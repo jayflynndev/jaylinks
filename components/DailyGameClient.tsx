@@ -10,7 +10,7 @@ import {
   submitGuessV1,
   revealAnswerV1,
 } from "@/lib/game";
-import { ClueCard } from "./ClueCard";
+import { ClueStack } from "./CluesStack";
 import { OptionGrid } from "./OptionGrid";
 import { StatsModal } from "./StatsModal";
 import { msUntilNextLondonMidnight, formatCountdown } from "@/lib/reset";
@@ -62,7 +62,6 @@ export function DailyGameClient({ puzzle }: Props) {
   }
 
   const isComplete = day.status === "solved" || day.status === "revealed";
-  const clueText = puzzle.clues[day.clueIndex] ?? puzzle.clues[0];
   const isLastClue = day.clueIndex >= maxClues - 1;
 
   function handleTileClick(optionId: string) {
@@ -173,10 +172,10 @@ export function DailyGameClient({ puzzle }: Props) {
         </div>
       </div>
 
-      <ClueCard
-        clueText={clueText}
-        clueIndex={day.clueIndex}
-        clueTotal={maxClues}
+      <ClueStack
+        clues={puzzle.clues}
+        revealedCount={day.clueIndex + 1}
+        maxClues={maxClues}
       />
 
       <OptionGrid
@@ -198,11 +197,18 @@ export function DailyGameClient({ puzzle }: Props) {
           </button>
 
           <button
-            type="button"
+            className="rounded-xl bg-white text-black px-4 py-2 text-sm font-semibold hover:opacity-90 disabled:opacity-40"
             onClick={handleGuess}
-            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
           >
             Guess
+          </button>
+
+          <button className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40">
+            Next clue
+          </button>
+
+          <button className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40">
+            Reveal
           </button>
 
           <button

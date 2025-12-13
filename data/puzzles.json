@@ -681,1009 +681,385 @@
     "id": 27,
     "dateISO": "2026-01-08",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "lad", "label": "Ladder" },
+      { "id": "step", "label": "Stool" },
+      { "id": "rope", "label": "Rope" },
+      { "id": "lift", "label": "Lift" },
+      { "id": "esca", "label": "Escalator" },
+      { "id": "ramp", "label": "Ramp" },
+      { "id": "stairs", "label": "Stairs" },
+      { "id": "pole", "label": "Pole" },
+      { "id": "crate", "label": "Crate" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "lad",
     "clues": [
-      "(2026-01-08) Placeholder clue 1 (replace).",
-      "(2026-01-08) Placeholder clue 2 (replace).",
-      "(2026-01-08) Placeholder clue 3 (replace).",
-      "(2026-01-08) Placeholder clue 4 (replace).",
-      "(2026-01-08) Placeholder clue 5 (replace)."
+      "This item is often associated with superstition.",
+      "This item is typically leaned rather than fixed.",
+      "This item is made up of evenly spaced sections.",
+      "This item is used to reach higher places.",
+      "This item is known as a ladder."
     ],
-    "explanation": "(2026-01-08) Placeholder explanation (replace)."
+    "explanation": "A ladder is leaned to climb upwards, consists of rungs, and is famously linked to the superstition of walking underneath it."
   },
   {
     "id": 28,
     "dateISO": "2026-01-09",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "ita", "label": "Italy" },
+      { "id": "fra", "label": "France" },
+      { "id": "spa", "label": "Spain" },
+      { "id": "gre", "label": "Greece" },
+      { "id": "por", "label": "Portugal" },
+      { "id": "cro", "label": "Croatia" },
+      { "id": "tur", "label": "Turkey" },
+      { "id": "ger", "label": "Germany" },
+      { "id": "sui", "label": "Switzerland" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "ita",
     "clues": [
-      "(2026-01-09) Placeholder clue 1 (replace).",
-      "(2026-01-09) Placeholder clue 2 (replace).",
-      "(2026-01-09) Placeholder clue 3 (replace).",
-      "(2026-01-09) Placeholder clue 4 (replace).",
-      "(2026-01-09) Placeholder clue 5 (replace)."
+      "This country has a famously recognisable shape.",
+      "This country was once the centre of a major ancient empire.",
+      "This country contains an independent city-state within its borders.",
+      "This country is known for pizza and pasta.",
+      "This country’s capital is Rome."
     ],
-    "explanation": "(2026-01-09) Placeholder explanation (replace)."
+    "explanation": "Italy is a European country shaped like a boot, home to Rome, and famous for its food and Roman history."
   },
   {
     "id": 29,
     "dateISO": "2026-01-10",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "too", "label": "Toothbrush" },
+      { "id": "raz", "label": "Razor" },
+      { "id": "comb", "label": "Comb" },
+      { "id": "soap", "label": "Soap" },
+      { "id": "towel", "label": "Towel" },
+      { "id": "floss", "label": "Dental Floss" },
+      { "id": "mirror", "label": "Mirror" },
+      { "id": "sponge", "label": "Sponge" },
+      { "id": "paste", "label": "Toothpaste" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "too",
     "clues": [
-      "(2026-01-10) Placeholder clue 1 (replace).",
-      "(2026-01-10) Placeholder clue 2 (replace).",
-      "(2026-01-10) Placeholder clue 3 (replace).",
-      "(2026-01-10) Placeholder clue 4 (replace).",
-      "(2026-01-10) Placeholder clue 5 (replace)."
+      "This item is replaced more often than people realise.",
+      "This item is usually kept near a sink.",
+      "This item is used daily by most people.",
+      "This item is used for oral hygiene.",
+      "This item is a toothbrush."
     ],
-    "explanation": "(2026-01-10) Placeholder explanation (replace)."
+    "explanation": "A toothbrush is used daily for oral hygiene and is commonly kept near a bathroom sink."
   },
   {
     "id": 30,
     "dateISO": "2026-01-11",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "gwc", "label": "Great Wall of China" },
+      { "id": "eff", "label": "Eiffel Tower" },
+      { "id": "taj", "label": "Taj Mahal" },
+      { "id": "mac", "label": "Machu Picchu" },
+      { "id": "pet", "label": "Petra" },
+      { "id": "ang", "label": "Angkor Wat" },
+      { "id": "sta", "label": "Statue of Liberty" },
+      { "id": "col", "label": "Colosseum" },
+      { "id": "chr", "label": "Christ the Redeemer" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "gwc",
     "clues": [
-      "(2026-01-11) Placeholder clue 1 (replace).",
-      "(2026-01-11) Placeholder clue 2 (replace).",
-      "(2026-01-11) Placeholder clue 3 (replace).",
-      "(2026-01-11) Placeholder clue 4 (replace).",
-      "(2026-01-11) Placeholder clue 5 (replace)."
+      "This structure was built primarily for defence.",
+      "This structure stretches for thousands of miles.",
+      "This structure was constructed over many centuries.",
+      "This structure is located in Asia.",
+      "This structure is the Great Wall of China."
     ],
-    "explanation": "(2026-01-11) Placeholder explanation (replace)."
+    "explanation": "The Great Wall of China is a vast defensive structure built over centuries and stretching thousands of miles."
   },
   {
     "id": 31,
     "dateISO": "2026-01-12",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "gra", "label": "Gravity" },
+      { "id": "mag", "label": "Magnetism" },
+      { "id": "fri", "label": "Friction" },
+      { "id": "ene", "label": "Energy" },
+      { "id": "for", "label": "Force" },
+      { "id": "acc", "label": "Acceleration" },
+      { "id": "mom", "label": "Momentum" },
+      { "id": "den", "label": "Density" },
+      { "id": "wei", "label": "Weight" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "gra",
     "clues": [
-      "(2026-01-12) Placeholder clue 1 (replace).",
-      "(2026-01-12) Placeholder clue 2 (replace).",
-      "(2026-01-12) Placeholder clue 3 (replace).",
-      "(2026-01-12) Placeholder clue 4 (replace).",
-      "(2026-01-12) Placeholder clue 5 (replace)."
+      "This concept acts on all objects with mass.",
+      "This concept was famously described by Isaac Newton.",
+      "This concept keeps planets in orbit.",
+      "This concept causes objects to fall.",
+      "This concept is gravity."
     ],
-    "explanation": "(2026-01-12) Placeholder explanation (replace)."
+    "explanation": "Gravity is the force that attracts objects with mass and causes them to fall toward one another."
   },
   {
     "id": 32,
     "dateISO": "2026-01-13",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "arm", "label": "Neil Armstrong" },
+      { "id": "ald", "label": "Buzz Aldrin" },
+      { "id": "gag", "label": "Yuri Gagarin" },
+      { "id": "gln", "label": "John Glenn" },
+      { "id": "had", "label": "Chris Hadfield" },
+      { "id": "she", "label": "Alan Shepard" },
+      { "id": "lov", "label": "Jim Lovell" },
+      { "id": "col", "label": "Michael Collins" },
+      { "id": "mus", "label": "Elon Musk" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "arm",
     "clues": [
-      "(2026-01-13) Placeholder clue 1 (replace).",
-      "(2026-01-13) Placeholder clue 2 (replace).",
-      "(2026-01-13) Placeholder clue 3 (replace).",
-      "(2026-01-13) Placeholder clue 4 (replace).",
-      "(2026-01-13) Placeholder clue 5 (replace)."
+      "This person was involved in a historic space mission.",
+      "This person was part of NASA’s Apollo programme.",
+      "This person set foot on the Moon.",
+      "This person spoke a famous sentence about a small step.",
+      "This person was Neil Armstrong."
     ],
-    "explanation": "(2026-01-13) Placeholder explanation (replace)."
+    "explanation": "Neil Armstrong was the first person to walk on the Moon during the Apollo 11 mission."
   },
   {
     "id": 33,
     "dateISO": "2026-01-14",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "pac", "label": "Pacific Ocean" },
+      { "id": "atl", "label": "Atlantic Ocean" },
+      { "id": "ind", "label": "Indian Ocean" },
+      { "id": "arc", "label": "Arctic Ocean" },
+      { "id": "sou", "label": "Southern Ocean" },
+      { "id": "med", "label": "Mediterranean Sea" },
+      { "id": "car", "label": "Caribbean Sea" },
+      { "id": "red", "label": "Red Sea" },
+      { "id": "bal", "label": "Baltic Sea" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "pac",
     "clues": [
-      "(2026-01-14) Placeholder clue 1 (replace).",
-      "(2026-01-14) Placeholder clue 2 (replace).",
-      "(2026-01-14) Placeholder clue 3 (replace).",
-      "(2026-01-14) Placeholder clue 4 (replace).",
-      "(2026-01-14) Placeholder clue 5 (replace)."
+      "This body of water borders more than one continent.",
+      "This body of water contains the deepest point on Earth.",
+      "This body of water covers more surface area than any other.",
+      "This body of water lies between Asia and the Americas.",
+      "This body of water is the Pacific Ocean."
     ],
-    "explanation": "(2026-01-14) Placeholder explanation (replace)."
+    "explanation": "The Pacific Ocean is the largest ocean on Earth and contains the Mariana Trench, the planet’s deepest point."
   },
   {
     "id": 34,
     "dateISO": "2026-01-15",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "env", "label": "Envelope" },
+      { "id": "box", "label": "Box" },
+      { "id": "bag", "label": "Bag" },
+      { "id": "case", "label": "Case" },
+      { "id": "folder", "label": "Folder" },
+      { "id": "wallet", "label": "Wallet" },
+      { "id": "pouch", "label": "Pouch" },
+      { "id": "tube", "label": "Tube" },
+      { "id": "parcel", "label": "Parcel" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "env",
     "clues": [
-      "(2026-01-15) Placeholder clue 1 (replace).",
-      "(2026-01-15) Placeholder clue 2 (replace).",
-      "(2026-01-15) Placeholder clue 3 (replace).",
-      "(2026-01-15) Placeholder clue 4 (replace).",
-      "(2026-01-15) Placeholder clue 5 (replace)."
+      "This item is often sealed before use.",
+      "This item usually contains something flat.",
+      "This item is designed to be opened once.",
+      "This item is commonly sent through the post.",
+      "This item is an envelope."
     ],
-    "explanation": "(2026-01-15) Placeholder explanation (replace)."
+    "explanation": "An envelope is sealed to send flat items like letters through the post."
   },
   {
     "id": 35,
     "dateISO": "2026-01-16",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "egy", "label": "Egypt" },
+      { "id": "mex", "label": "Mexico" },
+      { "id": "per", "label": "Peru" },
+      { "id": "ira", "label": "Iraq" },
+      { "id": "ind", "label": "India" },
+      { "id": "gre", "label": "Greece" },
+      { "id": "chi", "label": "China" },
+      { "id": "tur", "label": "Turkey" },
+      { "id": "mor", "label": "Morocco" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "egy",
     "clues": [
-      "(2026-01-16) Placeholder clue 1 (replace).",
-      "(2026-01-16) Placeholder clue 2 (replace).",
-      "(2026-01-16) Placeholder clue 3 (replace).",
-      "(2026-01-16) Placeholder clue 4 (replace).",
-      "(2026-01-16) Placeholder clue 5 (replace)."
+      "This country is strongly associated with an ancient civilisation.",
+      "This country lies in both Africa and Asia.",
+      "This country is closely linked to a major river.",
+      "This country is famous for pyramids.",
+      "This country is Egypt."
     ],
-    "explanation": "(2026-01-16) Placeholder explanation (replace)."
+    "explanation": "Egypt is home to one of the world’s oldest civilisations and is famous for the Nile River and pyramids."
   },
   {
     "id": 36,
     "dateISO": "2026-01-17",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "coi", "label": "Coincidence" },
+      { "id": "luck", "label": "Luck" },
+      { "id": "chance", "label": "Chance" },
+      { "id": "pattern", "label": "Pattern" },
+      { "id": "habit", "label": "Habit" },
+      { "id": "routine", "label": "Routine" },
+      { "id": "rule", "label": "Rule" },
+      { "id": "logic", "label": "Logic" },
+      { "id": "theory", "label": "Theory" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "coi",
     "clues": [
-      "(2026-01-17) Placeholder clue 1 (replace).",
-      "(2026-01-17) Placeholder clue 2 (replace).",
-      "(2026-01-17) Placeholder clue 3 (replace).",
-      "(2026-01-17) Placeholder clue 4 (replace).",
-      "(2026-01-17) Placeholder clue 5 (replace)."
+      "This describes events that appear related but are not planned.",
+      "This is often surprising when it happens.",
+      "This is sometimes mistaken for fate.",
+      "This refers to things occurring at the same time by chance.",
+      "This is a coincidence."
     ],
-    "explanation": "(2026-01-17) Placeholder explanation (replace)."
+    "explanation": "A coincidence occurs when events align unexpectedly without deliberate planning."
   },
   {
     "id": 37,
     "dateISO": "2026-01-18",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "pis", "label": "Leaning Tower of Pisa" },
+      { "id": "eff", "label": "Eiffel Tower" },
+      { "id": "big", "label": "Big Ben" },
+      { "id": "col", "label": "Colosseum" },
+      { "id": "taj", "label": "Taj Mahal" },
+      { "id": "pet", "label": "Petra" },
+      { "id": "sid", "label": "Sydney Opera House" },
+      { "id": "ang", "label": "Angkor Wat" },
+      { "id": "chr", "label": "Christ the Redeemer" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "pis",
     "clues": [
-      "(2026-01-18) Placeholder clue 1 (replace).",
-      "(2026-01-18) Placeholder clue 2 (replace).",
-      "(2026-01-18) Placeholder clue 3 (replace).",
-      "(2026-01-18) Placeholder clue 4 (replace).",
-      "(2026-01-18) Placeholder clue 5 (replace)."
+      "This structure is famous for an unintended feature.",
+      "This structure began leaning shortly after construction.",
+      "This structure is located in Europe.",
+      "This structure stands in Italy.",
+      "This structure is the Leaning Tower of Pisa."
     ],
-    "explanation": "(2026-01-18) Placeholder explanation (replace)."
+    "explanation": "The Leaning Tower of Pisa is known worldwide for its unintended tilt caused by unstable foundations."
   },
   {
     "id": 38,
     "dateISO": "2026-01-19",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "pen", "label": "Pen" },
+      { "id": "pcl", "label": "Pencil" },
+      { "id": "cha", "label": "Chalk" },
+      { "id": "bru", "label": "Paintbrush" },
+      { "id": "cra", "label": "Crayon" },
+      { "id": "mar", "label": "Marker" },
+      { "id": "sty", "label": "Stylus" },
+      { "id": "qua", "label": "Quill" },
+      { "id": "ink", "label": "Ink Bottle" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "pcl",
     "clues": [
-      "(2026-01-19) Placeholder clue 1 (replace).",
-      "(2026-01-19) Placeholder clue 2 (replace).",
-      "(2026-01-19) Placeholder clue 3 (replace).",
-      "(2026-01-19) Placeholder clue 4 (replace).",
-      "(2026-01-19) Placeholder clue 5 (replace)."
+      "This item does not use ink.",
+      "This item can be erased.",
+      "This item becomes shorter with use.",
+      "This item is commonly used for writing or drawing.",
+      "This item is a pencil."
     ],
-    "explanation": "(2026-01-19) Placeholder explanation (replace)."
+    "explanation": "A pencil uses graphite rather than ink and can be erased, becoming shorter as it’s sharpened."
   },
   {
     "id": 39,
     "dateISO": "2026-01-20",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "dav", "label": "Leonardo da Vinci" },
+      { "id": "mic", "label": "Michelangelo" },
+      { "id": "rap", "label": "Raphael" },
+      { "id": "pic", "label": "Pablo Picasso" },
+      { "id": "van", "label": "Vincent van Gogh" },
+      { "id": "rem", "label": "Rembrandt" },
+      { "id": "mon", "label": "Claude Monet" },
+      { "id": "gau", "label": "Paul Gauguin" },
+      { "id": "dal", "label": "Salvador Dalí" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "dav",
     "clues": [
-      "(2026-01-20) Placeholder clue 1 (replace).",
-      "(2026-01-20) Placeholder clue 2 (replace).",
-      "(2026-01-20) Placeholder clue 3 (replace).",
-      "(2026-01-20) Placeholder clue 4 (replace).",
-      "(2026-01-20) Placeholder clue 5 (replace)."
+      "This person had interests beyond their main profession.",
+      "This person lived during the Renaissance.",
+      "This person made significant contributions to both art and science.",
+      "This person painted the Mona Lisa.",
+      "This person was Leonardo da Vinci."
     ],
-    "explanation": "(2026-01-20) Placeholder explanation (replace)."
+    "explanation": "Leonardo da Vinci was a Renaissance polymath known for masterpieces like the Mona Lisa and wide-ranging scientific studies."
   },
   {
     "id": 40,
     "dateISO": "2026-01-21",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "moo", "label": "The Moon" },
+      { "id": "mar", "label": "Mars" },
+      { "id": "ven", "label": "Venus" },
+      { "id": "ear", "label": "Earth" },
+      { "id": "sun", "label": "The Sun" },
+      { "id": "pla", "label": "Pluto" },
+      { "id": "ast", "label": "Asteroid Belt" },
+      { "id": "com", "label": "Comet" },
+      { "id": "spa", "label": "Space Station" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "moo",
     "clues": [
-      "(2026-01-21) Placeholder clue 1 (replace).",
-      "(2026-01-21) Placeholder clue 2 (replace).",
-      "(2026-01-21) Placeholder clue 3 (replace).",
-      "(2026-01-21) Placeholder clue 4 (replace).",
-      "(2026-01-21) Placeholder clue 5 (replace)."
+      "This object has no atmosphere suitable for life.",
+      "This object influences tides on Earth.",
+      "This object orbits our planet.",
+      "This object has been visited by humans.",
+      "This object is the Moon."
     ],
-    "explanation": "(2026-01-21) Placeholder explanation (replace)."
+    "explanation": "The Moon orbits Earth, affects tides, and is the only celestial body visited by humans."
   },
   {
     "id": 41,
     "dateISO": "2026-01-22",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "sui", "label": "Suitcase" },
+      { "id": "bag", "label": "Backpack" },
+      { "id": "box", "label": "Box" },
+      { "id": "trunk", "label": "Trunk" },
+      { "id": "case", "label": "Briefcase" },
+      { "id": "sat", "label": "Satchel" },
+      { "id": "pouch", "label": "Pouch" },
+      { "id": "locker", "label": "Locker" },
+      { "id": "drawer", "label": "Drawer" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "sui",
     "clues": [
-      "(2026-01-22) Placeholder clue 1 (replace).",
-      "(2026-01-22) Placeholder clue 2 (replace).",
-      "(2026-01-22) Placeholder clue 3 (replace).",
-      "(2026-01-22) Placeholder clue 4 (replace).",
-      "(2026-01-22) Placeholder clue 5 (replace)."
+      "This item is commonly checked or carried.",
+      "This item is associated with journeys.",
+      "This item often has wheels.",
+      "This item is used to transport personal belongings.",
+      "This item is a suitcase."
     ],
-    "explanation": "(2026-01-22) Placeholder explanation (replace)."
+    "explanation": "A suitcase is used to carry personal belongings when travelling and often includes wheels for easy transport."
   },
   {
     "id": 42,
     "dateISO": "2026-01-23",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "bra", "label": "Brazil" },
+      { "id": "arg", "label": "Argentina" },
+      { "id": "per", "label": "Peru" },
+      { "id": "col", "label": "Colombia" },
+      { "id": "chi", "label": "Chile" },
+      { "id": "ven", "label": "Venezuela" },
+      { "id": "bol", "label": "Bolivia" },
+      { "id": "ecu", "label": "Ecuador" },
+      { "id": "uru", "label": "Uruguay" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "bra",
     "clues": [
-      "(2026-01-23) Placeholder clue 1 (replace).",
-      "(2026-01-23) Placeholder clue 2 (replace).",
-      "(2026-01-23) Placeholder clue 3 (replace).",
-      "(2026-01-23) Placeholder clue 4 (replace).",
-      "(2026-01-23) Placeholder clue 5 (replace)."
+      "This country is the largest in its continent by area.",
+      "This country’s official language is Portuguese.",
+      "This country contains most of the Amazon Rainforest.",
+      "This country is famous for Carnival.",
+      "This country is Brazil."
     ],
-    "explanation": "(2026-01-23) Placeholder explanation (replace)."
+    "explanation": "Brazil is the largest country in South America, the only one where Portuguese is the official language, and home to much of the Amazon."
   },
   {
     "id": 43,
@@ -1716,441 +1092,168 @@
     "id": 44,
     "dateISO": "2026-01-25",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "tzo", "label": "Time Zone" },
+      { "id": "calendar", "label": "Calendar" },
+      { "id": "clock", "label": "Clock" },
+      { "id": "schedule", "label": "Schedule" },
+      { "id": "deadline", "label": "Deadline" },
+      { "id": "routine", "label": "Routine" },
+      { "id": "timezone", "label": "Longitude" },
+      { "id": "date", "label": "Date" },
+      { "id": "alarm", "label": "Alarm" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "tzo",
     "clues": [
-      "(2026-01-25) Placeholder clue 1 (replace).",
-      "(2026-01-25) Placeholder clue 2 (replace).",
-      "(2026-01-25) Placeholder clue 3 (replace).",
-      "(2026-01-25) Placeholder clue 4 (replace).",
-      "(2026-01-25) Placeholder clue 5 (replace)."
+      "This concept varies depending on location.",
+      "This concept affects what time it is around the world.",
+      "This concept is based on Earth’s rotation.",
+      "This concept divides the globe longitudinally.",
+      "This concept is a time zone."
     ],
-    "explanation": "(2026-01-25) Placeholder explanation (replace)."
+    "explanation": "A time zone divides the Earth into regions that share the same standard time based on longitude."
   },
   {
     "id": 45,
     "dateISO": "2026-01-26",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "nia", "label": "Niagara Falls" },
+      { "id": "vic", "label": "Victoria Falls" },
+      { "id": "igu", "label": "Iguazu Falls" },
+      { "id": "ang", "label": "Angel Falls" },
+      { "id": "gca", "label": "Grand Canyon" },
+      { "id": "yos", "label": "Yosemite" },
+      { "id": "ant", "label": "Antelope Canyon" },
+      { "id": "dea", "label": "Death Valley" },
+      { "id": "ala", "label": "Alcatraz" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "nia",
     "clues": [
-      "(2026-01-26) Placeholder clue 1 (replace).",
-      "(2026-01-26) Placeholder clue 2 (replace).",
-      "(2026-01-26) Placeholder clue 3 (replace).",
-      "(2026-01-26) Placeholder clue 4 (replace).",
-      "(2026-01-26) Placeholder clue 5 (replace)."
+      "This landmark lies on an international border.",
+      "This landmark is composed of multiple waterfalls.",
+      "This landmark is located in North America.",
+      "This landmark sits between the United States and Canada.",
+      "This landmark is Niagara Falls."
     ],
-    "explanation": "(2026-01-26) Placeholder explanation (replace)."
+    "explanation": "Niagara Falls is a group of waterfalls on the border between the USA and Canada."
   },
   {
     "id": 46,
     "dateISO": "2026-01-27",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "the", "label": "Thermometer" },
+      { "id": "bar", "label": "Barometer" },
+      { "id": "alt", "label": "Altimeter" },
+      { "id": "scale", "label": "Scale" },
+      { "id": "timer", "label": "Timer" },
+      { "id": "clock", "label": "Clock" },
+      { "id": "gauge", "label": "Gauge" },
+      { "id": "meter", "label": "Meter" },
+      { "id": "sensor", "label": "Sensor" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "the",
     "clues": [
-      "(2026-01-27) Placeholder clue 1 (replace).",
-      "(2026-01-27) Placeholder clue 2 (replace).",
-      "(2026-01-27) Placeholder clue 3 (replace).",
-      "(2026-01-27) Placeholder clue 4 (replace).",
-      "(2026-01-27) Placeholder clue 5 (replace)."
+      "This instrument measures a physical property.",
+      "This instrument is used in medicine and science.",
+      "This instrument measures degrees.",
+      "This instrument measures temperature.",
+      "This instrument is a thermometer."
     ],
-    "explanation": "(2026-01-27) Placeholder explanation (replace)."
+    "explanation": "A thermometer is used to measure temperature, commonly in medical and scientific settings."
   },
   {
     "id": 47,
     "dateISO": "2026-01-28",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "ear", "label": "Amelia Earhart" },
+      { "id": "lin", "label": "Charles Lindbergh" },
+      { "id": "wri", "label": "The Wright Brothers" },
+      { "id": "arm", "label": "Neil Armstrong" },
+      { "id": "mag", "label": "Ferdinand Magellan" },
+      { "id": "sha", "label": "William Shakespeare" },
+      { "id": "tes", "label": "Nikola Tesla" },
+      { "id": "dav", "label": "Leonardo da Vinci" },
+      { "id": "dar", "label": "Charles Darwin" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "ear",
     "clues": [
-      "(2026-01-28) Placeholder clue 1 (replace).",
-      "(2026-01-28) Placeholder clue 2 (replace).",
-      "(2026-01-28) Placeholder clue 3 (replace).",
-      "(2026-01-28) Placeholder clue 4 (replace).",
-      "(2026-01-28) Placeholder clue 5 (replace)."
+      "This person is associated with aviation history.",
+      "This person achieved a record-breaking solo journey.",
+      "This person disappeared during a flight.",
+      "This person was a pioneering female pilot.",
+      "This person was Amelia Earhart."
     ],
-    "explanation": "(2026-01-28) Placeholder explanation (replace)."
+    "explanation": "Amelia Earhart was a pioneering aviator who disappeared during an attempt to fly around the world."
   },
   {
     "id": 48,
     "dateISO": "2026-01-29",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "fuji", "label": "Mount Fuji" },
+      { "id": "eve", "label": "Mount Everest" },
+      { "id": "kil", "label": "Mount Kilimanjaro" },
+      { "id": "den", "label": "Denali" },
+      { "id": "alp", "label": "The Alps" },
+      { "id": "oli", "label": "Mount Olympus" },
+      { "id": "ara", "label": "Aconcagua" },
+      { "id": "him", "label": "The Himalayas" },
+      { "id": "and", "label": "Andes Mountains" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "fuji",
     "clues": [
-      "(2026-01-29) Placeholder clue 1 (replace).",
-      "(2026-01-29) Placeholder clue 2 (replace).",
-      "(2026-01-29) Placeholder clue 3 (replace).",
-      "(2026-01-29) Placeholder clue 4 (replace).",
-      "(2026-01-29) Placeholder clue 5 (replace)."
+      "This mountain is considered sacred.",
+      "This mountain is a stratovolcano.",
+      "This mountain is located in Asia.",
+      "This mountain is found in Japan.",
+      "This mountain is Mount Fuji."
     ],
-    "explanation": "(2026-01-29) Placeholder explanation (replace)."
+    "explanation": "Mount Fuji is a sacred stratovolcano in Japan and one of the country’s most recognisable landmarks."
   },
   {
     "id": 49,
     "dateISO": "2026-01-30",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "sci", "label": "Scissors" },
+      { "id": "kni", "label": "Knife" },
+      { "id": "raz", "label": "Razor" },
+      { "id": "saw", "label": "Saw" },
+      { "id": "axe", "label": "Axe" },
+      { "id": "she", "label": "Shears" },
+      { "id": "cut", "label": "Cutter" },
+      { "id": "pen", "label": "Pen" },
+      { "id": "sta", "label": "Stapler" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "sci",
     "clues": [
-      "(2026-01-30) Placeholder clue 1 (replace).",
-      "(2026-01-30) Placeholder clue 2 (replace).",
-      "(2026-01-30) Placeholder clue 3 (replace).",
-      "(2026-01-30) Placeholder clue 4 (replace).",
-      "(2026-01-30) Placeholder clue 5 (replace)."
+      "This object has two parts that move around a pivot.",
+      "This object is often found in pairs but used as one.",
+      "This object is designed for precision rather than force.",
+      "This object is commonly used to cut paper.",
+      "This object is scissors."
     ],
-    "explanation": "(2026-01-30) Placeholder explanation (replace)."
+    "explanation": "Scissors consist of two pivoting blades and are commonly used for cutting paper and other materials."
   },
   {
     "id": 50,
     "dateISO": "2026-01-31",
     "options": [
-      {
-        "id": "a",
-        "label": "Option A"
-      },
-      {
-        "id": "b",
-        "label": "Option B"
-      },
-      {
-        "id": "c",
-        "label": "Option C"
-      },
-      {
-        "id": "d",
-        "label": "Option D"
-      },
-      {
-        "id": "e",
-        "label": "Option E"
-      },
-      {
-        "id": "f",
-        "label": "Option F"
-      },
-      {
-        "id": "g",
-        "label": "Option G"
-      },
-      {
-        "id": "h",
-        "label": "Option H"
-      },
-      {
-        "id": "i",
-        "label": "Option I"
-      },
-      {
-        "id": "j",
-        "label": "Option J"
-      },
-      {
-        "id": "k",
-        "label": "Option K"
-      },
-      {
-        "id": "l",
-        "label": "Option L"
-      }
+      { "id": "med", "label": "Mediterranean Sea" },
+      { "id": "bal", "label": "Baltic Sea" },
+      { "id": "red", "label": "Red Sea" },
+      { "id": "bla", "label": "Black Sea" },
+      { "id": "car", "label": "Caribbean Sea" },
+      { "id": "ara", "label": "Arabian Sea" },
+      { "id": "atl", "label": "Atlantic Ocean" },
+      { "id": "pac", "label": "Pacific Ocean" },
+      { "id": "ind", "label": "Indian Ocean" }
     ],
-    "answerOptionId": "a",
+    "answerOptionId": "med",
     "clues": [
-      "(2026-01-31) Placeholder clue 1 (replace).",
-      "(2026-01-31) Placeholder clue 2 (replace).",
-      "(2026-01-31) Placeholder clue 3 (replace).",
-      "(2026-01-31) Placeholder clue 4 (replace).",
-      "(2026-01-31) Placeholder clue 5 (replace)."
+      "This body of water borders multiple continents.",
+      "This body of water has been central to ancient civilisations.",
+      "This body of water connects to the Atlantic via a narrow strait.",
+      "This body of water lies between Europe and Africa.",
+      "This body of water is the Mediterranean Sea."
     ],
-    "explanation": "(2026-01-31) Placeholder explanation (replace)."
+    "explanation": "The Mediterranean Sea lies between Europe and Africa and played a major role in ancient history and trade."
   }
 ]
