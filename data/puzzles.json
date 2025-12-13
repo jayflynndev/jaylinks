@@ -1,0 +1,2156 @@
+[
+  {
+    "id": 1,
+    "dateISO": "2025-12-13",
+    "options": [
+      {
+        "id": "ij",
+        "label": "Indiana Jones"
+      },
+      {
+        "id": "jb",
+        "label": "James Bond"
+      },
+      {
+        "id": "hp",
+        "label": "Harry Potter"
+      },
+      {
+        "id": "ls",
+        "label": "Luke Skywalker"
+      },
+      {
+        "id": "bm",
+        "label": "Batman"
+      },
+      {
+        "id": "sm",
+        "label": "Superman"
+      },
+      {
+        "id": "sp",
+        "label": "Spider-Man"
+      },
+      {
+        "id": "im",
+        "label": "Iron Man"
+      },
+      {
+        "id": "dv",
+        "label": "Darth Vader"
+      },
+      {
+        "id": "rb",
+        "label": "Rocky Balboa"
+      },
+      {
+        "id": "fg",
+        "label": "Forrest Gump"
+      },
+      {
+        "id": "js",
+        "label": "Jack Sparrow"
+      }
+    ],
+    "answerOptionId": "ij",
+    "clues": [
+      "This character first appeared in a film released before 1985.",
+      "This character is not a superhero.",
+      "This character does not appear in a science-fiction film.",
+      "This character is portrayed as an academic or intellectual profession.",
+      "This character is known for wearing a distinctive hat."
+    ],
+    "explanation": "Indiana Jones debuted in Raiders of the Lost Ark (1981). He’s an archaeologist-adventurer, not a superhero, and not a sci-fi character."
+  },
+  {
+    "id": 2,
+    "dateISO": "2025-12-14",
+    "options": [
+      { "id": "ldn", "label": "London" },
+      { "id": "man", "label": "Manchester" },
+      { "id": "liv", "label": "Liverpool" },
+      { "id": "edi", "label": "Edinburgh" },
+      { "id": "gla", "label": "Glasgow" },
+      { "id": "car", "label": "Cardiff" },
+      { "id": "bel", "label": "Belfast" },
+      { "id": "yor", "label": "York" },
+      { "id": "bat", "label": "Bath" },
+      { "id": "oxf", "label": "Oxford" },
+      { "id": "cam", "label": "Cambridge" },
+      { "id": "bri", "label": "Brighton" }
+    ],
+    "answerOptionId": "edi",
+    "clues": [
+      "This city has a medieval Old Town and a Georgian New Town.",
+      "This city is dominated by a castle built on a volcanic rock.",
+      "This city hosts a world-famous arts festival every summer.",
+      "This city’s main street is called the Royal Mile.",
+      "This city is the capital of Scotland."
+    ],
+    "explanation": "Edinburgh is Scotland’s capital city, famous for its castle, historic Old Town, Royal Mile, and annual international arts festivals."
+  },
+  {
+    "id": 3,
+    "dateISO": "2025-12-15",
+    "options": [
+      { "id": "umb", "label": "Umbrella" },
+      { "id": "hat", "label": "Hat" },
+      { "id": "coa", "label": "Coat" },
+      { "id": "bag", "label": "Bag" },
+      { "id": "boo", "label": "Boots" },
+      { "id": "gla", "label": "Glasses" },
+      { "id": "sca", "label": "Scarf" },
+      { "id": "glo", "label": "Gloves" },
+      { "id": "map", "label": "Map" }
+    ],
+    "answerOptionId": "umb",
+    "clues": [
+      "This item can invert under the right conditions.",
+      "This item is often shared reluctantly.",
+      "This item is commonly forgotten in public places.",
+      "This item is designed to protect you from the weather.",
+      "This item is opened above your head when it rains."
+    ],
+    "explanation": "An umbrella is used for protection from rain, is often forgotten, and can turn inside out in strong winds."
+  },
+  {
+    "id": 4,
+    "dateISO": "2025-12-16",
+    "options": [
+      { "id": "eff", "label": "Eiffel Tower" },
+      { "id": "col", "label": "Colosseum" },
+      { "id": "sta", "label": "Statue of Liberty" },
+      { "id": "taj", "label": "Taj Mahal" },
+      { "id": "big", "label": "Big Ben" },
+      { "id": "chr", "label": "Christ the Redeemer" },
+      { "id": "mac", "label": "Machu Picchu" },
+      { "id": "pet", "label": "Petra" },
+      { "id": "sid", "label": "Sydney Opera House" }
+    ],
+    "answerOptionId": "eff",
+    "clues": [
+      "This structure was once widely criticised after it was built.",
+      "This structure was originally intended to be temporary.",
+      "This structure was constructed for a world exhibition.",
+      "This structure is located in a European capital city.",
+      "This structure is the most famous landmark in Paris."
+    ],
+    "explanation": "The Eiffel Tower was built for the 1889 World’s Fair, initially disliked, and is now Paris’s most iconic landmark."
+  },
+  {
+    "id": 5,
+    "dateISO": "2025-12-17",
+    "options": [
+      { "id": "ldn", "label": "London" },
+      { "id": "man", "label": "Manchester" },
+      { "id": "liv", "label": "Liverpool" },
+      { "id": "edi", "label": "Edinburgh" },
+      { "id": "gla", "label": "Glasgow" },
+      { "id": "car", "label": "Cardiff" },
+      { "id": "bel", "label": "Belfast" },
+      { "id": "yor", "label": "York" },
+      { "id": "bat", "label": "Bath" },
+      { "id": "oxf", "label": "Oxford" },
+      { "id": "cam", "label": "Cambridge" },
+      { "id": "bri", "label": "Brighton" }
+    ],
+    "answerOptionId": "car",
+    "clues": [
+      "This city has a castle located in its city centre.",
+      "This city lies close to the Bristol Channel.",
+      "This city is home to the Welsh Senedd.",
+      "This city has hosted international rugby matches.",
+      "This city is the capital of Wales."
+    ],
+    "explanation": "Cardiff is the capital of Wales, featuring Cardiff Castle in the city centre and serving as the home of the Welsh Parliament."
+  },
+  {
+    "id": 6,
+    "dateISO": "2025-12-18",
+    "options": [
+      { "id": "ice", "label": "Iceland" },
+      { "id": "gre", "label": "Greenland" },
+      { "id": "nor", "label": "Norway" },
+      { "id": "fin", "label": "Finland" },
+      { "id": "swe", "label": "Sweden" },
+      { "id": "ire", "label": "Ireland" },
+      { "id": "can", "label": "Canada" },
+      { "id": "rus", "label": "Russia" },
+      { "id": "est", "label": "Estonia" }
+    ],
+    "answerOptionId": "ice",
+    "clues": [
+      "This country has no standing army.",
+      "This country sits on both a volcanic and a tectonic hotspot.",
+      "This country has more sheep than people.",
+      "This country is known for geysers and hot springs.",
+      "This country’s capital is Reykjavík."
+    ],
+    "explanation": "Iceland is a volcanic island nation with geothermal activity, a small population, and no standing army."
+  },
+  {
+    "id": 7,
+    "dateISO": "2025-12-19",
+    "options": [
+      { "id": "hol", "label": "Sherlock Holmes" },
+      { "id": "poi", "label": "Hercule Poirot" },
+      { "id": "mar", "label": "Miss Marple" },
+      { "id": "bon", "label": "James Bond" },
+      { "id": "fro", "label": "Frodo Baggins" },
+      { "id": "wat", "label": "Dr Watson" },
+      { "id": "dar", "label": "Darth Vader" },
+      { "id": "ind", "label": "Indiana Jones" },
+      { "id": "bat", "label": "Batman" }
+    ],
+    "answerOptionId": "hol",
+    "clues": [
+      "This character is strongly associated with logical deduction.",
+      "This character is frequently accompanied by a close associate.",
+      "This character is linked to a specific London address.",
+      "This character is a consulting detective.",
+      "This character famously lived at 221B Baker Street."
+    ],
+    "explanation": "Sherlock Holmes is a fictional detective known for logical reasoning and his address at 221B Baker Street, London."
+  },
+  {
+    "id": 8,
+    "dateISO": "2025-12-20",
+    "options": [
+      { "id": "key", "label": "Key" },
+      { "id": "map", "label": "Map" },
+      { "id": "lock", "label": "Lock" },
+      { "id": "note", "label": "Notebook" },
+      { "id": "coin", "label": "Coin" },
+      { "id": "card", "label": "Card" },
+      { "id": "ring", "label": "Ring" },
+      { "id": "lamp", "label": "Lamp" },
+      { "id": "bell", "label": "Bell" }
+    ],
+    "answerOptionId": "key",
+    "clues": [
+      "This object often has duplicates made.",
+      "This object is frequently lost.",
+      "This object is usually carried rather than displayed.",
+      "This object is used to gain access.",
+      "This object is inserted into a lock."
+    ],
+    "explanation": "A key is used to open locks, is commonly carried, frequently lost, and often has duplicates."
+  },
+  {
+    "id": 9,
+    "dateISO": "2025-12-21",
+    "options": [
+      { "id": "ldn", "label": "London" },
+      { "id": "man", "label": "Manchester" },
+      { "id": "liv", "label": "Liverpool" },
+      { "id": "edi", "label": "Edinburgh" },
+      { "id": "gla", "label": "Glasgow" },
+      { "id": "car", "label": "Cardiff" },
+      { "id": "bel", "label": "Belfast" },
+      { "id": "yor", "label": "York" },
+      { "id": "bat", "label": "Bath" },
+      { "id": "oxf", "label": "Oxford" },
+      { "id": "cam", "label": "Cambridge" },
+      { "id": "bri", "label": "Brighton" }
+    ],
+    "answerOptionId": "bat",
+    "clues": [
+      "This city is a UNESCO World Heritage Site.",
+      "This city features Georgian architecture such as the Royal Crescent.",
+      "This city is famous for its Roman-built baths.",
+      "This city is located in Somerset.",
+      "This city’s name is directly linked to bathing."
+    ],
+    "explanation": "Bath is a UNESCO-listed city in Somerset, best known for its Roman baths and Georgian landmarks like the Royal Crescent."
+  },
+  {
+    "id": 10,
+    "dateISO": "2025-12-22",
+    "options": [
+      { "id": "jpn", "label": "Japan" },
+      { "id": "chn", "label": "China" },
+      { "id": "kor", "label": "South Korea" },
+      { "id": "tha", "label": "Thailand" },
+      { "id": "vnm", "label": "Vietnam" },
+      { "id": "ind", "label": "India" },
+      { "id": "phl", "label": "Philippines" },
+      { "id": "mal", "label": "Malaysia" },
+      { "id": "tai", "label": "Taiwan" }
+    ],
+    "answerOptionId": "jpn",
+    "clues": [
+      "This country consists of thousands of islands.",
+      "This country has one of the world’s oldest continuous monarchies.",
+      "This country is located in East Asia.",
+      "This country’s capital is Tokyo.",
+      "This country is commonly referred to as the Land of the Rising Sun."
+    ],
+    "explanation": "Japan is an island nation in East Asia, home to Tokyo and one of the world’s oldest monarchies."
+  },
+  {
+    "id": 11,
+    "dateISO": "2025-12-23",
+    "options": [
+      { "id": "gca", "label": "Grand Canyon" },
+      { "id": "nia", "label": "Niagara Falls" },
+      { "id": "yell", "label": "Yellowstone" },
+      { "id": "ant", "label": "Antelope Canyon" },
+      { "id": "mon", "label": "Mount Rushmore" },
+      { "id": "ala", "label": "Alcatraz" },
+      { "id": "dea", "label": "Death Valley" },
+      { "id": "yos", "label": "Yosemite" },
+      { "id": "arc", "label": "Arches National Park" }
+    ],
+    "answerOptionId": "gca",
+    "clues": [
+      "This site was formed primarily by erosion.",
+      "This site is located in the western United States.",
+      "This site was carved by a river over millions of years.",
+      "This site is located in Arizona.",
+      "This site is one of the largest canyons in the world."
+    ],
+    "explanation": "The Grand Canyon was carved by the Colorado River and is one of the most famous natural landmarks in the USA."
+  },
+  {
+    "id": 12,
+    "dateISO": "2025-12-24",
+    "options": [
+      { "id": "nor", "label": "North Pole" },
+      { "id": "sou", "label": "South Pole" },
+      { "id": "alp", "label": "The Alps" },
+      { "id": "sah", "label": "Sahara Desert" },
+      { "id": "ama", "label": "Amazon Rainforest" },
+      { "id": "him", "label": "The Himalayas" },
+      { "id": "arc", "label": "Arctic Circle" },
+      { "id": "ant", "label": "Antarctica" },
+      { "id": "gre", "label": "Greenland" }
+    ],
+    "answerOptionId": "nor",
+    "clues": [
+      "This location has no permanent human population.",
+      "This location is not situated on a landmass.",
+      "This location experiences months of continuous daylight or darkness.",
+      "This location is associated with extreme cold.",
+      "This location is traditionally said to be home to Santa Claus."
+    ],
+    "explanation": "The North Pole lies in the Arctic Ocean, has no permanent population, and is traditionally linked with Santa Claus."
+  },
+  {
+    "id": 13,
+    "dateISO": "2025-12-25",
+    "options": [
+      { "id": "tre", "label": "Christmas Tree" },
+      { "id": "can", "label": "Candle" },
+      { "id": "sta", "label": "Stocking" },
+      { "id": "pre", "label": "Present" },
+      { "id": "bel", "label": "Bell" },
+      { "id": "rei", "label": "Reindeer" },
+      { "id": "san", "label": "Santa Hat" },
+      { "id": "sno", "label": "Snowflake" },
+      { "id": "gar", "label": "Garland" }
+    ],
+    "answerOptionId": "tre",
+    "clues": [
+      "This item is traditionally brought indoors for a short period.",
+      "This item is commonly decorated rather than used.",
+      "This item often has lights added to it.",
+      "This item is associated with gifts underneath it.",
+      "This item is central to Christmas celebrations."
+    ],
+    "explanation": "A Christmas tree is decorated with lights and ornaments and traditionally has gifts placed beneath it."
+  },
+  {
+    "id": 14,
+    "dateISO": "2025-12-26",
+    "options": [
+      { "id": "ldn", "label": "London" },
+      { "id": "man", "label": "Manchester" },
+      { "id": "liv", "label": "Liverpool" },
+      { "id": "edi", "label": "Edinburgh" },
+      { "id": "gla", "label": "Glasgow" },
+      { "id": "car", "label": "Cardiff" },
+      { "id": "bel", "label": "Belfast" },
+      { "id": "yor", "label": "York" },
+      { "id": "bat", "label": "Bath" },
+      { "id": "oxf", "label": "Oxford" },
+      { "id": "cam", "label": "Cambridge" },
+      { "id": "bri", "label": "Brighton" }
+    ],
+    "answerOptionId": "man",
+    "clues": [
+      "This city played a key role in the Industrial Revolution.",
+      "This city has two world-famous football clubs.",
+      "This city was historically associated with the textile industry.",
+      "This city has an international airport.",
+      "This city is located in Greater Manchester."
+    ],
+    "explanation": "Manchester was a major centre of the Industrial Revolution and is globally known for its football clubs and cultural influence."
+  },
+  {
+    "id": 15,
+    "dateISO": "2025-12-27",
+    "options": [
+      { "id": "cal", "label": "Calendar" },
+      { "id": "clock", "label": "Clock" },
+      { "id": "watch", "label": "Watch" },
+      { "id": "alarm", "label": "Alarm" },
+      { "id": "diary", "label": "Diary" },
+      { "id": "timer", "label": "Timer" },
+      { "id": "hour", "label": "Hourglass" },
+      { "id": "chart", "label": "Chart" },
+      { "id": "board", "label": "Noticeboard" }
+    ],
+    "answerOptionId": "cal",
+    "clues": [
+      "This item is often replaced annually.",
+      "This item is organised into months.",
+      "This item helps track dates rather than time of day.",
+      "This item commonly hangs on a wall.",
+      "This item shows the days of the year."
+    ],
+    "explanation": "A calendar displays days and months of the year and is typically replaced annually."
+  },
+  {
+    "id": 16,
+    "dateISO": "2025-12-28",
+    "options": [
+      { "id": "ein", "label": "Albert Einstein" },
+      { "id": "new", "label": "Isaac Newton" },
+      { "id": "dar", "label": "Charles Darwin" },
+      { "id": "tes", "label": "Nikola Tesla" },
+      { "id": "gal", "label": "Galileo Galilei" },
+      { "id": "cur", "label": "Marie Curie" },
+      { "id": "edd", "label": "Thomas Edison" },
+      { "id": "far", "label": "Michael Faraday" },
+      { "id": "haw", "label": "Stephen Hawking" }
+    ],
+    "answerOptionId": "ein",
+    "clues": [
+      "This person emigrated from Europe to the United States.",
+      "This person won a Nobel Prize in Physics.",
+      "This person is strongly associated with theoretical physics.",
+      "This person developed the theory of relativity.",
+      "This person is famously linked to the equation E=mc²."
+    ],
+    "explanation": "Albert Einstein was a theoretical physicist best known for developing the theory of relativity and the equation E=mc²."
+  },
+  {
+    "id": 17,
+    "dateISO": "2025-12-29",
+    "options": [
+      { "id": "sah", "label": "Sahara Desert" },
+      { "id": "gob", "label": "Gobi Desert" },
+      { "id": "kal", "label": "Kalahari Desert" },
+      { "id": "ata", "label": "Atacama Desert" },
+      { "id": "arc", "label": "Arctic Circle" },
+      { "id": "ant", "label": "Antarctica" },
+      { "id": "out", "label": "Australian Outback" },
+      { "id": "ala", "label": "Alaskan Tundra" },
+      { "id": "him", "label": "Himalayas" }
+    ],
+    "answerOptionId": "sah",
+    "clues": [
+      "This place spans multiple countries.",
+      "This place is primarily defined by its climate.",
+      "This place is located in Africa.",
+      "This place is the largest hot desert on Earth.",
+      "This place is known as the Sahara."
+    ],
+    "explanation": "The Sahara Desert is the largest hot desert in the world and stretches across much of North Africa."
+  },
+  {
+    "id": 18,
+    "dateISO": "2025-12-30",
+    "options": [
+      { "id": "mir", "label": "Mirror" },
+      { "id": "win", "label": "Window" },
+      { "id": "scr", "label": "Screen" },
+      { "id": "gla", "label": "Glass" },
+      { "id": "pho", "label": "Photograph" },
+      { "id": "pic", "label": "Picture Frame" },
+      { "id": "len", "label": "Lens" },
+      { "id": "cam", "label": "Camera" },
+      { "id": "sha", "label": "Shadow" }
+    ],
+    "answerOptionId": "mir",
+    "clues": [
+      "This object reverses left and right but not up and down.",
+      "This object shows something without storing it.",
+      "This object is often found in bathrooms and bedrooms.",
+      "This object reflects light.",
+      "This object shows your own image."
+    ],
+    "explanation": "A mirror reflects light to show your image, reversing left and right without recording anything."
+  },
+  {
+    "id": 19,
+    "dateISO": "2025-12-31",
+    "options": [
+      { "id": "nye", "label": "New Year’s Eve" },
+      { "id": "nyd", "label": "New Year’s Day" },
+      { "id": "xme", "label": "Christmas Eve" },
+      { "id": "val", "label": "Valentine’s Day" },
+      { "id": "eas", "label": "Easter Sunday" },
+      { "id": "bon", "label": "Bonfire Night" },
+      { "id": "hal", "label": "Halloween" },
+      { "id": "pan", "label": "Pancake Day" },
+      { "id": "may", "label": "May Day" }
+    ],
+    "answerOptionId": "nye",
+    "clues": [
+      "This occasion is associated with countdowns.",
+      "This occasion marks the end of a calendar year.",
+      "This occasion is celebrated worldwide.",
+      "This occasion occurs on 31 December.",
+      "This occasion immediately precedes New Year’s Day."
+    ],
+    "explanation": "New Year’s Eve is celebrated on 31 December and marks the transition into a new calendar year."
+  },
+  {
+    "id": 20,
+    "dateISO": "2026-01-01",
+    "options": [
+      { "id": "aus", "label": "Australia" },
+      { "id": "usa", "label": "United States" },
+      { "id": "can", "label": "Canada" },
+      { "id": "bra", "label": "Brazil" },
+      { "id": "rsa", "label": "South Africa" },
+      { "id": "ind", "label": "India" },
+      { "id": "arg", "label": "Argentina" },
+      { "id": "mex", "label": "Mexico" },
+      { "id": "chn", "label": "China" }
+    ],
+    "answerOptionId": "aus",
+    "clues": [
+      "This country is both a nation and a continent.",
+      "This country is located entirely in the Southern Hemisphere.",
+      "This country has a capital city that is not its largest city.",
+      "This country is famous for unique wildlife such as kangaroos.",
+      "This country’s capital is Canberra."
+    ],
+    "explanation": "Australia is both a country and a continent, known for its unique wildlife and capital city Canberra."
+  },
+  {
+    "id": 21,
+    "dateISO": "2026-01-02",
+    "options": [
+      { "id": "ldn", "label": "London" },
+      { "id": "man", "label": "Manchester" },
+      { "id": "liv", "label": "Liverpool" },
+      { "id": "edi", "label": "Edinburgh" },
+      { "id": "gla", "label": "Glasgow" },
+      { "id": "car", "label": "Cardiff" },
+      { "id": "bel", "label": "Belfast" },
+      { "id": "yor", "label": "York" },
+      { "id": "bat", "label": "Bath" },
+      { "id": "oxf", "label": "Oxford" },
+      { "id": "cam", "label": "Cambridge" },
+      { "id": "bri", "label": "Brighton" }
+    ],
+    "answerOptionId": "yor",
+    "clues": [
+      "This city was founded by the Romans.",
+      "This city has well-preserved medieval city walls.",
+      "This city contains a large Gothic cathedral known as a Minster.",
+      "This city is located in North Yorkshire.",
+      "This city’s streets include the Shambles."
+    ],
+    "explanation": "York is a historic city in North Yorkshire, founded by the Romans and famous for York Minster and its medieval streets."
+  },
+  {
+    "id": 22,
+    "dateISO": "2026-01-03",
+    "options": [
+      { "id": "pas", "label": "Passport" },
+      { "id": "lic", "label": "Driving Licence" },
+      { "id": "tic", "label": "Ticket" },
+      { "id": "map", "label": "Map" },
+      { "id": "visa", "label": "Visa" },
+      { "id": "car", "label": "Credit Card" },
+      { "id": "idc", "label": "ID Card" },
+      { "id": "boa", "label": "Boarding Pass" },
+      { "id": "doc", "label": "Document Folder" }
+    ],
+    "answerOptionId": "pas",
+    "clues": [
+      "This item is issued by a government.",
+      "This item contains personal identification details.",
+      "This item is commonly stamped.",
+      "This item is required for international travel.",
+      "This item proves your nationality."
+    ],
+    "explanation": "A passport is an official government document used to identify a person and allow international travel."
+  },
+  {
+    "id": 23,
+    "dateISO": "2026-01-04",
+    "options": [
+      { "id": "eve", "label": "Mount Everest" },
+      { "id": "kil", "label": "Mount Kilimanjaro" },
+      { "id": "alp", "label": "The Alps" },
+      { "id": "him", "label": "The Himalayas" },
+      { "id": "den", "label": "Denali" },
+      { "id": "and", "label": "Andes Mountains" },
+      { "id": "fuji", "label": "Mount Fuji" },
+      { "id": "oli", "label": "Mount Olympus" },
+      { "id": "ara", "label": "Aconcagua" }
+    ],
+    "answerOptionId": "eve",
+    "clues": [
+      "This place lies on a border between two countries.",
+      "This place is part of a major mountain range.",
+      "This place attracts climbers from around the world.",
+      "This place is the highest point on Earth.",
+      "This place is known as Mount Everest."
+    ],
+    "explanation": "Mount Everest is the highest mountain on Earth and lies on the border between Nepal and China."
+  },
+  {
+    "id": 24,
+    "dateISO": "2026-01-05",
+    "options": [
+      { "id": "alp", "label": "Alphabet" },
+      { "id": "dic", "label": "Dictionary" },
+      { "id": "lan", "label": "Language" },
+      { "id": "let", "label": "Letter" },
+      { "id": "wor", "label": "Word" },
+      { "id": "phr", "label": "Phrase" },
+      { "id": "sen", "label": "Sentence" },
+      { "id": "par", "label": "Paragraph" },
+      { "id": "sto", "label": "Story" }
+    ],
+    "answerOptionId": "alp",
+    "clues": [
+      "This system is finite rather than infinite.",
+      "This system is ordered.",
+      "This system is used to build words.",
+      "This system consists of letters.",
+      "This system is known as the alphabet."
+    ],
+    "explanation": "The alphabet is an ordered, finite set of letters used to form words and language."
+  },
+  {
+    "id": 25,
+    "dateISO": "2026-01-06",
+    "options": [
+      { "id": "sha", "label": "William Shakespeare" },
+      { "id": "dic", "label": "Charles Dickens" },
+      { "id": "aus", "label": "Jane Austen" },
+      { "id": "tol", "label": "J.R.R. Tolkien" },
+      { "id": "row", "label": "J.K. Rowling" },
+      { "id": "hem", "label": "Ernest Hemingway" },
+      { "id": "orl", "label": "George Orwell" },
+      { "id": "hug", "label": "Victor Hugo" },
+      { "id": "poe", "label": "Edgar Allan Poe" }
+    ],
+    "answerOptionId": "sha",
+    "clues": [
+      "This person lived during the late 16th and early 17th centuries.",
+      "This person wrote works still performed today.",
+      "This person is associated with the Globe Theatre.",
+      "This person wrote plays and sonnets.",
+      "This person is William Shakespeare."
+    ],
+    "explanation": "William Shakespeare was an English playwright and poet whose works remain widely performed and studied."
+  },
+  {
+    "id": 26,
+    "dateISO": "2026-01-07",
+    "options": [
+      { "id": "ama", "label": "Amazon Rainforest" },
+      { "id": "con", "label": "Congo Rainforest" },
+      { "id": "bor", "label": "Borneo Rainforest" },
+      { "id": "sah", "label": "Sahara Desert" },
+      { "id": "arc", "label": "Arctic Circle" },
+      { "id": "ant", "label": "Antarctica" },
+      { "id": "out", "label": "Australian Outback" },
+      { "id": "him", "label": "Himalayas" },
+      { "id": "alp", "label": "The Alps" }
+    ],
+    "answerOptionId": "ama",
+    "clues": [
+      "This place spans more than one country.",
+      "This place plays a major role in Earth’s climate system.",
+      "This place contains immense biodiversity.",
+      "This place is located in South America.",
+      "This place is the Amazon Rainforest."
+    ],
+    "explanation": "The Amazon Rainforest spans multiple South American countries and is known for its biodiversity and climate importance."
+  },
+  {
+    "id": 27,
+    "dateISO": "2026-01-08",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-08) Placeholder clue 1 (replace).",
+      "(2026-01-08) Placeholder clue 2 (replace).",
+      "(2026-01-08) Placeholder clue 3 (replace).",
+      "(2026-01-08) Placeholder clue 4 (replace).",
+      "(2026-01-08) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-08) Placeholder explanation (replace)."
+  },
+  {
+    "id": 28,
+    "dateISO": "2026-01-09",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-09) Placeholder clue 1 (replace).",
+      "(2026-01-09) Placeholder clue 2 (replace).",
+      "(2026-01-09) Placeholder clue 3 (replace).",
+      "(2026-01-09) Placeholder clue 4 (replace).",
+      "(2026-01-09) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-09) Placeholder explanation (replace)."
+  },
+  {
+    "id": 29,
+    "dateISO": "2026-01-10",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-10) Placeholder clue 1 (replace).",
+      "(2026-01-10) Placeholder clue 2 (replace).",
+      "(2026-01-10) Placeholder clue 3 (replace).",
+      "(2026-01-10) Placeholder clue 4 (replace).",
+      "(2026-01-10) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-10) Placeholder explanation (replace)."
+  },
+  {
+    "id": 30,
+    "dateISO": "2026-01-11",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-11) Placeholder clue 1 (replace).",
+      "(2026-01-11) Placeholder clue 2 (replace).",
+      "(2026-01-11) Placeholder clue 3 (replace).",
+      "(2026-01-11) Placeholder clue 4 (replace).",
+      "(2026-01-11) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-11) Placeholder explanation (replace)."
+  },
+  {
+    "id": 31,
+    "dateISO": "2026-01-12",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-12) Placeholder clue 1 (replace).",
+      "(2026-01-12) Placeholder clue 2 (replace).",
+      "(2026-01-12) Placeholder clue 3 (replace).",
+      "(2026-01-12) Placeholder clue 4 (replace).",
+      "(2026-01-12) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-12) Placeholder explanation (replace)."
+  },
+  {
+    "id": 32,
+    "dateISO": "2026-01-13",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-13) Placeholder clue 1 (replace).",
+      "(2026-01-13) Placeholder clue 2 (replace).",
+      "(2026-01-13) Placeholder clue 3 (replace).",
+      "(2026-01-13) Placeholder clue 4 (replace).",
+      "(2026-01-13) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-13) Placeholder explanation (replace)."
+  },
+  {
+    "id": 33,
+    "dateISO": "2026-01-14",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-14) Placeholder clue 1 (replace).",
+      "(2026-01-14) Placeholder clue 2 (replace).",
+      "(2026-01-14) Placeholder clue 3 (replace).",
+      "(2026-01-14) Placeholder clue 4 (replace).",
+      "(2026-01-14) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-14) Placeholder explanation (replace)."
+  },
+  {
+    "id": 34,
+    "dateISO": "2026-01-15",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-15) Placeholder clue 1 (replace).",
+      "(2026-01-15) Placeholder clue 2 (replace).",
+      "(2026-01-15) Placeholder clue 3 (replace).",
+      "(2026-01-15) Placeholder clue 4 (replace).",
+      "(2026-01-15) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-15) Placeholder explanation (replace)."
+  },
+  {
+    "id": 35,
+    "dateISO": "2026-01-16",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-16) Placeholder clue 1 (replace).",
+      "(2026-01-16) Placeholder clue 2 (replace).",
+      "(2026-01-16) Placeholder clue 3 (replace).",
+      "(2026-01-16) Placeholder clue 4 (replace).",
+      "(2026-01-16) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-16) Placeholder explanation (replace)."
+  },
+  {
+    "id": 36,
+    "dateISO": "2026-01-17",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-17) Placeholder clue 1 (replace).",
+      "(2026-01-17) Placeholder clue 2 (replace).",
+      "(2026-01-17) Placeholder clue 3 (replace).",
+      "(2026-01-17) Placeholder clue 4 (replace).",
+      "(2026-01-17) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-17) Placeholder explanation (replace)."
+  },
+  {
+    "id": 37,
+    "dateISO": "2026-01-18",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-18) Placeholder clue 1 (replace).",
+      "(2026-01-18) Placeholder clue 2 (replace).",
+      "(2026-01-18) Placeholder clue 3 (replace).",
+      "(2026-01-18) Placeholder clue 4 (replace).",
+      "(2026-01-18) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-18) Placeholder explanation (replace)."
+  },
+  {
+    "id": 38,
+    "dateISO": "2026-01-19",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-19) Placeholder clue 1 (replace).",
+      "(2026-01-19) Placeholder clue 2 (replace).",
+      "(2026-01-19) Placeholder clue 3 (replace).",
+      "(2026-01-19) Placeholder clue 4 (replace).",
+      "(2026-01-19) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-19) Placeholder explanation (replace)."
+  },
+  {
+    "id": 39,
+    "dateISO": "2026-01-20",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-20) Placeholder clue 1 (replace).",
+      "(2026-01-20) Placeholder clue 2 (replace).",
+      "(2026-01-20) Placeholder clue 3 (replace).",
+      "(2026-01-20) Placeholder clue 4 (replace).",
+      "(2026-01-20) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-20) Placeholder explanation (replace)."
+  },
+  {
+    "id": 40,
+    "dateISO": "2026-01-21",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-21) Placeholder clue 1 (replace).",
+      "(2026-01-21) Placeholder clue 2 (replace).",
+      "(2026-01-21) Placeholder clue 3 (replace).",
+      "(2026-01-21) Placeholder clue 4 (replace).",
+      "(2026-01-21) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-21) Placeholder explanation (replace)."
+  },
+  {
+    "id": 41,
+    "dateISO": "2026-01-22",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-22) Placeholder clue 1 (replace).",
+      "(2026-01-22) Placeholder clue 2 (replace).",
+      "(2026-01-22) Placeholder clue 3 (replace).",
+      "(2026-01-22) Placeholder clue 4 (replace).",
+      "(2026-01-22) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-22) Placeholder explanation (replace)."
+  },
+  {
+    "id": 42,
+    "dateISO": "2026-01-23",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-23) Placeholder clue 1 (replace).",
+      "(2026-01-23) Placeholder clue 2 (replace).",
+      "(2026-01-23) Placeholder clue 3 (replace).",
+      "(2026-01-23) Placeholder clue 4 (replace).",
+      "(2026-01-23) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-23) Placeholder explanation (replace)."
+  },
+  {
+    "id": 43,
+    "dateISO": "2026-01-24",
+    "options": [
+      { "id": "ldn", "label": "London" },
+      { "id": "man", "label": "Manchester" },
+      { "id": "liv", "label": "Liverpool" },
+      { "id": "edi", "label": "Edinburgh" },
+      { "id": "gla", "label": "Glasgow" },
+      { "id": "car", "label": "Cardiff" },
+      { "id": "bel", "label": "Belfast" },
+      { "id": "yor", "label": "York" },
+      { "id": "bat", "label": "Bath" },
+      { "id": "oxf", "label": "Oxford" },
+      { "id": "cam", "label": "Cambridge" },
+      { "id": "bri", "label": "Brighton" }
+    ],
+    "answerOptionId": "bri",
+    "clues": [
+      "This city is a seaside resort on the south coast of England.",
+      "This city has a long pier extending into the sea.",
+      "This city is known for its pebble beach.",
+      "This city lies in East Sussex.",
+      "This city is famous for its Regency architecture."
+    ],
+    "explanation": "Brighton is a seaside city in East Sussex, known for its pier, pebble beach, and distinctive Regency architecture."
+  },
+  {
+    "id": 44,
+    "dateISO": "2026-01-25",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-25) Placeholder clue 1 (replace).",
+      "(2026-01-25) Placeholder clue 2 (replace).",
+      "(2026-01-25) Placeholder clue 3 (replace).",
+      "(2026-01-25) Placeholder clue 4 (replace).",
+      "(2026-01-25) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-25) Placeholder explanation (replace)."
+  },
+  {
+    "id": 45,
+    "dateISO": "2026-01-26",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-26) Placeholder clue 1 (replace).",
+      "(2026-01-26) Placeholder clue 2 (replace).",
+      "(2026-01-26) Placeholder clue 3 (replace).",
+      "(2026-01-26) Placeholder clue 4 (replace).",
+      "(2026-01-26) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-26) Placeholder explanation (replace)."
+  },
+  {
+    "id": 46,
+    "dateISO": "2026-01-27",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-27) Placeholder clue 1 (replace).",
+      "(2026-01-27) Placeholder clue 2 (replace).",
+      "(2026-01-27) Placeholder clue 3 (replace).",
+      "(2026-01-27) Placeholder clue 4 (replace).",
+      "(2026-01-27) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-27) Placeholder explanation (replace)."
+  },
+  {
+    "id": 47,
+    "dateISO": "2026-01-28",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-28) Placeholder clue 1 (replace).",
+      "(2026-01-28) Placeholder clue 2 (replace).",
+      "(2026-01-28) Placeholder clue 3 (replace).",
+      "(2026-01-28) Placeholder clue 4 (replace).",
+      "(2026-01-28) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-28) Placeholder explanation (replace)."
+  },
+  {
+    "id": 48,
+    "dateISO": "2026-01-29",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-29) Placeholder clue 1 (replace).",
+      "(2026-01-29) Placeholder clue 2 (replace).",
+      "(2026-01-29) Placeholder clue 3 (replace).",
+      "(2026-01-29) Placeholder clue 4 (replace).",
+      "(2026-01-29) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-29) Placeholder explanation (replace)."
+  },
+  {
+    "id": 49,
+    "dateISO": "2026-01-30",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-30) Placeholder clue 1 (replace).",
+      "(2026-01-30) Placeholder clue 2 (replace).",
+      "(2026-01-30) Placeholder clue 3 (replace).",
+      "(2026-01-30) Placeholder clue 4 (replace).",
+      "(2026-01-30) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-30) Placeholder explanation (replace)."
+  },
+  {
+    "id": 50,
+    "dateISO": "2026-01-31",
+    "options": [
+      {
+        "id": "a",
+        "label": "Option A"
+      },
+      {
+        "id": "b",
+        "label": "Option B"
+      },
+      {
+        "id": "c",
+        "label": "Option C"
+      },
+      {
+        "id": "d",
+        "label": "Option D"
+      },
+      {
+        "id": "e",
+        "label": "Option E"
+      },
+      {
+        "id": "f",
+        "label": "Option F"
+      },
+      {
+        "id": "g",
+        "label": "Option G"
+      },
+      {
+        "id": "h",
+        "label": "Option H"
+      },
+      {
+        "id": "i",
+        "label": "Option I"
+      },
+      {
+        "id": "j",
+        "label": "Option J"
+      },
+      {
+        "id": "k",
+        "label": "Option K"
+      },
+      {
+        "id": "l",
+        "label": "Option L"
+      }
+    ],
+    "answerOptionId": "a",
+    "clues": [
+      "(2026-01-31) Placeholder clue 1 (replace).",
+      "(2026-01-31) Placeholder clue 2 (replace).",
+      "(2026-01-31) Placeholder clue 3 (replace).",
+      "(2026-01-31) Placeholder clue 4 (replace).",
+      "(2026-01-31) Placeholder clue 5 (replace)."
+    ],
+    "explanation": "(2026-01-31) Placeholder explanation (replace)."
+  }
+]

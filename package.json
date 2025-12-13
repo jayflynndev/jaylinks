@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run validate:puzzles && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "validate:puzzles": "node scripts/validate-puzzles.mjs",
+    "add:placeholders": "node scripts/add-placeholders.mjs",
+    "list:puzzles": "node scripts/list-puzzles.mjs"
   },
   "dependencies": {
     "next": "16.0.10",
