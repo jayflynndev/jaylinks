@@ -53,7 +53,7 @@ export function DailyGameClient({ puzzle }: Props) {
   const day = state.history[puzzle.dateISO];
   if (!day) {
     return (
-      <section className="mt-6 space-y-4">
+      <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-12">
         <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-white/70">
           Could not load today’s state.
         </div>
@@ -100,10 +100,14 @@ export function DailyGameClient({ puzzle }: Props) {
     }
 
     const { nextState, correct } = submitGuessV1(state, puzzle, selectedId);
-    saveState(nextState);
-    setState(nextState);
 
-    if (!correct) showToast("Not quite.");
+    // If wrong, end the game by revealing the answer immediately (v1: no "failed" status needed)
+    const finalState = correct ? nextState : revealAnswerV1(nextState, puzzle);
+
+    saveState(finalState);
+    setState(finalState);
+
+    showToast(correct ? "Correct!" : "Not quite.");
   }
 
   function handleReveal() {
@@ -138,134 +142,122 @@ export function DailyGameClient({ puzzle }: Props) {
   }
 
   return (
-    <section className="mt-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => setStatsOpen(true)}
-          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
-        >
-          Stats
-        </button>
+    <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-12">
+      {/* Left: clues */}
+      <div className="lg:col-span-5 lg:sticky lg:top-6 self-start space-y-4">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 flex items-center justify-between">
+          <div className="text-sm text-white/70">
+            <span className="text-white/90 font-semibold">
+              🔥 {state.stats.currentStreak}
+            </span>{" "}
+            <span className="text-white/50">day streak</span>
+          </div>
 
-        <button
-          type="button"
-          onClick={handleShare}
-          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
-        >
-          Share
-        </button>
-      </div>
-
-      <div className="flex items-center justify-between text-sm text-white/60">
-        <div>
-          🔥{" "}
-          <span className="font-medium text-white/80">
-            {state.stats.currentStreak}
-          </span>{" "}
-          <span className="text-white/50">streak</span>
-        </div>
-        <div>
-          Clue{" "}
-          <span className="font-medium text-white/80">{day.clueIndex + 1}</span>
-          /<span className="font-medium text-white/80">{maxClues}</span>
-        </div>
-      </div>
-
-      <ClueStack
-        clues={puzzle.clues}
-        revealedCount={day.clueIndex + 1}
-        maxClues={maxClues}
-      />
-
-      <OptionGrid
-        options={puzzle.options}
-        eliminatedIds={new Set(day.eliminatedOptionIds)}
-        selectedId={selectedId}
-        onToggle={handleTileClick}
-      />
-
-      {!isComplete ? (
-        <div className="flex flex-wrap items-center gap-2 pt-2">
-          <button
-            type="button"
-            onClick={handleNextClue}
-            disabled={isLastClue}
-            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 disabled:opacity-40"
-          >
-            Next clue
-          </button>
-
-          <button
-            className="rounded-xl bg-white text-black px-4 py-2 text-sm font-semibold hover:opacity-90 disabled:opacity-40"
-            onClick={handleGuess}
-          >
-            Guess
-          </button>
-
-          <button className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40">
-            Next clue
-          </button>
-
-          <button className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40">
-            Reveal
-          </button>
-
-          <button
-            type="button"
-            onClick={handleReveal}
-            disabled={!isLastClue}
-            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 disabled:opacity-40"
-            title={
-              !isLastClue
-                ? "Reveal becomes available on the final clue"
-                : "Reveal the answer"
-            }
-          >
-            Reveal answer
-          </button>
-        </div>
-      ) : (
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">
-            {day.status === "solved" ? "Solved" : "Revealed"} •{" "}
-            {day.cluesUsed ?? day.clueIndex + 1} clue
-            {(day.cluesUsed ?? day.clueIndex + 1) === 1 ? "" : "s"}
+            Clue{" "}
+            <span className="font-medium text-white/80">
+              {day.clueIndex + 1}
+            </span>
+            /<span className="font-medium text-white/80">{maxClues}</span>
           </div>
+        </div>
 
-          <div className="mt-2 text-xl font-semibold">
-            Answer:{" "}
-            {puzzle.options.find((o) => o.id === puzzle.answerOptionId)
-              ?.label ?? "—"}
-          </div>
+        <ClueStack
+          clues={puzzle.clues}
+          revealedCount={day.clueIndex + 1}
+          maxClues={maxClues}
+        />
+      </div>
 
-          <p className="mt-3 text-white/80">{puzzle.explanation}</p>
+      {/* Right: grid + actions */}
+      <div className="lg:col-span-7 space-y-4">
+        {!isComplete && (
+          <OptionGrid
+            options={puzzle.options}
+            eliminatedIds={new Set(day.eliminatedOptionIds)}
+            selectedId={selectedId}
+            onToggle={handleTileClick}
+          />
+        )}
 
-          <div className="mt-4 flex flex-wrap gap-2">
+        {!isComplete ? (
+          <div className="flex flex-wrap items-center gap-2 pt-2">
             <button
               type="button"
-              onClick={handleShare}
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+              onClick={handleNextClue}
+              disabled={isLastClue}
+              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
             >
-              Share
+              Next clue
             </button>
+
             <button
               type="button"
-              onClick={() => setStatsOpen(true)}
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+              onClick={handleGuess}
+              className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-black hover:opacity-90 disabled:opacity-40 transition"
+              disabled={!selectedId}
+              title={
+                !selectedId ? "Select an option first" : "Submit your guess"
+              }
             >
-              Stats
+              Guess
             </button>
-            <p className="mt-3 text-white/80">
-              Come back tomorrow for the next puzzle.
-            </p>
-            <p className="mt-2 text-sm text-white/60">
+
+            <button
+              type="button"
+              onClick={handleReveal}
+              disabled={!isLastClue}
+              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
+              title={
+                !isLastClue
+                  ? "Reveal becomes available on the final clue"
+                  : "Reveal the answer"
+              }
+            >
+              Reveal answer
+            </button>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div className="text-sm text-white/60">
+              {day.status === "solved" ? "✅ Correct!" : "❌ Not quite."} •{" "}
+              {day.cluesUsed ?? day.clueIndex + 1} clue
+              {(day.cluesUsed ?? day.clueIndex + 1) === 1 ? "" : "s"}
+            </div>
+
+            <div className="mt-2 text-xl font-semibold">
+              Answer:{" "}
+              {puzzle.options.find((o) => o.id === puzzle.answerOptionId)
+                ?.label ?? "—"}
+            </div>
+
+            <p className="mt-3 text-white/80">{puzzle.explanation}</p>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={handleShare}
+                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+              >
+                Share
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setStatsOpen(true)}
+                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+              >
+                Stats
+              </button>
+            </div>
+
+            <div className="mt-4 rounded-xl bg-white/10 p-3 text-sm text-white/80">
               Next puzzle in{" "}
               <span className="font-mono">{formatCountdown(untilResetMs)}</span>
-            </p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {toast && (
         <div className="fixed inset-x-0 bottom-6 mx-auto w-fit rounded-xl bg-black/80 px-4 py-2 text-sm text-white shadow-lg">

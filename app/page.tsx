@@ -33,14 +33,19 @@ export default function Page() {
   const { puzzle } = result;
 
   return (
-    <main className="min-h-dvh bg-zinc-950 text-white">
-      <div className="mx-auto w-full max-w-xl px-4 py-10">
+    <main className="min-h-dvh text-white bg-zinc-950 [background:radial-gradient(80%_60%_at_50%_0%,rgba(255,255,255,0.10),transparent_60%),radial-gradient(60%_40%_at_10%_20%,rgba(124,58,237,0.18),transparent_55%),radial-gradient(60%_40%_at_90%_30%,rgba(59,130,246,0.14),transparent_55%),#09090b]">
+      <div className="mx-auto w-full max-w-3xl px-4 py-10">
         <header className="flex items-end justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Jay’s Links</h1>
-            <p className="mt-1 text-sm text-white/60">
-              #{puzzle.id} • <span className="font-mono">{puzzle.dateISO}</span>
+          <div className="text-center space-y-1">
+            <h1 className="text-3xl font-bold tracking-tight text-white">
+              Jay’s Links
+            </h1>
+
+            <p className="text-sm text-white/60">
+              Daily puzzle · {puzzle.dateISO}
             </p>
+
+            <div className="mx-auto mt-3 h-px w-24 bg-linear-to-r from-transparent via-white/20 to-transparent" />
           </div>
         </header>
 
