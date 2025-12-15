@@ -30,10 +30,6 @@ export function toggleEliminationV1(
     return { nextState: state, blocked: false };
   }
 
-  if (optionId === puzzle.answerOptionId) {
-    return { nextState: state, blocked: true };
-  }
-
   const nextState: LocalStateV1 = structuredClone(state);
   const ids = new Set(nextState.history[puzzle.dateISO].eliminatedOptionIds);
 

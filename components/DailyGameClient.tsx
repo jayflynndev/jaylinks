@@ -54,7 +54,10 @@ export function DailyGameClient({ puzzle }: Props) {
   if (!day) {
     return (
       <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-12">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-white/70">
+        <div
+          className="rounded-2xl border border-amber-400/20
+ bg-white/5 p-5 text-white/70"
+        >
           Could not load today’s state.
         </div>
       </section>
@@ -64,30 +67,27 @@ export function DailyGameClient({ puzzle }: Props) {
   const isComplete = day.status === "solved" || day.status === "revealed";
   const isLastClue = day.clueIndex >= maxClues - 1;
 
-  function handleTileClick(optionId: string) {
+  function handleSelect(optionId: string) {
     if (isComplete) return;
-
-    // If it's eliminated, clicking it just un-eliminates.
-    // If it's active, clicking selects it as your "guess candidate" AND still allows elimination with a long-press later.
-    // For v1 simplicity: click selects. Shift/eliminate is a separate control? No.
-    // So: we keep your original mechanic: click toggles elimination.
-    // And selection is set as well (so user can guess without typing).
     setSelectedId(optionId);
-
-    const { nextState, blocked } = toggleEliminationV1(state, puzzle, optionId);
-    if (blocked) {
-      showToast("That still fits the clues so far.");
-      return;
-    }
-
-    saveState(nextState);
-    setState(nextState);
   }
 
   function handleNextClue() {
     if (isComplete) return;
 
     const nextState = nextClue(state, puzzle);
+    saveState(nextState);
+    setState(nextState);
+  }
+
+  function handleEliminate() {
+    if (isComplete) return;
+    if (!selectedId) {
+      showToast("Select an option first.");
+      return;
+    }
+
+    const { nextState } = toggleEliminationV1(state, puzzle, selectedId);
     saveState(nextState);
     setState(nextState);
   }
@@ -145,12 +145,14 @@ export function DailyGameClient({ puzzle }: Props) {
     <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-12">
       {/* Left: clues */}
       <div className="lg:col-span-5 lg:sticky lg:top-6 self-start space-y-4">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 flex items-center justify-between">
+        <div
+          className="rounded-2xl border border-amber-400/20
+ bg-white/5 p-3 flex items-center justify-between"
+        >
           <div className="text-sm text-white/70">
-            <span className="text-white/90 font-semibold">
-              🔥 {state.stats.currentStreak}
-            </span>{" "}
-            <span className="text-white/50">day streak</span>
+            <span className="text-white/50">
+              {state.stats.currentStreak ? "day streak" : "Play daily"}
+            </span>
           </div>
 
           <div className="text-sm text-white/60">
@@ -176,7 +178,7 @@ export function DailyGameClient({ puzzle }: Props) {
             options={puzzle.options}
             eliminatedIds={new Set(day.eliminatedOptionIds)}
             selectedId={selectedId}
-            onToggle={handleTileClick}
+            onToggle={handleSelect}
           />
         )}
 
@@ -186,19 +188,35 @@ export function DailyGameClient({ puzzle }: Props) {
               type="button"
               onClick={handleNextClue}
               disabled={isLastClue}
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
+              className="rounded-xl border border-amber-400/20
+ bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
             >
-              Next clue
+              Reveal Next clue
+            </button>
+
+            <button
+              type="button"
+              onClick={handleEliminate}
+              disabled={!selectedId}
+              className="rounded-xl border border-rose-400/40 bg-rose-400/15
+  px-5 py-2.5 text-sm font-bold
+  text-rose-100 hover:bg-rose-400/25
+  shadow-sm shadow-rose-500/20 transition"
+              title={
+                !selectedId ? "Select an option first" : "Eliminate this option"
+              }
+            >
+              Eliminate
             </button>
 
             <button
               type="button"
               onClick={handleGuess}
-              className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-black hover:opacity-90 disabled:opacity-40 transition"
               disabled={!selectedId}
-              title={
-                !selectedId ? "Select an option first" : "Submit your guess"
-              }
+              className="rounded-xl bg-linear-to-br from-amber-400 to-amber-500
+  px-5 py-2.5 text-sm font-semibold text-black
+  shadow-md shadow-amber-500/30
+  hover:brightness-105 active:scale-[0.98] transition"
             >
               Guess
             </button>
@@ -207,18 +225,17 @@ export function DailyGameClient({ puzzle }: Props) {
               type="button"
               onClick={handleReveal}
               disabled={!isLastClue}
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
-              title={
-                !isLastClue
-                  ? "Reveal becomes available on the final clue"
-                  : "Reveal the answer"
-              }
+              className="rounded-xl border border-amber-400/20
+ bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
             >
               Reveal answer
             </button>
           </div>
         ) : (
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <div
+            className="rounded-2xl border border-amber-400/20
+ bg-white/5 p-5"
+          >
             <div className="text-sm text-white/60">
               {day.status === "solved" ? "✅ Correct!" : "❌ Not quite."} •{" "}
               {day.cluesUsed ?? day.clueIndex + 1} clue
@@ -237,7 +254,8 @@ export function DailyGameClient({ puzzle }: Props) {
               <button
                 type="button"
                 onClick={handleShare}
-                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+                className="rounded-xl border border-amber-400/20
+ bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
               >
                 Share
               </button>
@@ -245,7 +263,8 @@ export function DailyGameClient({ puzzle }: Props) {
               <button
                 type="button"
                 onClick={() => setStatsOpen(true)}
-                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+                className="rounded-xl border border-amber-400/20
+ bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
               >
                 Stats
               </button>

@@ -14,7 +14,16 @@ export default function Page() {
 
   if (!result) {
     return (
-      <main className="min-h-dvh bg-zinc-950 text-white">
+      <main
+        className="min-h-dvh text-white"
+        style={{
+          background:
+            "radial-gradient(120% 80% at 50% -10%, rgba(168,85,247,0.30), transparent 55%)," +
+            "radial-gradient(80% 60% at 20% 30%, rgba(99,102,241,0.18), transparent 55%)," +
+            "radial-gradient(60% 40% at 90% 40%, rgba(245,158,11,0.10), transparent 55%)," +
+            "#0a0613",
+        }}
+      >
         <div className="mx-auto w-full max-w-xl px-4 py-10">
           <header>
             <h1 className="text-2xl font-bold tracking-tight">Jay’s Links</h1>
@@ -23,7 +32,10 @@ export default function Page() {
             </p>
           </header>
 
-          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5 text-white/80">
+          <div
+            className="mt-6 rounded-2xl border border-amber-400/20
+ bg-[#1a1d24] p-5 text-white/80"
+          >
             Today’s puzzle isn’t available.
           </div>
 
@@ -36,7 +48,16 @@ export default function Page() {
   const { puzzle } = result;
 
   return (
-    <main className="min-h-dvh text-white bg-zinc-950 [background:radial-gradient(80%_60%_at_50%_0%,rgba(255,255,255,0.10),transparent_60%),radial-gradient(60%_40%_at_10%_20%,rgba(124,58,237,0.18),transparent_55%),radial-gradient(60%_40%_at_90%_30%,rgba(59,130,246,0.14),transparent_55%),#09090b]">
+    <main
+      className="min-h-dvh text-white"
+      style={{
+        background:
+          "radial-gradient(120% 80% at 50% -10%, rgba(168,85,247,0.30), transparent 55%)," +
+          "radial-gradient(80% 60% at 20% 30%, rgba(99,102,241,0.18), transparent 55%)," +
+          "radial-gradient(60% 40% at 90% 40%, rgba(245,158,11,0.10), transparent 55%)," +
+          "#0a0613",
+      }}
+    >
       <div className="mx-auto w-full max-w-3xl px-4 py-10">
         <header className="flex items-end justify-between gap-4">
           <div className="text-center space-y-1">
@@ -44,8 +65,8 @@ export default function Page() {
               Jay’s Links
             </h1>
 
-            <p className="text-sm text-white/60">
-              Daily puzzle · {puzzle.dateISO}
+            <p className="mt-1 text-sm text-white/70">
+              Today’s puzzle is ready 👀
             </p>
 
             <div className="mx-auto mt-3 h-px w-24 bg-linear-to-r from-transparent via-white/20 to-transparent" />

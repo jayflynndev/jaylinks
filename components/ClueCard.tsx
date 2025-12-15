@@ -8,7 +8,10 @@ type Props = {
 
 export function ClueCard({ clueText, clueIndex, clueTotal }: Props) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-sm">
+    <div
+      className="rounded-3xl border border-violet-300/15 bg-violet-500/10 backdrop-blur
+"
+    >
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-lg font-semibold tracking-tight">Clue</h2>
         <span className="text-sm text-white/60">

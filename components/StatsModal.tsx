@@ -24,13 +24,17 @@ export function StatsModal({ open, onClose, stats }: Props) {
         className="absolute inset-0 bg-black/60"
         onClick={onClose}
       />
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-zinc-950 p-5 text-white shadow-xl">
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-amber-400/20
+ bg-zinc-950 p-5 text-white shadow-xl"
+      >
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold tracking-tight">Stats</h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white/80 hover:bg-white/10"
+            className="rounded-xl border border-amber-400/20
+ bg-white/5 px-3 py-1.5 text-sm text-white/80 hover:bg-white/10"
           >
             Close
           </button>
@@ -54,7 +58,10 @@ export function StatsModal({ open, onClose, stats }: Props) {
 
 function StatCard({ label, value }: { label: string; value: number | string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+    <div
+      className="rounded-2xl border border-amber-400/20
+ bg-white/5 p-4"
+    >
       <div className="text-xs text-white/60">{label}</div>
       <div className="mt-1 text-xl font-semibold">{value}</div>
     </div>
