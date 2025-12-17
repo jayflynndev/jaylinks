@@ -5,6 +5,9 @@ export function getOrCreateDay(
   state: LocalStateV1,
   puzzle: PuzzleV1
 ): LocalStateV1 {
+  if (!puzzle || !puzzle.dateISO) {
+    throw new Error("Invalid puzzle provided");
+  }
   if (state.history[puzzle.dateISO]) return state;
 
   const next = structuredClone(state);
@@ -90,6 +93,9 @@ export function submitGuessV1(
   puzzle: PuzzleV1,
   optionId: string
 ): { nextState: LocalStateV1; correct: boolean } {
+  if (!puzzle || !optionId) {
+    return { nextState: state, correct: false };
+  }
   const day = state.history[puzzle.dateISO];
   if (!day) return { nextState: state, correct: false };
 

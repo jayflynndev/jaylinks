@@ -11,12 +11,12 @@ export function OptionTile({ label, eliminated, selected, onClick }: Props) {
   const cls = [
     "w-full select-none rounded-2xl border px-4 py-4 text-left shadow-sm",
     "transition-all duration-150 ease-out",
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400/50",
     eliminated
-      ? "bg-[#1a1d24] bg-black/30 text-white/40 opacity-40 scale-[0.98] line-through"
-      : "border-white/15 bg-gradient-to-br from-white/10 to-white/5 hover:from-white/15 hover:to-white/10",
-    selected && !eliminated
-      ? "ring-2 ring-amber-400/60 bg-amber-400/15 shadow-md shadow-amber-500/20"
+      ? "bg-gray-800/50 text-gray-500 opacity-30 scale-[0.95] line-through border-gray-600/30"
+      : "border-purple-400/20 bg-gradient-to-br from-purple-500/10 to-purple-600/5 hover:from-purple-500/20 hover:to-purple-600/10 hover:scale-[1.02]",
+    selected
+      ? "ring-2 ring-yellow-400/60 bg-yellow-400/15 shadow-md shadow-yellow-500/20"
       : "",
   ].join(" ");
 
@@ -26,23 +26,17 @@ export function OptionTile({ label, eliminated, selected, onClick }: Props) {
       onClick={onClick}
       className={cls}
       aria-pressed={selected}
+      onTouchStart={(e) => e.preventDefault()} // Prevent double-tap zoom on mobile
     >
       <div className="flex items-start justify-between gap-3">
         <span className="block text-base font-semibold text-white">
           {label}
         </span>
 
-        {eliminated ? (
+        {eliminated ? null : selected ? (
           <span
-            className="mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full border border-amber-400/20
- bg-white/5 text-xs text-white/50"
-          >
-            ✕
-          </span>
-        ) : selected ? (
-          <span
-            className="mt-0.5 inline-flex h-6 px-2 items-center justify-center rounded-full border border-amber-400/20
- bg-white/10 text-[11px] font-medium text-white/80"
+            className="mt-0.5 inline-flex h-6 px-2 items-center justify-center rounded-full border border-yellow-400/20
+ bg-yellow-500/10 text-[11px] font-medium text-yellow-200"
           >
             Selected
           </span>

@@ -23,12 +23,23 @@ export function loadState(): LocalStateV1 {
     if (!raw) return defaultState();
     const parsed = JSON.parse(raw) as LocalStateV1;
     if (parsed?.version !== 1) return defaultState();
+    // Basic validation
+    if (!parsed.history || typeof parsed.history !== "object")
+      return defaultState();
+    if (!parsed.stats || typeof parsed.stats !== "object")
+      return defaultState();
     return parsed;
-  } catch {
+  } catch (error) {
+    console.warn("Failed to load state from localStorage:", error);
     return defaultState();
   }
 }
 
 export function saveState(state: LocalStateV1): void {
-  localStorage.setItem(KEY, JSON.stringify(state));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn("Failed to save state to localStorage:", error);
+    // Could implement fallback, like in-memory storage
+  }
 }

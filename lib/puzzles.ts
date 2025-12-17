@@ -11,6 +11,9 @@ export function getPuzzleForDate(
   dateISO: string,
   devFallback: boolean
 ): GetPuzzleResult | null {
+  if (!dateISO || !/^\d{4}-\d{2}-\d{2}$/.test(dateISO)) {
+    return null;
+  }
   const exact = PUZZLES_V1.find((p) => p.dateISO === dateISO);
   if (exact) return { puzzle: exact, isFallback: false };
 

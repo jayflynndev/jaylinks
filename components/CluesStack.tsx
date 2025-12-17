@@ -1,4 +1,5 @@
 import * as React from "react";
+import { MAX_CLUES } from "@/lib/constants";
 
 type Props = {
   clues: string[];
@@ -9,8 +10,8 @@ type Props = {
 export function ClueStack({ clues, revealedCount, maxClues }: Props) {
   return (
     <div
-      className="rounded-3xl border border-amber-400/20
- bg-[#1a1d24] p-4"
+      className="rounded-3xl border border-purple-400/20
+ bg-purple-500/10 p-4 shadow-lg shadow-purple-500/10"
     >
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-white/80">Clues</h2>
@@ -20,21 +21,21 @@ export function ClueStack({ clues, revealedCount, maxClues }: Props) {
       </div>
 
       <div
-        className="mt-3 rounded-3xl border border-amber-400/30 
-        bg-linear-to-br from-amber-400/15 via-amber-300/10 to-transparent
-        p-5 shadow-lg shadow-amber-500/10"
+        className="mt-3 rounded-3xl border border-yellow-400/30 
+        bg-gradient-to-br from-yellow-400/15 via-yellow-300/10 to-transparent
+        p-5 shadow-lg shadow-yellow-500/10"
       >
         <div className="text-xs uppercase tracking-wide text-amber-300/80">
           Today’s clues
         </div>
-        <div className="mt-2 text-lg font-semibold text-white leading-relaxed">
+        <div className="mt-2 text-lg font-semibold text-white leading-relaxed transition-opacity duration-300">
           {clues[Math.min(revealedCount - 1, maxClues - 1)]}
         </div>
       </div>
 
       <div className="mt-3 hidden lg:block max-h-105 overflow-y-auto pr-1">
         <ol className="space-y-2">
-          {clues.slice(0, maxClues).map((c, idx) => {
+          {clues.slice(0, MAX_CLUES).map((c, idx) => {
             const revealed = idx < revealedCount;
 
             return (

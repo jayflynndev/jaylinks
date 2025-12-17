@@ -1,8 +1,7 @@
 "use client";
-
 import * as React from "react";
 import type { PuzzleV1, LocalStateV1 } from "@/lib/types";
-import { loadState, saveState } from "@/lib/storage";
+import { loadState, saveState, defaultState } from "@/lib/storage";
 import {
   getOrCreateDay,
   nextClue,
@@ -14,16 +13,23 @@ import { ClueStack } from "./CluesStack";
 import { OptionGrid } from "./OptionGrid";
 import { StatsModal } from "./StatsModal";
 import { msUntilNextLondonMidnight, formatCountdown } from "@/lib/reset";
+import {
+  MAX_CLUES,
+  TOAST_TIMEOUT_MS,
+  RELOAD_THRESHOLD_MS,
+  RELOAD_DELAY_MS,
+} from "@/lib/constants";
 
 type Props = {
   puzzle: PuzzleV1;
 };
 
 export function DailyGameClient({ puzzle }: Props) {
-  const maxClues = Math.min(puzzle.clues.length, 5);
+  const maxClues = Math.min(puzzle.clues.length, MAX_CLUES);
 
+  const [mounted, setMounted] = React.useState(false);
   const [toast, setToast] = React.useState<string | null>(null);
-  const [state, setState] = React.useState<LocalStateV1>(() => loadState());
+  const [state, setState] = React.useState<LocalStateV1>(defaultState());
 
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
   const [statsOpen, setStatsOpen] = React.useState(false);
@@ -34,16 +40,21 @@ export function DailyGameClient({ puzzle }: Props) {
   const hasReloadedRef = React.useRef(false);
 
   React.useEffect(() => {
+    setState(loadState());
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
     if (hasReloadedRef.current) return;
 
     // When we hit midnight, msUntilNextLondonMidnight() will jump back up to ~24h.
-    // But there’s a short moment where it’s very close to 0. Use that to reload once.
-    if (untilResetMs <= 1200) {
+    // But there's a short moment where it's very close to 0. Use that to reload once.
+    if (untilResetMs <= RELOAD_THRESHOLD_MS) {
       hasReloadedRef.current = true;
 
       window.setTimeout(() => {
         window.location.reload();
-      }, 1500);
+      }, RELOAD_DELAY_MS);
     }
   }, [untilResetMs]);
 
@@ -63,7 +74,7 @@ export function DailyGameClient({ puzzle }: Props) {
 
   function showToast(message: string) {
     setToast(message);
-    window.setTimeout(() => setToast(null), 1600);
+    window.setTimeout(() => setToast(null), TOAST_TIMEOUT_MS);
   }
 
   const day = state.history[puzzle.dateISO];
@@ -90,6 +101,8 @@ export function DailyGameClient({ puzzle }: Props) {
 
   function handleSelect(optionId: string) {
     if (isComplete) return;
+    // Prevent selecting eliminated options after clues have been revealed
+    if (day.eliminatedOptionIds.includes(optionId) && day.clueIndex > 0) return;
     setSelectedId(optionId);
   }
 
@@ -103,6 +116,7 @@ export function DailyGameClient({ puzzle }: Props) {
 
   function handleEliminate() {
     if (isComplete) return;
+    if (day.clueIndex > 0) return; // Lock eliminations after clues are revealed
     if (!selectedId) {
       showToast("Select an option first.");
       return;
@@ -166,13 +180,17 @@ export function DailyGameClient({ puzzle }: Props) {
     }
   }
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-12">
       {/* Left: clues */}
       <div className="lg:col-span-5 lg:sticky lg:top-6 self-start space-y-4">
         <div
-          className="rounded-2xl border border-amber-400/20
- bg-white/5 p-3 flex items-center justify-between"
+          className="rounded-2xl border border-purple-400/20
+ bg-purple-500/10 p-3 flex items-center justify-between shadow-lg shadow-purple-500/10"
         >
           <div className="text-sm text-white/70">
             <span className="text-white/90 font-semibold">🔥 {streak}</span>{" "}
@@ -214,8 +232,8 @@ export function DailyGameClient({ puzzle }: Props) {
               type="button"
               onClick={handleNextClue}
               disabled={isLastClue}
-              className="rounded-xl border border-amber-400/20
- bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
+              className="rounded-xl border border-purple-400/30
+ bg-purple-500/10 px-4 py-2 text-sm text-purple-200 hover:bg-purple-500/20 disabled:opacity-40 transition"
             >
               Reveal Next clue
             </button>
@@ -224,10 +242,10 @@ export function DailyGameClient({ puzzle }: Props) {
               type="button"
               onClick={handleEliminate}
               disabled={!selectedId}
-              className="rounded-xl border border-rose-400/40 bg-rose-400/15
+              className="rounded-xl border border-yellow-400/40 bg-yellow-400/15
   px-5 py-2.5 text-sm font-bold
-  text-rose-100 hover:bg-rose-400/25
-  shadow-sm shadow-rose-500/20 transition"
+  text-yellow-100 hover:bg-yellow-400/25
+  shadow-sm shadow-yellow-500/20 transition"
               title={
                 !selectedId ? "Select an option first" : "Eliminate this option"
               }
@@ -246,10 +264,10 @@ export function DailyGameClient({ puzzle }: Props) {
                   ? "That option is eliminated — pick another"
                   : "Submit your guess"
               }
-              className="rounded-xl bg-linear-to-br from-amber-400 to-amber-500
-  px-5 py-2.5 text-sm font-semibold text-black
-  shadow-md shadow-amber-500/30
-  hover:brightness-105 active:scale-[0.98] transition"
+              className="rounded-xl bg-gradient-to-br from-purple-500 to-purple-700
+  px-5 py-2.5 text-sm font-semibold text-white
+  shadow-lg shadow-purple-500/40
+  hover:brightness-110 active:scale-[0.98] transition-all duration-150"
             >
               Guess
             </button>
@@ -258,16 +276,16 @@ export function DailyGameClient({ puzzle }: Props) {
               type="button"
               onClick={handleReveal}
               disabled={!isLastClue}
-              className="rounded-xl border border-amber-400/20
- bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-40 transition"
+              className="rounded-xl border border-yellow-400/30
+ bg-yellow-500/10 px-4 py-2 text-sm text-yellow-200 hover:bg-yellow-500/20 disabled:opacity-40 transition"
             >
               Reveal answer
             </button>
           </div>
         ) : (
           <div
-            className="rounded-2xl border border-amber-400/20
- bg-white/5 p-5"
+            className="rounded-2xl border border-yellow-400/20
+ bg-yellow-500/10 p-5 shadow-lg shadow-yellow-500/10"
           >
             <div className="text-sm text-white/60">
               {day.status === "solved" ? "✅ Correct!" : "❌ Not quite."} •{" "}
@@ -287,8 +305,8 @@ export function DailyGameClient({ puzzle }: Props) {
               <button
                 type="button"
                 onClick={handleShare}
-                className="rounded-xl border border-amber-400/20
- bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+                className="rounded-xl border border-purple-400/30
+ bg-purple-500/10 px-4 py-2 text-sm text-purple-200 hover:bg-purple-500/20 transition"
               >
                 Share
               </button>
@@ -296,23 +314,25 @@ export function DailyGameClient({ puzzle }: Props) {
               <button
                 type="button"
                 onClick={() => setStatsOpen(true)}
-                className="rounded-xl border border-amber-400/20
- bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+                className="rounded-xl border border-yellow-400/30
+ bg-yellow-500/10 px-4 py-2 text-sm text-yellow-200 hover:bg-yellow-500/20 transition"
               >
                 Stats
               </button>
             </div>
 
-            <div className="mt-4 rounded-xl bg-white/10 p-3 text-sm text-white/80">
+            <div className="mt-4 rounded-xl bg-purple-500/20 p-3 text-sm text-purple-200 border border-purple-400/20">
               Next puzzle in{" "}
-              <span className="font-mono">{formatCountdown(untilResetMs)}</span>
+              <span className="font-mono text-yellow-300">
+                {formatCountdown(untilResetMs)}
+              </span>
             </div>
           </div>
         )}
       </div>
 
       {toast && (
-        <div className="fixed inset-x-0 bottom-6 mx-auto w-fit rounded-xl bg-black/80 px-4 py-2 text-sm text-white shadow-lg">
+        <div className="fixed inset-x-0 bottom-6 mx-auto w-fit rounded-xl bg-purple-900/90 border border-purple-400/30 px-4 py-2 text-sm text-yellow-200 shadow-lg shadow-purple-500/20 animate-[slideIn_0.3s_ease-out]">
           {toast}
         </div>
       )}
