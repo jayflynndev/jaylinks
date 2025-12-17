@@ -31,6 +31,22 @@ export function DailyGameClient({ puzzle }: Props) {
     msUntilNextLondonMidnight()
   );
 
+  const hasReloadedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (hasReloadedRef.current) return;
+
+    // When we hit midnight, msUntilNextLondonMidnight() will jump back up to ~24h.
+    // But there’s a short moment where it’s very close to 0. Use that to reload once.
+    if (untilResetMs <= 1200) {
+      hasReloadedRef.current = true;
+
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+  }, [untilResetMs]);
+
   React.useEffect(() => {
     const id = window.setInterval(() => {
       setUntilResetMs(msUntilNextLondonMidnight());
@@ -67,6 +83,11 @@ export function DailyGameClient({ puzzle }: Props) {
   const isComplete = day.status === "solved" || day.status === "revealed";
   const isLastClue = day.clueIndex >= maxClues - 1;
 
+  const selectedIsEliminated =
+    !!selectedId && day.eliminatedOptionIds.includes(selectedId);
+
+  const streak = state.stats.currentStreak ?? 0;
+
   function handleSelect(optionId: string) {
     if (isComplete) return;
     setSelectedId(optionId);
@@ -96,6 +117,10 @@ export function DailyGameClient({ puzzle }: Props) {
     if (isComplete) return;
     if (!selectedId) {
       showToast("Select an option first.");
+      return;
+    }
+    if (selectedIsEliminated) {
+      showToast("That option is eliminated — select another.");
       return;
     }
 
@@ -150,8 +175,9 @@ export function DailyGameClient({ puzzle }: Props) {
  bg-white/5 p-3 flex items-center justify-between"
         >
           <div className="text-sm text-white/70">
+            <span className="text-white/90 font-semibold">🔥 {streak}</span>{" "}
             <span className="text-white/50">
-              {state.stats.currentStreak ? "day streak" : "Play daily"}
+              {streak === 1 ? "day in a row" : "days in a row"}
             </span>
           </div>
 
@@ -212,7 +238,14 @@ export function DailyGameClient({ puzzle }: Props) {
             <button
               type="button"
               onClick={handleGuess}
-              disabled={!selectedId}
+              disabled={!selectedId || selectedIsEliminated}
+              title={
+                !selectedId
+                  ? "Select an option first"
+                  : selectedIsEliminated
+                  ? "That option is eliminated — pick another"
+                  : "Submit your guess"
+              }
               className="rounded-xl bg-linear-to-br from-amber-400 to-amber-500
   px-5 py-2.5 text-sm font-semibold text-black
   shadow-md shadow-amber-500/30
