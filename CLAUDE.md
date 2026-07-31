@@ -86,5 +86,7 @@ docs/
 See the end of each milestone's chat summary for current state. As of the
 last update: project scaffolded, DB schema written (`supabase/migrations/`,
 not yet applied by Jay), Supabase server/browser clients and the
-Europe/London time utility in place. Answer engine and game UI not yet
-started.
+Europe/London time utility in place. Answer engine Tier 1 (fuzzy match) is
+implemented and unit tested (`npm test`); Tiers 2 (AI judge) and 3
+(caching/review queue) are designed in `docs/ANSWER_ENGINE.md` but not yet
+built. Game UI not yet started.
