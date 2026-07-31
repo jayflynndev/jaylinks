@@ -3,6 +3,11 @@ import { QuestionMarks } from "@/components/brand/QuestionMarks";
 import { TitlePanel } from "@/components/brand/TitlePanel";
 import { getTodaysPuzzle } from "@/lib/puzzles/get-daily-puzzle";
 
+// "Today's puzzle" changes daily and depends on live DB state — without
+// this, Next.js statically prerenders the page once at build time and
+// would keep serving that stale snapshot in production forever.
+export const dynamic = "force-dynamic";
+
 /**
  * Home screen: the brand title panel and the "Play Link #N" CTA. Fetches
  * today's puzzle server-side just to know its episode number for the

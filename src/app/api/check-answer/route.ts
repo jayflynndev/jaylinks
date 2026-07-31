@@ -4,10 +4,13 @@ import { isRateLimited } from "@/lib/answer-engine/rate-limit";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 
 /**
- * Adjudicates a player's answer to one question. Never receives or returns
- * the canonical answer/alternatives up front — it looks them up server-side
- * from Supabase and only echoes the canonical answer back once the guess is
- * confirmed correct (so the client can show the reveal), keeping unsolved
+ * Adjudicates a player's answer to one question, or reveals it once the
+ * question's timer has run out. Never receives or returns the canonical
+ * answer/alternatives up front — it looks them up server-side from
+ * Supabase and only echoes the canonical answer back once a guess is
+ * confirmed correct, or an explicit reveal is requested (used when the
+ * player's points meter/grace period has run out — see
+ * src/lib/scoring/scoring.ts's isQuestionTimedOut), keeping unsolved
  * answers out of dev tools per docs/ANSWER_ENGINE.md's security note.
  */
 export async function POST(request: Request) {
@@ -30,14 +33,21 @@ export async function POST(request: Request) {
     typeof body !== "object" ||
     body === null ||
     !("questionId" in body) ||
-    !("guess" in body) ||
     typeof body.questionId !== "string" ||
-    typeof body.guess !== "string" ||
-    body.questionId.length === 0 ||
-    body.guess.length === 0
+    body.questionId.length === 0
   ) {
     return NextResponse.json(
-      { error: "Expected { questionId: string, guess: string }" },
+      { error: "Expected { questionId: string, guess: string } or { questionId: string, reveal: true }" },
+      { status: 400 }
+    );
+  }
+
+  const isReveal = "reveal" in body && body.reveal === true;
+  const guess = "guess" in body && typeof body.guess === "string" ? body.guess : null;
+
+  if (!isReveal && (!guess || guess.length === 0)) {
+    return NextResponse.json(
+      { error: "Expected { questionId: string, guess: string } or { questionId: string, reveal: true }" },
       { status: 400 }
     );
   }
@@ -53,6 +63,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Question not found" }, { status: 404 });
   }
 
+  if (isReveal) {
+    return NextResponse.json({ correct: false, answer: question.answer });
+  }
+
   const result = await checkAnswer(
     {
       type: "question",
@@ -61,7 +75,7 @@ export async function POST(request: Request) {
       canonicalAnswer: question.answer,
       alternatives: question.alternatives,
     },
-    body.guess
+    guess as string
   );
 
   return NextResponse.json({

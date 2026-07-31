@@ -116,6 +116,20 @@ canonical answer/alternatives up server-side from the posted
 `questionId`/`puzzleId` and only echo the canonical text back once a guess
 is confirmed correct.
 
+Both routes also accept `{ questionId, reveal: true }` /
+`{ puzzleId, reveal: true }`, which skips adjudication and returns the
+canonical answer directly — this is what the client calls when a
+question's timer/grace period runs out (`isQuestionTimedOut` in
+scoring.ts), or to reveal the link at the end of an unguessed puzzle.
+**Known v1 trade-off:** nothing server-side stops a determined player from
+calling `reveal: true` immediately, before actually playing — there's no
+player-account/session state in the database to check "has this browser
+actually answered questions 1-4 yet." This matches the trust boundary of
+most casual daily-quiz games (a Wordle clone doesn't cryptographically
+stop you from reading its solution via dev tools either): the security bar
+here is "answers aren't in the initial page payload for casual inspection,"
+not "immune to a player who deliberately reverse-engineers the API."
+
 Guess attempts are rate-limited per client IP in both route handlers via
 `src/lib/answer-engine/rate-limit.ts` — a basic in-memory fixed-window
 counter (30 requests/minute), with the serverless caveat documented in that

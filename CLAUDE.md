@@ -87,19 +87,42 @@ See the end of each milestone's chat summary for current state. As of the
 last update: project scaffolded, DB schema written (`supabase/migrations/`,
 not yet applied by Jay), Supabase server/browser clients and the
 Europe/London time utility in place. The full three-tier answer engine is
-built and wired up behind `/api/check-answer` and `/api/check-link`. The
-scoring engine (`src/lib/scoring/scoring.ts`), the localStorage-backed
-player storage interface (`src/lib/storage/`), and server-side "today's
-puzzle" fetching with answers stripped (`src/lib/puzzles/get-daily-puzzle.ts`)
-are also built. The brand shell is in place: Fredoka (body) + Luckiest Guy
-(display) fonts, the deep-purple gradient background, the `TitlePanel`
-gameshow marquee component (bulb-ring border, all pure CSS — see
-`.bulb-ring` in globals.css), scattered `QuestionMarks` motifs, and a home
-screen with the "Play Link #N" CTA (`src/app/page.tsx`) — verified visually
-via a headless-browser screenshot. 64 unit tests pass (`npm test`). One
-product decision made along the way: the "I KNOW THE LINK!" button is
-available from the first revealed answer (not "from question 2" as an
-earlier draft of the brief read), confirmed directly — see the comment on
-`LINK_BONUS_TIERS` in scoring.ts. Not yet built: the actual game-loop
-screens (`/play`), results/sharing, and the admin screen (including the
-review queue UI the engine already writes data for).
+built and wired up behind `/api/check-answer` and `/api/check-link`
+(both also accept `{ reveal: true }` to reveal an answer/link without
+adjudicating a guess — used on question timeout and the end-of-puzzle link
+reveal). The scoring engine (`src/lib/scoring/scoring.ts`), the
+localStorage-backed player storage interface (`src/lib/storage/`), and
+server-side "today's puzzle" fetching with answers stripped
+(`src/lib/puzzles/get-daily-puzzle.ts`) are also built. The brand shell is
+in place: Fredoka (body) + Luckiest Guy (display) fonts, the deep-purple
+gradient background, the `TitlePanel` gameshow marquee component (bulb-ring
+border, all pure CSS — see `.bulb-ring` in globals.css), scattered
+`QuestionMarks` motifs, and a home screen with the "Play Link #N" CTA.
+
+The full player game loop is built under `/play`
+(`src/components/game/GameLoop.tsx` orchestrates `QuestionCard`,
+`LinkGuessPanel`, `RevealedAnswersList`; `src/hooks/use-elapsed-timer.ts`
+drives the pausable points-meter clock) — question sequence, draining
+meter, wrong-guess shake, link guessing from the first revealed answer,
+the "already played today → practice mode" gate, and a **minimal
+placeholder completion screen** (total score only) that milestone 5 will
+replace with the real results/share/streak screen. Both `/` and `/play`
+are marked `export const dynamic = "force-dynamic"` — without this Next
+would statically prerender "today's puzzle" once at build time and never
+refresh it (caught and fixed during this session). Verified visually via
+headless-browser screenshots, including a temporary mock-data preview
+route (not committed) since Supabase isn't configured in this dev
+environment yet — full correct/wrong-guess and link-guess flows still need
+real Supabase + Anthropic keys to test end-to-end.
+
+64 unit tests pass (`npm test`). One product decision made along the way:
+the "I KNOW THE LINK!" button is available from the first revealed answer
+(not "from question 2" as an earlier draft of the brief read), confirmed
+directly — see the comment on `LINK_BONUS_TIERS` in scoring.ts.
+
+**Next up (milestone 5):** replace GameLoop's placeholder completion
+screen with the real results screen — per-question breakdown, link bonus,
+streak, share card (Web Share API + clipboard fallback), and the
+next-puzzle countdown (`millisecondsUntilNextLondonMidnight` in
+`src/lib/time/london.ts`, already built). Then milestone 6 (admin screen)
+and milestone 7 (PWA + deployment docs).
