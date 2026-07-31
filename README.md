@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jay's Links
 
-## Getting Started
+A daily chain-quiz web app (Wordle-style habit game), adapted from Jay's
+YouTube Shorts / FB Reels quiz format. Every day there's one puzzle: five
+questions whose answers all share a hidden "link" — guess the link early for
+the biggest score.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [Next.js](https://nextjs.org) 16 (App Router) + TypeScript + Tailwind CSS v4
+- [Supabase](https://supabase.com) (Postgres + auth) for puzzle data and the
+  admin screen
+- PWA (installable, offline app shell)
+- Deployed on [Vercel](https://vercel.com)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+See [`CLAUDE.md`](CLAUDE.md) for the full architecture/conventions reference.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Copy `.env.local.example` to `.env.local` and fill in your Supabase and
+   Anthropic API keys. See [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md)
+   for a beginner-friendly walkthrough of creating the Supabase project and
+   running the SQL migrations.
+3. Run the dev server:
+   ```bash
+   npm run dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+- `npm run dev` — start the dev server
+- `npm run build` — production build
+- `npm start` — run a production build
+- `npm run lint` — lint
+- `npm test` — unit tests (fuzzy matcher, scoring, etc.)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Docs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [`docs/ANSWER_ENGINE.md`](docs/ANSWER_ENGINE.md) — how player/link answers
+  get adjudicated (fuzzy match → AI judge → learned cache + review queue)
+- [`docs/ADDING_PUZZLES.md`](docs/ADDING_PUZZLES.md) — how Jay adds daily
+  puzzles via the admin screen
+- [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md) — step-by-step Supabase
+  project setup
+- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — deploying to Vercel
 
-## Deploy on Vercel
+## Project status
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Early build — see `CLAUDE.md` "Status" section and git log for what's done.
