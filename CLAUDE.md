@@ -91,10 +91,15 @@ built and wired up behind `/api/check-answer` and `/api/check-link`. The
 scoring engine (`src/lib/scoring/scoring.ts`), the localStorage-backed
 player storage interface (`src/lib/storage/`), and server-side "today's
 puzzle" fetching with answers stripped (`src/lib/puzzles/get-daily-puzzle.ts`)
-are also built. 64 unit tests pass (`npm test`). One product decision made
-along the way: the "I KNOW THE LINK!" button is available from the first
-revealed answer (not "from question 2" as an earlier draft of the brief
-read), confirmed directly — see the comment on `LINK_BONUS_TIERS` in
-scoring.ts. Not yet built: the actual game UI/screens, results/sharing, and
-the admin screen (including the review queue UI the engine already writes
-data for).
+are also built. The brand shell is in place: Fredoka (body) + Luckiest Guy
+(display) fonts, the deep-purple gradient background, the `TitlePanel`
+gameshow marquee component (bulb-ring border, all pure CSS — see
+`.bulb-ring` in globals.css), scattered `QuestionMarks` motifs, and a home
+screen with the "Play Link #N" CTA (`src/app/page.tsx`) — verified visually
+via a headless-browser screenshot. 64 unit tests pass (`npm test`). One
+product decision made along the way: the "I KNOW THE LINK!" button is
+available from the first revealed answer (not "from question 2" as an
+earlier draft of the brief read), confirmed directly — see the comment on
+`LINK_BONUS_TIERS` in scoring.ts. Not yet built: the actual game-loop
+screens (`/play`), results/sharing, and the admin screen (including the
+review queue UI the engine already writes data for).

@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1e0a4a;
+  --foreground: #fefce8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-fredoka);
+  --font-display: var(--font-luckiest-guy);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/**
+ * Jay's Links brand background: a deep purple gradient, used behind every
+ * screen. A soft violet glow top-left plus a dark purple-to-near-black
+ * fade gives it depth instead of a flat fill.
+ */
+.brand-gradient-bg {
+  background:
+    radial-gradient(circle at 15% -10%, rgba(147, 51, 234, 0.55) 0%, transparent 55%),
+    linear-gradient(165deg, #4c1d95 0%, #2e1065 55%, #150733 100%);
+}
+
+/**
+ * The gameshow "marquee light" ring effect used around the title panel:
+ * a band of evenly-tiled dots, masked (via mask-composite: exclude) to
+ * only the ring area between the panel's outer edge and its padding
+ * inset — not a fill. This is pure CSS (no per-bulb markup) so it stays
+ * correct at any panel size, including the rounded corners, without
+ * needing to compute bulb positions in JS.
+ */
+.bulb-ring {
+  position: relative;
+}
+
+.bulb-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 10px;
+  box-sizing: border-box;
+  background-image: radial-gradient(circle at center, #fde047 42%, transparent 44%);
+  background-size: 26px 26px;
+  background-position: 4px 4px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .bulb-ring::before {
+    padding: 14px;
+    background-size: 30px 30px;
+  }
 }
