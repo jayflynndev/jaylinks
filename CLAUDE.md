@@ -87,8 +87,14 @@ See the end of each milestone's chat summary for current state. As of the
 last update: project scaffolded, DB schema written (`supabase/migrations/`,
 not yet applied by Jay), Supabase server/browser clients and the
 Europe/London time utility in place. The full three-tier answer engine is
-built and wired up behind `/api/check-answer` and `/api/check-link` (fuzzy
-match → AI judge → cache/review-queue write), with unit tests for the
-fuzzy matcher, judge JSON parsing, and rate limiter (`npm test`). Not yet
-built: the game UI/loop, results/sharing/streaks, and the admin screen
-(including the review queue UI the engine already writes data for).
+built and wired up behind `/api/check-answer` and `/api/check-link`. The
+scoring engine (`src/lib/scoring/scoring.ts`), the localStorage-backed
+player storage interface (`src/lib/storage/`), and server-side "today's
+puzzle" fetching with answers stripped (`src/lib/puzzles/get-daily-puzzle.ts`)
+are also built. 64 unit tests pass (`npm test`). One product decision made
+along the way: the "I KNOW THE LINK!" button is available from the first
+revealed answer (not "from question 2" as an earlier draft of the brief
+read), confirmed directly — see the comment on `LINK_BONUS_TIERS` in
+scoring.ts. Not yet built: the actual game UI/screens, results/sharing, and
+the admin screen (including the review queue UI the engine already writes
+data for).
