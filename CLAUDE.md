@@ -84,5 +84,7 @@ docs/
 ## Status
 
 See the end of each milestone's chat summary for current state. As of the
-last update: project scaffolded with `create-next-app`, autonomy config and
-docs in place, DB schema and app code not yet started.
+last update: project scaffolded, DB schema written (`supabase/migrations/`,
+not yet applied by Jay), Supabase server/browser clients and the
+Europe/London time utility in place. Answer engine and game UI not yet
+started.
