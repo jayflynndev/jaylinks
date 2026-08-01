@@ -17,6 +17,8 @@ interface GameLoopProps {
    * player's "play again for practice" replay).
    */
   mode?: "play" | "preview";
+  /** The signed-in player's id, or null — resolved server-side once (see src/lib/supabase/player-auth.ts) and passed down; picks which PlayerStore backend this round uses. */
+  currentUserId: string | null;
 }
 
 type Gate = "checking" | "countdown" | "already-played" | "playing";
@@ -30,22 +32,39 @@ type Gate = "checking" | "countdown" | "already-played" | "playing";
  * check, or while the countdown is still running) would let the clock run
  * before the player is actually ready.
  */
-export function GameLoop({ puzzle, mode = "play" }: GameLoopProps) {
+export function GameLoop({ puzzle, mode = "play", currentUserId }: GameLoopProps) {
   const [gate, setGate] = useState<Gate>(mode === "preview" ? "countdown" : "checking");
   const [isPractice, setIsPractice] = useState(mode === "preview");
 
-  // One play per puzzle per device per day — see PlayerStore.hasPlayed.
-  // This has to be an effect, not state computed during render: localStorage
-  // (what PlayerStore reads) doesn't exist during SSR, so the check can only
-  // run after this client component has mounted in the browser. The gate
-  // starts at "checking" precisely so the server-rendered and first-client-
-  // render markup match before this effect updates it.
+  // One play per puzzle per device/account per day — see PlayerStore.hasPlayed.
+  // This has to be an effect, not state computed during render: the
+  // localStorage-backed store can't be read during SSR, and the
+  // account-backed store is a network call either way. The gate starts at
+  // "checking" precisely so the server-rendered and first-client-render
+  // markup match before this effect updates it. Fails open (treats an
+  // error as "not played yet") — safe because SupabasePlayerStore.saveResult
+  // always upserts-then-recomputes from the full history rather than
+  // incrementing, so a stray re-play just overwrites the same row instead
+  // of double-counting.
   useEffect(() => {
     if (mode === "preview") return; // gate already starts "countdown" — see useState above.
-    const alreadyPlayed = getPlayerStore().hasPlayed(puzzle.episodeNumber);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setGate(alreadyPlayed ? "already-played" : "countdown");
-  }, [puzzle.episodeNumber, mode]);
+    let cancelled = false;
+    async function check() {
+      let alreadyPlayed = false;
+      try {
+        alreadyPlayed = await getPlayerStore(currentUserId).hasPlayed(puzzle.episodeNumber);
+      } catch {
+        alreadyPlayed = false;
+      }
+      if (!cancelled) {
+        setGate(alreadyPlayed ? "already-played" : "countdown");
+      }
+    }
+    void check();
+    return () => {
+      cancelled = true;
+    };
+  }, [puzzle.episodeNumber, mode, currentUserId]);
 
   if (gate === "checking") {
     return null;
@@ -87,5 +106,7 @@ export function GameLoop({ puzzle, mode = "play" }: GameLoopProps) {
     );
   }
 
-  return <PuzzleRound key={puzzle.id} puzzle={puzzle} isPractice={isPractice} />;
+  return (
+    <PuzzleRound key={puzzle.id} puzzle={puzzle} isPractice={isPractice} currentUserId={currentUserId} />
+  );
 }

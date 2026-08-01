@@ -21,7 +21,7 @@ export default async function PuzzlePreviewPage({ params }: { params: Promise<{ 
       <p className="rounded-full border-2 border-yellow-300/50 bg-purple-900/60 px-4 py-1 font-sans text-sm text-yellow-200">
         Preview mode — nothing here is saved
       </p>
-      <GameLoop puzzle={puzzle} mode="preview" />
+      <GameLoop puzzle={puzzle} mode="preview" currentUserId={null} />
     </div>
   );
 }

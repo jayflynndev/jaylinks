@@ -16,9 +16,11 @@ per-clue answering — clues just appear on a timer. The only interactive,
 scored action is guessing the link, which a player can attempt at any point
 after the first clue appears, against a continuously draining points meter.
 A wrong guess locks the guess button until the next clue reveals. Players
-then get a results/share screen. See `docs/ANSWER_ENGINE.md` for the
-link-guess adjudication design and `docs/ADDING_PUZZLES.md` for how puzzles
-get authored.
+then get a results/share screen. Signing in is fully optional — anonymous
+play (localStorage-backed) is the zero-friction default; signing in moves
+a device's progress to the account instead, so streak/history carry across
+devices. See `docs/ANSWER_ENGINE.md` for the link-guess adjudication design
+and `docs/ADDING_PUZZLES.md` for how puzzles get authored.
 
 ## Stack
 
@@ -47,20 +49,24 @@ get authored.
 ```
 src/
   app/                  routes (App Router)
+    actions/            client-callable Server Actions (player-store-actions.ts)
     api/                server-only route handlers (link-guess checking)
     admin/               admin screen (Supabase-authed, is_admin-gated)
+    account/             player sign-in/sign-up + profile/history (optional)
     play/                player game loop
   lib/
     answer-engine/       Tier 1 fuzzy match, Tier 2 AI judge, Tier 3 cache/review
     scoring/             whole-round points-meter math (pure functions, unit tested)
     time/                Europe/London "what day is it" utilities (see below)
-    storage/             player-state persistence interface (localStorage now,
-                          swappable for Supabase-backed accounts later)
+    storage/             PlayerStore interface — LocalStoragePlayerStore
+                          (anonymous, default) and SupabasePlayerStore
+                          (signed-in, calls the Server Actions above)
     puzzles/             server-side puzzle queries/writes (admin + player fetch)
     supabase/            Supabase client setup (server + browser variants) +
-                          admin-check.ts (profiles.is_admin gate)
-  components/           UI components
-  hooks/                 shared client hooks (elapsed timer, clue reveal)
+                          admin-check.ts (profiles.is_admin gate) +
+                          player-auth.ts (optional player sign-in check)
+  components/           UI components (game/, admin/, player/, brand/)
+  hooks/                 shared client hooks (elapsed timer)
 supabase/
   migrations/            SQL migration files (Jay runs these by hand, against
                           the existing shared Supabase project)
@@ -88,10 +94,16 @@ docs/
   Supabase project is shared with QuizHub. Non-`JL_` tables referenced here
   (currently just `profiles`) belong to QuizHub — read-only from this app's
   perspective except where explicitly noted.
-- **Player persistence** goes through the storage interface in
-  `src/lib/storage/` (currently backed by localStorage) — game logic must
-  never call `localStorage` directly, so swapping in Supabase-backed accounts
-  later doesn't touch game logic.
+- **Player persistence** goes through the `PlayerStore` interface in
+  `src/lib/storage/player-store.ts` — game logic must never call
+  `localStorage` directly. `getPlayerStore(currentUserId)` picks
+  `LocalStoragePlayerStore` (anonymous, default) or `SupabasePlayerStore`
+  (signed in — calls Server Actions in `src/app/actions/player-store-actions.ts`,
+  which re-derive the user from the session cookie, never trusting a
+  client-supplied id). `currentUserId` is resolved server-side once per
+  page (`src/lib/supabase/player-auth.ts`) and threaded down as a prop —
+  it's a rendering hint only, never itself a trust boundary. Practice
+  plays are never persisted server-side, only locally/ephemerally.
 - **Data model is designed for future category packs** (non-daily puzzle
   collections) even though v1 only builds the Daily UI. Don't add
   daily-only assumptions to the schema or shared APIs; extension points are
@@ -132,19 +144,28 @@ border, all pure CSS — see `.bulb-ring` in globals.css), scattered
 
 The full player game loop is built under `/play`
 (`GameLoop.tsx` handles the "already played today → practice mode" gate,
-then hands off to `PuzzleRound.tsx`, which owns the round itself: the
-shared `useElapsedTimer` meter clock, the independent `useClueReveal` timer,
-`ClueList`, and `LinkGuessPanel`). A wrong guess locks the guess button
-until the next clue reveals; the meter pauses while the guess form is open
-and resumes on a wrong guess. The real results screen
+a "3, 2, 1, GO" `Countdown` before the round's clocks start (so nothing
+ticks before the player is ready), then hands off to `PuzzleRound.tsx`,
+which owns the round itself — the shared `useElapsedTimer` meter clock
+also drives clue-reveal count directly (`revealedClueCount(activeElapsedMs)`,
+both derived from the same paused-aware value so they can never drift
+apart — this replaced an earlier design with two independent clocks that
+had a real exploit: opening the guess form froze the meter but not the
+clue reveal, letting every clue show for free), `ClueList`, and
+`LinkGuessPanel`. A wrong guess locks the guess button until the next
+clue reveals; the meter (and clue reveal) pause while the guess form is
+open and resume on a wrong guess. The real results screen
 (`ResultsScreen.tsx`) shows the revealed clues, the link (guessed or
-revealed), score, streak (skipped for practice plays), a share card via the
-Web Share API with a clipboard fallback, and a live "next puzzle unlocks
-in…" countdown. Share text generation is a pure, tested function
-(`src/lib/sharing/share-card.ts`). Both `/` and `/play` are marked
-`export const dynamic = "force-dynamic"` — without this Next would
-statically prerender "today's puzzle" once at build time and never refresh
-it.
+revealed), score, streak (skipped for practice plays, or replaced with a
+"couldn't save" notice if a signed-in player's save failed), a share card
+via the Web Share API with a clipboard fallback, a live "next puzzle
+unlocks in…" countdown, and a sign-in/account entry point. Share text
+generation is a pure, tested function (`src/lib/sharing/share-card.ts`).
+A "First time? How to play" button + modal (`HowToPlayModal.tsx`) on the
+home screen explains the mechanic in plain language for new visitors.
+Both `/` and `/play` are marked `export const dynamic = "force-dynamic"`
+— without this Next would statically prerender "today's puzzle" once at
+build time and never refresh it.
 
 The admin screen (`/admin`, gated on `profiles.is_admin` via
 `src/lib/supabase/admin-check.ts` and `src/proxy.ts`, not just "is signed
@@ -158,13 +179,30 @@ and the review queue at `/admin/review`
 (`src/lib/puzzles/review-queue.ts`) — approve/reject/dismiss pending
 `JL_judged_answers` rows, plus a daily AI-judge-call counter.
 
-98 unit tests pass (`npx vitest run`), `next build` and `eslint` both clean.
-Full end-to-end verification (real Supabase + Anthropic keys, headless
-visual check of the corrected clue-reveal loop) is still outstanding —
-tracked as part of finishing this correction.
+**Optional player accounts** are built: sign-in stays fully optional —
+anonymous localStorage play is still the zero-friction default. Signing in
+(`/account`, `PlayerAuthForm.tsx` — email/password, combined sign-in/
+sign-up, same shared `auth.users` table as QuizHub) moves a device's
+progress to `"JL_play_history"` instead (one row per real, non-practice
+play; practice plays are never persisted server-side). `PlayerStats` is
+always derived fresh from the full history table
+(`compute-stats-from-history.ts`) rather than cached, which is also what
+makes the one-time local→account history merge on first sign-in safe to
+call repeatedly/from multiple devices (`AccountDashboard.tsx`'s merge
+effect, `mergeLocalHistoryAction` — existing account rows always win, the
+upload only fills gaps). `src/proxy.ts` now refreshes the Supabase session
+on `/`, `/play`, and `/account` too (not just `/admin`) — required for
+signed-in sessions to keep working over time, since Supabase rotates
+refresh tokens on each use and only proxy can persist a refreshed cookie
+back to the browser.
 
-**Next up:** milestone 7 — PWA (installable, app-shell cached) and
-deployment docs (`docs/DEPLOYMENT.md`, Vercel).
+103 unit tests pass (`npx vitest run`), `next build` and `eslint` both
+clean. Deployed and live at jayslinks.com (Vercel, auto-deploys from
+`master`) — currently in closed beta with real testers.
+
+**Next up:** PWA (installable, app-shell cached) and deployment docs
+(`docs/DEPLOYMENT.md`) — the original milestone 7, still outstanding.
+Fold in beta feedback as it comes in.
 
 Repo: pushed to `https://github.com/jayflynndev/jaylinks` (remote `origin`,
 branch `master`).

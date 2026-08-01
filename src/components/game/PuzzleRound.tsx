@@ -16,6 +16,8 @@ import type { LinkGuessOutcome } from "./types";
 interface PuzzleRoundProps {
   puzzle: PublicPuzzle;
   isPractice: boolean;
+  /** The signed-in player's id, or null — see GameLoop's prop of the same name. */
+  currentUserId: string | null;
 }
 
 interface LinkGuessState {
@@ -40,13 +42,14 @@ const NOT_GUESSED: LinkGuessState = {
  * so its timing hooks naturally start from zero at the right moment
  * rather than needing a reset effect.
  */
-export function PuzzleRound({ puzzle, isPractice }: PuzzleRoundProps) {
+export function PuzzleRound({ puzzle, isPractice, currentUserId }: PuzzleRoundProps) {
   const [isGuessActive, setIsGuessActive] = useState(false);
   const [linkGuessState, setLinkGuessState] = useState<LinkGuessState>(NOT_GUESSED);
 
   const [finalResult, setFinalResult] = useState<PlayResult | null>(null);
   const [finalStats, setFinalStats] = useState<PlayerStats | null>(null);
   const [finalLinkText, setFinalLinkText] = useState<string | null>(null);
+  const [saveFailed, setSaveFailed] = useState(false);
 
   const isRoundOver = finalResult !== null;
 
@@ -112,9 +115,19 @@ export function PuzzleRound({ puzzle, isPractice }: PuzzleRoundProps) {
         totalScore: linkGuessState.guessed ? (linkGuessState.score ?? 0) : 0,
       };
 
-      const stats = getPlayerStore().saveResult(result);
+      try {
+        const stats = await getPlayerStore(currentUserId).saveResult(result);
+        if (cancelled) return;
+        setFinalStats(stats);
+      } catch {
+        // Non-blocking: the round still ends and results still show — see
+        // the "Couldn't save" notice ResultsScreen renders when stats is
+        // null. A signed-in player's account just won't reflect this play
+        // until they're back online and play again.
+        if (cancelled) return;
+        setSaveFailed(true);
+      }
       setFinalLinkText(linkText);
-      setFinalStats(stats);
       setFinalResult(result);
     }
 
@@ -122,15 +135,26 @@ export function PuzzleRound({ puzzle, isPractice }: PuzzleRoundProps) {
     return () => {
       cancelled = true;
     };
-  }, [isRoundOver, isGuessActive, linkGuessState, activeElapsedMs, puzzle, isPractice, revealedCount]);
+  }, [
+    isRoundOver,
+    isGuessActive,
+    linkGuessState,
+    activeElapsedMs,
+    puzzle,
+    isPractice,
+    revealedCount,
+    currentUserId,
+  ]);
 
-  if (finalResult && finalStats) {
+  if (finalResult) {
     return (
       <ResultsScreen
         puzzleTitle={puzzle.title}
         result={finalResult}
         linkText={finalLinkText ?? "?"}
         stats={finalStats}
+        saveFailed={saveFailed}
+        currentUserId={currentUserId}
       />
     );
   }

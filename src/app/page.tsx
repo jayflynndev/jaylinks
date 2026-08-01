@@ -3,6 +3,7 @@ import { QuestionMarks } from "@/components/brand/QuestionMarks";
 import { TitlePanel } from "@/components/brand/TitlePanel";
 import { HowToPlayModal } from "@/components/game/HowToPlayModal";
 import { getTodaysPuzzle } from "@/lib/puzzles/get-daily-puzzle";
+import { getCurrentPlayerId } from "@/lib/supabase/player-auth";
 
 // "Today's puzzle" changes daily and depends on live DB state — without
 // this, Next.js statically prerenders the page once at build time and
@@ -25,6 +26,7 @@ export default async function Home() {
   } catch {
     episodeNumber = null;
   }
+  const currentUserId = await getCurrentPlayerId();
 
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-6 py-16">
@@ -46,6 +48,9 @@ export default async function Home() {
             No puzzle is live yet — check back soon!
           </p>
         )}
+        <Link href="/account" className="font-sans text-sm text-yellow-100/70 underline">
+          {currentUserId ? "My account" : "Sign in to save progress"}
+        </Link>
       </div>
     </div>
   );

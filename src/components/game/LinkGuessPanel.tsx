@@ -122,7 +122,7 @@ export function LinkGuessPanel({
           disabled={isLocked}
           className="w-full rounded-full border-2 border-yellow-300 bg-purple-800/80 px-5 py-3 font-display text-lg tracking-wide text-yellow-300 transition disabled:cursor-not-allowed disabled:border-yellow-300/30 disabled:text-yellow-300/40"
         >
-          {isLocked ? "Locked until next clue…" : `🔗 Guess the link (${currentScore})`}
+          {isLocked ? "Locked until next clue…" : "🔗 Guess the link"}
         </button>
       ) : (
         <form

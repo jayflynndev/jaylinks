@@ -2,6 +2,7 @@ import Link from "next/link";
 import { QuestionMarks } from "@/components/brand/QuestionMarks";
 import { GameLoop } from "@/components/game/GameLoop";
 import { getTodaysPuzzle } from "@/lib/puzzles/get-daily-puzzle";
+import { getCurrentPlayerId } from "@/lib/supabase/player-auth";
 
 // Same reasoning as src/app/page.tsx: today's puzzle changes daily, so this
 // route must be server-rendered per-request, never statically prerendered.
@@ -19,6 +20,7 @@ export default async function PlayPage() {
   } catch {
     puzzle = null;
   }
+  const currentUserId = await getCurrentPlayerId();
 
   if (!puzzle) {
     return (
@@ -43,7 +45,7 @@ export default async function PlayPage() {
       <h1 className="mb-6 font-display text-2xl tracking-wide text-yellow-300 sm:text-3xl">
         Link #{puzzle.episodeNumber}
       </h1>
-      <GameLoop puzzle={puzzle} />
+      <GameLoop puzzle={puzzle} currentUserId={currentUserId} />
     </div>
   );
 }

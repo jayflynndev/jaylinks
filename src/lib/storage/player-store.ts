@@ -1,25 +1,30 @@
 "use client";
 
+import {
+  getResultAction,
+  getStatsAction,
+  hasPlayedAction,
+  saveResultAction,
+} from "@/app/actions/player-store-actions";
 import { computeStreakUpdate } from "./streak";
 import type { PlayerStats, PlayResult } from "./types";
 
 /**
  * The player-state persistence interface. Every piece of game code that
  * needs to read or write player history (streaks, past results, stats)
- * goes through this interface — never `localStorage` directly. v1 ships
- * only `LocalStoragePlayerStore` (no player accounts), but the interface
- * is the seam for a future Supabase-backed implementation (e.g.
- * `SupabasePlayerStore`) once accounts exist: swap what `getPlayerStore()`
- * returns and no game-loop/results code needs to change.
+ * goes through this interface — never `localStorage` directly. Async
+ * because a real account-backed implementation needs network I/O — see
+ * `SupabasePlayerStore` below; `LocalStoragePlayerStore` just wraps its
+ * synchronous logic in `Promise.resolve(...)`.
  */
 export interface PlayerStore {
-  /** The result for a given episode, or null if that puzzle hasn't been played on this device. */
-  getResult(episodeNumber: number): PlayResult | null;
+  /** The result for a given episode, or null if that puzzle hasn't been played (for real) yet. */
+  getResult(episodeNumber: number): Promise<PlayResult | null>;
   /** True if a *non-practice* result already exists for this episode (the "one real play per puzzle" rule). */
-  hasPlayed(episodeNumber: number): boolean;
+  hasPlayed(episodeNumber: number): Promise<boolean>;
   /** Persists a result and (for non-practice plays) updates aggregate stats/streak. Returns the up-to-date stats. */
-  saveResult(result: PlayResult): PlayerStats;
-  getStats(): PlayerStats;
+  saveResult(result: PlayResult): Promise<PlayerStats>;
+  getStats(): Promise<PlayerStats>;
 }
 
 const RESULTS_KEY = "jayslinks:results:v1";
@@ -39,7 +44,8 @@ function hasLocalStorage(): boolean {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 }
 
-function readResults(): Record<number, PlayResult> {
+/** Exported for src/lib/storage/local-export.ts's one-time account-merge read — not part of the PlayerStore interface itself. */
+export function readResults(): Record<number, PlayResult> {
   if (!hasLocalStorage()) return {};
   try {
     const raw = window.localStorage.getItem(RESULTS_KEY);
@@ -95,15 +101,15 @@ function markEpisodeCompleted(episodeNumber: number): void {
 }
 
 class LocalStoragePlayerStore implements PlayerStore {
-  getResult(episodeNumber: number): PlayResult | null {
+  async getResult(episodeNumber: number): Promise<PlayResult | null> {
     return readResults()[episodeNumber] ?? null;
   }
 
-  hasPlayed(episodeNumber: number): boolean {
+  async hasPlayed(episodeNumber: number): Promise<boolean> {
     return readCompletedEpisodes().includes(episodeNumber);
   }
 
-  saveResult(result: PlayResult): PlayerStats {
+  async saveResult(result: PlayResult): Promise<PlayerStats> {
     const results = readResults();
     results[result.episodeNumber] = result;
     writeResults(results);
@@ -141,17 +147,47 @@ class LocalStoragePlayerStore implements PlayerStore {
     return newStats;
   }
 
-  getStats(): PlayerStats {
+  async getStats(): Promise<PlayerStats> {
     return readStats();
   }
 }
 
-let cachedStore: PlayerStore | null = null;
-
-/** The single PlayerStore instance the app should use — see the interface doc above for the future Supabase swap point. */
-export function getPlayerStore(): PlayerStore {
-  if (!cachedStore) {
-    cachedStore = new LocalStoragePlayerStore();
+/**
+ * The account-backed implementation, used once a player is signed in —
+ * delegates to the Server Actions in src/app/actions/player-store-actions.ts,
+ * which re-derive the authenticated user from the session cookie
+ * themselves (the real trust boundary; this class never sends an id).
+ * Practice plays are intentionally not persisted server-side — see
+ * player-history-queries.ts's saveResult.
+ */
+class SupabasePlayerStore implements PlayerStore {
+  async getResult(episodeNumber: number): Promise<PlayResult | null> {
+    return getResultAction(episodeNumber);
   }
-  return cachedStore;
+
+  async hasPlayed(episodeNumber: number): Promise<boolean> {
+    return hasPlayedAction(episodeNumber);
+  }
+
+  async saveResult(result: PlayResult): Promise<PlayerStats> {
+    return saveResultAction(result);
+  }
+
+  async getStats(): Promise<PlayerStats> {
+    return getStatsAction();
+  }
+}
+
+const localStore = new LocalStoragePlayerStore();
+const supabaseStore = new SupabasePlayerStore();
+
+/**
+ * The PlayerStore the app should use for this render — `currentUserId` is
+ * a rendering hint only (resolved server-side once, e.g. via
+ * src/lib/supabase/player-auth.ts, and threaded down as a prop), never
+ * itself a trust boundary. Signed out (or accounts not relevant to this
+ * screen) → localStorage, exactly as before accounts existed.
+ */
+export function getPlayerStore(currentUserId: string | null): PlayerStore {
+  return currentUserId ? supabaseStore : localStore;
 }

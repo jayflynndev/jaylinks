@@ -12,17 +12,29 @@ interface ResultsScreenProps {
   result: PlayResult;
   /** The canonical link answer — always shown at this point, whether or not the player guessed it. */
   linkText: string;
-  stats: PlayerStats;
+  /** Null if saving this result failed (see saveFailed) or for practice plays where the streak block is skipped anyway. */
+  stats: PlayerStats | null;
+  /** True if PuzzleRound's save to the signed-in player's account failed — shown as a small non-blocking notice instead of the streak block. */
+  saveFailed: boolean;
+  /** The signed-in player's id, or null — drives the "sign in to save progress" / "My account" entry point. */
+  currentUserId: string | null;
 }
 
 /**
  * The end-of-round results screen: score, the 5 clue words, the link
  * reveal, current streak, a share card, and a countdown to the next
  * puzzle. Everything it needs (the PlayResult and the streak-updated
- * PlayerStats) is computed by GameLoop once the round completes and
+ * PlayerStats) is computed by PuzzleRound once the round completes and
  * handed down as props — this component is purely presentational.
  */
-export function ResultsScreen({ puzzleTitle, result, linkText, stats }: ResultsScreenProps) {
+export function ResultsScreen({
+  puzzleTitle,
+  result,
+  linkText,
+  stats,
+  saveFailed,
+  currentUserId,
+}: ResultsScreenProps) {
   const countdown = useCountdownToNextPuzzle();
 
   // In practice this only ever renders client-side (reached through
@@ -76,18 +88,28 @@ export function ResultsScreen({ puzzleTitle, result, linkText, stats }: ResultsS
         </p>
       </div>
 
-      {!result.isPractice && (
-        <div className="flex items-center justify-center gap-2 rounded-2xl border-2 border-yellow-300/40 bg-purple-900/60 p-4 text-center">
-          <span className="font-display text-2xl text-yellow-300">🔥 {stats.currentStreak}</span>
-          <span className="font-sans text-yellow-100/80">
-            day{stats.currentStreak === 1 ? "" : "s"} streak
-          </span>
-        </div>
-      )}
+      {!result.isPractice &&
+        (stats ? (
+          <div className="flex items-center justify-center gap-2 rounded-2xl border-2 border-yellow-300/40 bg-purple-900/60 p-4 text-center">
+            <span className="font-display text-2xl text-yellow-300">🔥 {stats.currentStreak}</span>
+            <span className="font-sans text-yellow-100/80">
+              day{stats.currentStreak === 1 ? "" : "s"} streak
+            </span>
+          </div>
+        ) : (
+          saveFailed && (
+            <p className="rounded-2xl border-2 border-yellow-300/20 bg-purple-900/40 p-3 text-center font-sans text-sm text-yellow-100/60">
+              Couldn&apos;t save this result — check your connection. It&apos;ll count next time you play.
+            </p>
+          )
+        ))}
 
       <div className="flex flex-col items-center gap-3">
         <ShareButton text={shareText} />
         <p className="font-sans text-sm text-yellow-100/60">Next puzzle in {countdown}</p>
+        <Link href="/account" className="font-sans text-yellow-100/80 underline">
+          {currentUserId ? "My account" : "Sign in to save your progress"}
+        </Link>
         <Link href="/" className="font-sans text-yellow-100/80 underline">
           Back home
         </Link>

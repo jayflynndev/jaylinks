@@ -87,6 +87,22 @@ export type Profile = {
   is_admin: boolean;
 };
 
+/** One real (non-practice) play, saved server-side only once a player is signed in — see src/lib/storage/player-history-queries.ts. */
+export type PlayHistory = {
+  id: string;
+  user_id: string;
+  puzzle_id: string;
+  episode_number: number;
+  /** Europe/London calendar date ("YYYY-MM-DD") this was played on. */
+  played_date: string;
+  clue_texts: string[];
+  revealed_clue_count: number;
+  guessed_correctly: boolean;
+  total_score: number;
+  created_at: string;
+  updated_at: string;
+};
+
 export type JudgedAnswer = {
   id: string;
   /** Always a link guess — clues are never individually judged. */
@@ -225,6 +241,36 @@ export interface Database {
         // manage) — Insert/Update are typed loosely since they're unused.
         Insert: { id: string; is_admin?: boolean };
         Update: { id?: string; is_admin?: boolean };
+      };
+      JL_play_history: {
+        Row: PlayHistory;
+        Relationships: [];
+        Insert: {
+          id?: string;
+          user_id: string;
+          puzzle_id: string;
+          episode_number: number;
+          played_date: string;
+          clue_texts: string[];
+          revealed_clue_count: number;
+          guessed_correctly: boolean;
+          total_score: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          puzzle_id?: string;
+          episode_number?: number;
+          played_date?: string;
+          clue_texts?: string[];
+          revealed_clue_count?: number;
+          guessed_correctly?: boolean;
+          total_score?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
       };
     };
     Views: Record<string, never>;
