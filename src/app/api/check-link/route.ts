@@ -4,11 +4,11 @@ import { isRateLimited } from "@/lib/answer-engine/rate-limit";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 
 /**
- * Adjudicates a player's link guess for a puzzle, or reveals it once the
- * puzzle is complete and it was never guessed. Same shared engine as
- * /api/check-answer (see docs/ANSWER_ENGINE.md) — phrasing varies more for
- * links ("Types of Poem" / "poems" / "poetry forms"), which is exactly what
- * the fuzzy matcher's alternatives list and the Tier 2 judge are for.
+ * Adjudicates a player's link guess for a puzzle — the only thing ever
+ * guessed in Jay's Links (the 5 clues per puzzle just auto-reveal on a
+ * timer; they're never individually answered). Also handles revealing the
+ * link once the round ends unguessed (`{ puzzleId, reveal: true }`). See
+ * docs/ANSWER_ENGINE.md for the three-tier adjudication design.
  */
 export async function POST(request: Request) {
   const clientKey = request.headers.get("x-forwarded-for") ?? "unknown";
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
   const supabase = createServiceRoleClient();
   const { data: puzzle, error } = await supabase
-    .from("puzzles")
+    .from("JL_puzzles")
     .select("link_answer, link_alternatives")
     .eq("id", body.puzzleId)
     .maybeSingle();
@@ -63,9 +63,8 @@ export async function POST(request: Request) {
 
   const result = await checkAnswer(
     {
-      type: "link",
-      id: body.puzzleId,
-      contextText: "The hidden link/theme connecting the answers to all 5 questions in this puzzle.",
+      puzzleId: body.puzzleId,
+      contextText: "The hidden link/theme connecting this puzzle's 5 revealed clue words.",
       canonicalAnswer: puzzle.link_answer,
       alternatives: puzzle.link_alternatives,
     },

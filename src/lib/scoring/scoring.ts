@@ -1,91 +1,79 @@
 /**
- * Pure scoring math for the game loop — no timers, no React, no I/O. The
- * timer/UI layer (milestone 4e) calls these functions with elapsed
- * milliseconds it has tracked itself (pausing while an input is focused,
- * per the product brief), keeping the actual scoring rules in one place
- * that's easy to reason about and unit test.
+ * Pure scoring/timing math for the game loop — no timers, no React, no I/O.
+ * The UI layer calls these functions with elapsed milliseconds it has
+ * tracked itself (pausing while the guess input is open, per the product
+ * brief), keeping the actual rules in one place that's easy to reason
+ * about and unit test.
+ *
+ * The game is one continuous round per puzzle: 5 clue words auto-reveal on
+ * a fixed, never-paused 5-second clock, while a single points meter drains
+ * for the whole round (pausing only while the player has the guess input
+ * open) until they guess the link correctly or time runs out.
  */
 
-/** Points meter starts here for every question. */
+/** Points meter starts here when the round begins (clue 1 reveals). */
 export const METER_START = 1000;
 
-/** Points meter never drains (or gets penalised) below this floor. */
+/** Points meter never drains below this floor. */
 export const METER_FLOOR = 100;
 
-/** Time for the meter to drain from METER_START to METER_FLOOR. */
-export const DRAIN_DURATION_MS = 15_000;
+/** How often a new clue reveals — independent of the points meter's pause state. */
+export const CLUE_REVEAL_INTERVAL_MS = 5_000;
 
-/** Points lost per wrong guess (never below METER_FLOOR). */
-export const WRONG_GUESS_PENALTY = 100;
+/** Every puzzle has exactly 5 clues. */
+export const CLUE_COUNT = 5;
 
 /**
- * Once the meter hits the floor, the player still has this long to keep
- * guessing before the question auto-reveals with 0 points.
+ * Time for the points meter to drain from METER_START to METER_FLOOR.
+ * Spans all 5 clue reveals (0s, 5s, 10s, 15s, 20s) with a 5s buffer so the
+ * meter doesn't bottom out the instant the last clue appears. Starting
+ * default — tune after seeing it live.
+ */
+export const ROUND_DRAIN_DURATION_MS = 25_000;
+
+/**
+ * Once the meter hits the floor, the player still has this long to guess
+ * before the round auto-ends (link revealed, 0 points banked).
  */
 export const EXTRA_TIME_AFTER_FLOOR_MS = 5_000;
 
-/** Total time (from question start) before a question auto-reveals unanswered. */
-export const QUESTION_TIMEOUT_MS = DRAIN_DURATION_MS + EXTRA_TIME_AFTER_FLOOR_MS;
+/** Total time (from round start) before an unguessed round auto-ends. */
+export const ROUND_TIMEOUT_MS = ROUND_DRAIN_DURATION_MS + EXTRA_TIME_AFTER_FLOOR_MS;
 
 /**
- * The points meter's value from time-drain alone, given how many
- * milliseconds of *active* (non-paused) time have elapsed since the
- * question started. Linear drain from METER_START to METER_FLOOR over
- * DRAIN_DURATION_MS, then holds at the floor.
+ * The points meter's value given how many milliseconds of *active*
+ * (non-paused) time have elapsed since the round started. Linear drain
+ * from METER_START to METER_FLOOR over ROUND_DRAIN_DURATION_MS, then holds
+ * at the floor. This is also exactly what a correct guess banks — the
+ * meter pausing while the guess input is open is what makes "freeze the
+ * score, then bank it on a correct answer" work with no extra bookkeeping.
  */
 export function meterValueAtElapsed(activeElapsedMs: number): number {
   if (activeElapsedMs <= 0) return METER_START;
-  if (activeElapsedMs >= DRAIN_DURATION_MS) return METER_FLOOR;
+  if (activeElapsedMs >= ROUND_DRAIN_DURATION_MS) return METER_FLOOR;
 
-  const drained = (METER_START - METER_FLOOR) * (activeElapsedMs / DRAIN_DURATION_MS);
+  const drained = (METER_START - METER_FLOOR) * (activeElapsedMs / ROUND_DRAIN_DURATION_MS);
   return Math.round(METER_START - drained);
 }
 
 /**
- * The score a correct guess would bank right now: time-drain value minus
- * WRONG_GUESS_PENALTY for every prior wrong guess on this question, never
- * below METER_FLOOR. This is also what the UI displays as the live meter,
- * since a wrong guess's penalty should be visible immediately.
+ * True once the round's total time budget (drain + the extra grace period
+ * after hitting the floor) has elapsed — the UI should auto-reveal the
+ * link and award 0 points.
  */
-export function currentQuestionScore(activeElapsedMs: number, wrongGuessCount: number): number {
-  const drainedValue = meterValueAtElapsed(activeElapsedMs);
-  const penalised = drainedValue - WRONG_GUESS_PENALTY * wrongGuessCount;
-  return Math.max(METER_FLOOR, penalised);
+export function isRoundTimedOut(activeElapsedMs: number): boolean {
+  return activeElapsedMs >= ROUND_TIMEOUT_MS;
 }
 
 /**
- * True once a question's total time budget (drain + the extra grace
- * period after hitting the floor) has elapsed — the UI should auto-reveal
- * the answer and award 0 points.
+ * How many clues have revealed by `elapsedMs` on the *unpaused* wall-clock
+ * since the round started — clue 1 is visible immediately, then one more
+ * every CLUE_REVEAL_INTERVAL_MS, capped at CLUE_COUNT. Deliberately a
+ * separate clock from the points meter: clue reveals never pause, even
+ * while the player has the guess input open.
  */
-export function isQuestionTimedOut(activeElapsedMs: number): boolean {
-  return activeElapsedMs >= QUESTION_TIMEOUT_MS;
-}
-
-/**
- * Link-guess bonus by how many answers have been revealed at guess time.
- * Per product decision: the "I KNOW THE LINK!" button is available from
- * the moment the first answer is revealed (not "from question 2" as an
- * earlier draft of the brief suggested — confirmed directly), with the
- * bonus decreasing the more answers the player has seen. Index 0 here
- * corresponds to 1 revealed answer.
- */
-export const LINK_BONUS_TIERS = [2500, 2000, 1500, 1000, 500] as const;
-
-/** True once a link guess is allowed — as soon as the first answer is revealed. */
-export function isLinkGuessAvailable(revealedCount: number): boolean {
-  return revealedCount >= 1 && revealedCount <= LINK_BONUS_TIERS.length;
-}
-
-/**
- * The link bonus for guessing correctly with `revealedCount` answers
- * revealed. Returns 0 outside the valid 1-5 range (e.g. guessing before
- * any answer is revealed, which the UI shouldn't allow in the first
- * place — see isLinkGuessAvailable) rather than throwing, since this may
- * be called from UI code that's easier to write defensively than to prove
- * exhaustively correct.
- */
-export function linkBonusForRevealedCount(revealedCount: number): number {
-  if (!isLinkGuessAvailable(revealedCount)) return 0;
-  return LINK_BONUS_TIERS[revealedCount - 1];
+export function revealedClueCount(elapsedMs: number): number {
+  if (elapsedMs <= 0) return 1;
+  const count = Math.floor(elapsedMs / CLUE_REVEAL_INTERVAL_MS) + 1;
+  return Math.min(CLUE_COUNT, count);
 }

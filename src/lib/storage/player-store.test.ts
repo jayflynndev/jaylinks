@@ -9,15 +9,9 @@ function makeResult(overrides: Partial<PlayResult> = {}): PlayResult {
     puzzleId: "puzzle-281",
     playedDate: "2026-07-31",
     isPractice: false,
-    questionResults: [
-      { correct: true, pointsBanked: 900 },
-      { correct: true, pointsBanked: 800 },
-      { correct: true, pointsBanked: 700 },
-      { correct: false, pointsBanked: 0 },
-      { correct: true, pointsBanked: 600 },
-    ],
-    linkBonus: 2000,
-    linkGuessedAfterRevealedCount: 2,
+    clueTexts: ["Sesame", "Quality", "Baker", "Coronation", "Fleet"],
+    revealedClueCount: 2,
+    guessedCorrectly: true,
     totalScore: 5000,
     ...overrides,
   };

@@ -1,10 +1,3 @@
-/** Per-question outcome, used both for scoring history and the share-card emoji grid. */
-export interface QuestionResult {
-  correct: boolean;
-  /** Points banked for this question (0 if missed/revealed/timed out). */
-  pointsBanked: number;
-}
-
 /** One completed (or practice) play of a puzzle. */
 export interface PlayResult {
   episodeNumber: number;
@@ -13,11 +6,11 @@ export interface PlayResult {
   playedDate: string;
   /** True for replays of an already-completed puzzle — these don't affect stats/streak. */
   isPractice: boolean;
-  /** Always 5 entries, in question order. */
-  questionResults: QuestionResult[];
-  linkBonus: number;
-  /** How many answers were revealed when the link was correctly guessed, or null if never guessed. */
-  linkGuessedAfterRevealedCount: number | null;
+  /** All 5 clue words, in reveal order — always fully known once the round ends, guessed or not. */
+  clueTexts: string[];
+  /** How many clues had revealed at the moment the round ended (correct guess or timeout). */
+  revealedClueCount: number;
+  guessedCorrectly: boolean;
   totalScore: number;
 }
 

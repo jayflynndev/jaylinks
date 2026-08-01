@@ -5,17 +5,16 @@ import { judgeAnswer } from "./ai-judge";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 
 /**
- * The shared three-tier answer engine (docs/ANSWER_ENGINE.md), used
- * identically by /api/check-answer (regular questions) and /api/check-link
- * (link guesses) — callers just describe which "subject" is being judged.
+ * The shared three-tier answer engine (docs/ANSWER_ENGINE.md), used by
+ * /api/check-link. Every guess is a link guess against a puzzle — clues
+ * are just auto-revealed words/phrases, never individually answered, so
+ * there's only ever one kind of "subject" here (unlike an earlier design
+ * that also handled per-question answers).
  */
 
-export interface AnswerSubject {
-  /** "question" for a regular answer, "link" for a link guess. */
-  type: "question" | "link";
-  /** questions.id or puzzles.id, matching `type`. */
-  id: string;
-  /** Question text (or a description of the link) shown to the Tier 2 judge for context. */
+export interface LinkGuessSubject {
+  puzzleId: string;
+  /** A short description of the link shown to the Tier 2 judge for context. */
   contextText: string;
   canonicalAnswer: string;
   alternatives: string[];
@@ -32,19 +31,15 @@ export interface CheckAnswerResult {
 /** Every "accept" and every low-confidence "reject" goes in the admin review queue — see docs/ANSWER_ENGINE.md Tier 3. */
 const REVIEW_CONFIDENCE_THRESHOLD = 0.7;
 
-function subjectColumn(subject: AnswerSubject): "question_id" | "puzzle_id" {
-  return subject.type === "question" ? "question_id" : "puzzle_id";
-}
-
 /**
- * Adjudicates one player answer against one subject (a question or a
- * link), running Tier 1 first and falling through to the Tier 3 cache and
- * then the Tier 2 AI judge only when needed. Never throws for expected
- * failure modes (AI judge timeout/error) — worst case the game treats the
- * answer as incorrect, matching Tier 1's verdict.
+ * Adjudicates one player's link guess, running Tier 1 first and falling
+ * through to the Tier 3 cache and then the Tier 2 AI judge only when
+ * needed. Never throws for expected failure modes (AI judge timeout/
+ * error) — worst case the game treats the guess as incorrect, matching
+ * Tier 1's verdict.
  */
 export async function checkAnswer(
-  subject: AnswerSubject,
+  subject: LinkGuessSubject,
   rawGuess: string
 ): Promise<CheckAnswerResult> {
   const tier1 = fuzzyMatch(rawGuess, subject.canonicalAnswer, subject.alternatives);
@@ -58,12 +53,11 @@ export async function checkAnswer(
   }
 
   const supabase = createServiceRoleClient();
-  const column = subjectColumn(subject);
 
   const { data: cached } = await supabase
-    .from("judged_answers")
+    .from("JL_judged_answers")
     .select("id, verdict, times_seen")
-    .eq(column, subject.id)
+    .eq("puzzle_id", subject.puzzleId)
     .eq("normalized_answer", normalized)
     .maybeSingle();
 
@@ -71,7 +65,7 @@ export async function checkAnswer(
     // Best-effort popularity counter — not load-bearing, so failures here
     // are swallowed rather than affecting the player-facing verdict.
     void supabase
-      .from("judged_answers")
+      .from("JL_judged_answers")
       .update({ times_seen: cached.times_seen + 1 })
       .eq("id", cached.id)
       .then(undefined, () => {});
@@ -80,7 +74,7 @@ export async function checkAnswer(
   }
 
   const judged = await judgeAnswer({
-    questionText: subject.contextText,
+    linkContext: subject.contextText,
     canonicalAnswer: subject.canonicalAnswer,
     alternatives: subject.alternatives,
     playerAnswer: rawGuess,
@@ -95,15 +89,8 @@ export async function checkAnswer(
   const needsReview =
     judged.verdict === "accept" || judged.confidence < REVIEW_CONFIDENCE_THRESHOLD;
 
-  // Built as a literal-keyed union rather than a computed `[column]: ...`
-  // property: the latter widens to a generic string index signature, which
-  // the Supabase Insert type (deliberately exact, no index signature)
-  // rejects at compile time.
-  const subjectFields =
-    subject.type === "question" ? { question_id: subject.id } : { puzzle_id: subject.id };
-
-  const { error } = await supabase.from("judged_answers").insert({
-    ...subjectFields,
+  const { error } = await supabase.from("JL_judged_answers").insert({
+    puzzle_id: subject.puzzleId,
     normalized_answer: normalized,
     raw_answer: rawGuess,
     verdict: judged.verdict,
@@ -116,7 +103,7 @@ export async function checkAnswer(
   // the same never-before-seen variant already wrote the row. Any other
   // insert failure is logged but still shouldn't block the player.
   if (error && error.code !== "23505") {
-    console.error("judged_answers insert failed", error);
+    console.error("JL_judged_answers insert failed", error);
   }
 
   return { correct: judged.verdict === "accept", tier: 2 };

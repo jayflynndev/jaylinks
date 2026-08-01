@@ -1,17 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { isLinkGuessAvailable, linkBonusForRevealedCount } from "@/lib/scoring/scoring";
 import type { LinkGuessOutcome } from "./types";
 
 interface LinkGuessPanelProps {
   puzzleId: string;
-  /** How many questions have been fully resolved (revealed) so far — the link button is available from 1 onward. */
+  /** How many clues have revealed so far — drives the "locked until next clue" re-enable. */
   revealedCount: number;
-  /** True once the link has already been correctly guessed (parent-owned, so the state survives question advances). */
+  /** The shared round meter's live value — shown as a hint on the button, and what a correct guess banks. */
+  currentScore: number;
+  /** True once the link has already been correctly guessed (parent-owned, so the state persists after the round ends). */
   guessed: boolean;
-  guessedBonus: number | null;
+  guessedScore: number | null;
   onCorrect: (outcome: LinkGuessOutcome) => void;
+  /** Fired true the instant the guess input opens (pausing the shared meter), false once it closes/resolves (resuming it). */
+  onActiveChange: (active: boolean) => void;
 }
 
 interface CheckLinkResponse {
@@ -21,18 +24,22 @@ interface CheckLinkResponse {
 }
 
 /**
- * The persistent "I KNOW THE LINK!" button and its inline guess form. A
- * wrong guess locks the button until the next answer is revealed (one
- * attempt per bonus tier, per the product brief) — tracked by remembering
- * the revealedCount a wrong guess happened at, and only re-enabling once
- * revealedCount has moved past it.
+ * The persistent "Guess the link" button and its inline guess form. A
+ * wrong guess locks the button until the next clue is revealed (one
+ * attempt per clue-window, per the product brief) — tracked by
+ * remembering the revealedCount a wrong guess happened at, and only
+ * re-enabling once revealedCount has moved past it. Opening the form
+ * pauses the shared points meter (via onActiveChange) so composing a
+ * guess doesn't cost points; a wrong guess resumes it immediately.
  */
 export function LinkGuessPanel({
   puzzleId,
   revealedCount,
+  currentScore,
   guessed,
-  guessedBonus,
+  guessedScore,
   onCorrect,
+  onActiveChange,
 }: LinkGuessPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [guessValue, setGuessValue] = useState("");
@@ -44,18 +51,23 @@ export function LinkGuessPanel({
     return (
       <div className="w-full rounded-2xl border-2 border-emerald-300/60 bg-emerald-900/30 px-5 py-3 text-center">
         <p className="font-display text-lg tracking-wide text-emerald-300">
-          🔗 Link guessed! +{guessedBonus}
+          🔗 Guessed! +{guessedScore}
         </p>
       </div>
     );
   }
 
-  if (!isLinkGuessAvailable(revealedCount)) {
-    return null;
+  const isLocked = lockedAtRevealedCount !== null && revealedCount <= lockedAtRevealedCount;
+
+  function openForm() {
+    setIsOpen(true);
+    onActiveChange(true);
   }
 
-  const isLocked = lockedAtRevealedCount !== null && revealedCount <= lockedAtRevealedCount;
-  const currentBonus = linkBonusForRevealedCount(revealedCount);
+  function closeForm() {
+    setIsOpen(false);
+    onActiveChange(false);
+  }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -63,6 +75,11 @@ export function LinkGuessPanel({
     const guess = guessValue.trim();
     if (guess.length === 0) return;
 
+    // Freeze the score the player sees right now — it's what gets banked
+    // if this guess is correct. It's already frozen by the meter being
+    // paused (onActiveChange(true) fired when the form opened), so no
+    // extra bookkeeping is needed here.
+    const scoreAtSubmit = currentScore;
     setIsSubmitting(true);
     setWrongMessage(null);
 
@@ -74,18 +91,26 @@ export function LinkGuessPanel({
       .then((res) => res.json() as Promise<CheckLinkResponse>)
       .then((data) => {
         if (data.correct) {
-          onCorrect({ bonus: currentBonus, revealedAtCount: revealedCount, linkText: data.link ?? guess });
-          setIsOpen(false);
+          onCorrect({
+            score: scoreAtSubmit,
+            revealedClueCount: revealedCount,
+            linkText: data.link ?? guess,
+          });
         } else {
           setLockedAtRevealedCount(revealedCount);
-          setWrongMessage("Not quite — locked until the next answer is revealed.");
+          setWrongMessage("Not quite — locked until the next clue.");
           setGuessValue("");
+          setIsOpen(false);
         }
       })
       .catch(() => {
         setWrongMessage("Couldn't check that guess — check your connection.");
+        setIsOpen(false);
       })
-      .finally(() => setIsSubmitting(false));
+      .finally(() => {
+        setIsSubmitting(false);
+        onActiveChange(false);
+      });
   }
 
   return (
@@ -93,11 +118,11 @@ export function LinkGuessPanel({
       {!isOpen ? (
         <button
           type="button"
-          onClick={() => setIsOpen(true)}
+          onClick={openForm}
           disabled={isLocked}
           className="w-full rounded-full border-2 border-yellow-300 bg-purple-800/80 px-5 py-3 font-display text-lg tracking-wide text-yellow-300 transition disabled:cursor-not-allowed disabled:border-yellow-300/30 disabled:text-yellow-300/40"
         >
-          {isLocked ? "Locked until next clue…" : `🔗 I KNOW THE LINK! (+${currentBonus})`}
+          {isLocked ? "Locked until next clue…" : `🔗 Guess the link (${currentScore})`}
         </button>
       ) : (
         <form
@@ -114,7 +139,7 @@ export function LinkGuessPanel({
             onChange={(event) => setGuessValue(event.target.value)}
             disabled={isSubmitting}
             placeholder="What's the link?"
-            className="flex-1 rounded-full border-2 border-yellow-300/50 bg-purple-900/70 px-5 py-3 text-lg text-yellow-50 placeholder:text-yellow-100/40 focus:border-yellow-300 focus:outline-none disabled:opacity-60"
+            className="min-w-0 flex-1 rounded-full border-2 border-yellow-300/50 bg-purple-900/70 px-5 py-3 text-lg text-yellow-50 placeholder:text-yellow-100/40 focus:border-yellow-300 focus:outline-none disabled:opacity-60"
           />
           <div className="flex gap-2">
             <button
@@ -126,7 +151,7 @@ export function LinkGuessPanel({
             </button>
             <button
               type="button"
-              onClick={() => setIsOpen(false)}
+              onClick={closeForm}
               className="rounded-full border-2 border-yellow-300/40 px-4 py-3 font-sans text-yellow-100/80"
             >
               Cancel

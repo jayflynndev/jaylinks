@@ -1,56 +1,53 @@
 # Supabase setup (step-by-step)
 
-This walks through creating the free Supabase project that powers Jay's
-Links' database and admin login, from scratch. No prior Supabase experience
-assumed.
+Jay's Links **reuses the existing Supabase project** that already powers
+QuizHub — same project, same `auth.users` table, so a login created on
+either site works on both. This app does not get its own Supabase project.
+Every table this app creates is prefixed `"JL_"` (exact case) so it's
+visually distinguishable from QuizHub's tables in the same project's Table
+Editor.
 
-## 1. Create your Supabase account and project
+## 1. Run the database migrations
 
-1. Go to [supabase.com](https://supabase.com) and click **Start your
-   project**. Sign up (GitHub sign-in is easiest) — this is free, no card
-   required for the free tier.
-2. Once logged in, click **New project**.
-3. Fill in the form:
-   - **Name**: `jays-links` (or anything you like — it's just a label).
-   - **Database password**: click **Generate a password**, then copy it
-     somewhere safe (a password manager, or a note — you likely won't need
-     it directly, but keep it in case).
-   - **Region**: pick the one closest to you (e.g. "West EU (London)" if
-     you're in the UK) — this keeps the app snappy.
-   - **Pricing plan**: leave on **Free**.
-4. Click **Create new project**. It takes 1-2 minutes to provision — you'll
-   land on the project dashboard once it's ready.
-
-## 2. Run the database migrations
-
-The SQL files that create all the tables live in this repo under
+The SQL files that create Jay's Links' tables live in this repo under
 `supabase/migrations/`, in the order they should be run (the filenames start
 with a timestamp, so just run them top to bottom).
 
-1. In the Supabase dashboard, click **SQL Editor** in the left sidebar.
+1. In the Supabase dashboard for the existing QuizHub project, click **SQL
+   Editor** in the left sidebar.
 2. Click **New query**.
 3. Open `supabase/migrations/20260731000000_initial_schema.sql` in this
    repo, copy its entire contents, and paste them into the SQL editor.
 4. Click **Run** (or press Ctrl/Cmd+Enter). You should see "Success. No rows
-   returned" — that means all the tables were created.
-5. Repeat steps 2-4 for `20260731000001_rls_policies.sql`.
+   returned" — that means `"JL_categories"`, `"JL_puzzles"`, `"JL_clues"`,
+   and `"JL_judged_answers"` were created. Nothing here touches QuizHub's
+   own tables.
+5. Repeat steps 2-4 for `20260731000001_rls_policies.sql` — this enables
+   Row Level Security on the 4 `JL_` tables with **no policies** (default-
+   deny for both `anon` and `authenticated`). This app's server code always
+   uses the service-role key to talk to these tables (which bypasses RLS),
+   so this is defense-in-depth only — but it matters here specifically
+   because `authenticated` means "any QuizHub user," not "Jay," now that the
+   project is shared.
 6. Repeat steps 2-4 for `20260731000002_seed_sample_puzzles.sql` — this adds
-   3 sample puzzles (including the "Types of Poem" one from the brief) so
-   you can play the app right away.
+   3 sample puzzles so you can play the app right away.
 
 If any step errors, stop and check the error message before continuing —
 don't re-run a script that partially succeeded without checking what's
-already there (you can look under **Table Editor** in the sidebar to see
-what tables/rows exist).
+already there (look under **Table Editor** in the sidebar, filter for the
+`JL_` prefix to see just this app's tables).
 
 When new migration files are added later in development, come back to this
 section and run just the new ones the same way, in filename order.
 
-## 3. Get your API keys
+## 2. Get your API keys
+
+If you already have QuizHub's `.env.local` keys to hand, they're the same
+project — you can skip straight to pasting them into this repo's
+`.env.local` (copy `.env.local.example` first if you haven't). Otherwise:
 
 1. In the sidebar, click the gear icon **Project Settings**, then **API**.
-2. You'll need three values for `.env.local` in the project root (copy
-   `.env.local.example` to `.env.local` first if you haven't):
+2. You'll need three values for `.env.local` in this project's root:
    - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
    - **anon / public** key (under "Project API keys") →
      `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -63,22 +60,27 @@ section and run just the new ones the same way, in filename order.
    **never** in any file that starts with `NEXT_PUBLIC_`, and never
    committed to git.
 
-## 4. Create your admin login
+## 3. Make your account an admin
 
-The `/admin` screen uses Supabase Auth so only you can create/edit puzzles.
+The `/admin` screen checks two things: that you're signed in via Supabase
+Auth, **and** that your row in the existing `profiles` table (the one
+QuizHub already uses, linked to `auth.users`) has `is_admin = true`. Being
+signed in alone is not enough — since this project's user base is shared
+with QuizHub, "any logged-in user" would mean "any QuizHub visitor."
 
-1. In the sidebar, click **Authentication**, then **Users**.
-2. Click **Add user** → **Create new user**.
-3. Enter your email address and a password you'll remember (or choose
-   "Auto Confirm User" so you don't need to click an email link).
-4. Click **Create user**.
+1. If you don't already have a QuizHub account, sign up for one first (via
+   QuizHub, or **Authentication → Users → Add user** in the Supabase
+   dashboard).
+2. In the sidebar, click **Table Editor**, open `profiles`, find your row
+   (matched by your user id / email), and set `is_admin` to `true`.
+3. That's the account you log in with at `/admin/login`.
 
-That's the account you'll log in with at `/admin` once that screen is built.
-(If you'd rather use magic-link email sign-in instead of a password, that's
-also fine — Supabase Auth supports both. This doc will be updated with
-exact sign-in instructions once the admin screen ships.)
+If you sign in at `/admin/login` with an account that isn't an admin, you'll
+see a "not an admin account" message instead of the dashboard — that's
+expected, not a bug; it means step 2 above still needs doing for that
+account.
 
-## 5. Verify the connection
+## 4. Verify the connection
 
 Once `.env.local` is filled in, run:
 
@@ -86,17 +88,17 @@ Once `.env.local` is filled in, run:
 npm run dev
 ```
 
-and open [http://localhost:3000](http://localhost:3000). Once the player UI
-is built (see `CLAUDE.md` status notes), you should see today's seeded
-puzzle. If you see a Supabase connection error instead, double-check the
-three keys in `.env.local` match what's in Project Settings → API, and that
-you didn't leave any stray quotes or spaces around the values.
+and open [http://localhost:3000](http://localhost:3000) — you should see
+today's seeded puzzle. If you see a Supabase connection error instead,
+double-check the three keys in `.env.local` match what's in Project
+Settings → API, and that you didn't leave any stray quotes or spaces around
+the values.
 
 ## Reference: what each key is used for
 
 | Env var | Used where | Purpose |
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | browser + server | Your project's API endpoint |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | browser | Powers the `/admin` login flow only |
-| `SUPABASE_SERVICE_ROLE_KEY` | server only | All puzzle/answer reads & writes, bypassing RLS |
-| `ANTHROPIC_API_KEY` | server only | Tier 2 AI answer judge — see `docs/ANSWER_ENGINE.md` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | browser | Powers the `/admin/login` sign-in flow only |
+| `SUPABASE_SERVICE_ROLE_KEY` | server only | All `JL_*` table reads & writes, bypassing RLS; also checks `profiles.is_admin` |
+| `ANTHROPIC_API_KEY` | server only | Tier 2 AI link-guess judge — see `docs/ANSWER_ENGINE.md` |

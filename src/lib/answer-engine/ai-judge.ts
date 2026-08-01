@@ -19,20 +19,20 @@ const JUDGE_MODEL = "claude-haiku-4-5";
 const JUDGE_TIMEOUT_MS = 3000;
 
 export interface JudgeAnswerParams {
-  /** The question text (or a description of "the link" for link guesses). */
-  questionText: string;
+  /** A short description of the puzzle's link, e.g. "The hidden theme connecting 5 revealed clue words." */
+  linkContext: string;
   canonicalAnswer: string;
   alternatives: string[];
   playerAnswer: string;
 }
 
-const SYSTEM_PROMPT = `You are the answer judge for a trivia game called Jay's Links. A player's typed answer did not match the canonical answer or any known alternative by simple fuzzy matching, so you make the final call.
+const SYSTEM_PROMPT = `You are the link-guess judge for a daily chain-quiz game called Jay's Links. Each puzzle reveals 5 clue words/phrases that all share a hidden link (e.g. Sesame/Quality/Baker/Coronation/Fleet → "Streets"). A player's typed guess for the link did not match the canonical answer or any known alternative by simple fuzzy matching, so you make the final call.
 
 Rules:
-- Accept answers that are semantically equivalent to the canonical answer, even if worded differently.
-- Accept answers that are MORE SPECIFIC than the canonical answer, as long as they are still correct (e.g. if the canonical answer is "Dairy", accept "Cheeses").
-- REJECT answers that are VAGUER or more general than the canonical answer, even if related (e.g. if the canonical answer is "Dairy", reject "Food"). Generosity flows toward precision, never toward vagueness.
-- Reject answers that are simply wrong or unrelated.
+- Accept guesses that are semantically equivalent to the canonical link, even if worded differently (e.g. "Street" or "Types of street" for "Streets").
+- Accept guesses that are MORE SPECIFIC than the canonical link, as long as they are still correct.
+- REJECT guesses that are VAGUER or more general than the canonical link, even if related. Generosity flows toward precision, never toward vagueness.
+- Reject guesses that are simply wrong or unrelated.
 
 Respond with ONLY a single JSON object on one line, no other text, no markdown formatting:
 {"verdict": "accept" or "reject", "confidence": a number from 0 to 1, "reason": a brief one-sentence explanation}`;
@@ -56,10 +56,10 @@ function getClient(): Anthropic {
 function buildUserPrompt(params: JudgeAnswerParams): string {
   const alternativesText =
     params.alternatives.length > 0 ? params.alternatives.join(", ") : "(none)";
-  return `Question: ${params.questionText}
-Canonical answer: ${params.canonicalAnswer}
+  return `Puzzle: ${params.linkContext}
+Canonical link answer: ${params.canonicalAnswer}
 Known alternatives: ${alternativesText}
-Player's answer: ${params.playerAnswer}`;
+Player's guess: ${params.playerAnswer}`;
 }
 
 /**

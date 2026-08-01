@@ -1,20 +1,8 @@
-/** What a resolved question hands back to the game loop. */
-export interface QuestionOutcome {
-  correct: boolean;
-  pointsBanked: number;
-  answerText: string;
-}
-
-/** One entry in the growing list of already-answered questions, shown throughout the puzzle and in the results breakdown. */
-export interface RevealedAnswer {
-  questionText: string;
-  answerText: string;
-  correct: boolean;
-}
-
 /** What a correct link guess hands back to the game loop. */
 export interface LinkGuessOutcome {
-  bonus: number;
-  revealedAtCount: number;
+  /** The points meter's value at the moment of the correct guess — this is what gets banked. */
+  score: number;
+  /** How many clues had revealed at the moment of the correct guess. */
+  revealedClueCount: number;
   linkText: string;
 }

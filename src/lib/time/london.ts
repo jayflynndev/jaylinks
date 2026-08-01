@@ -61,7 +61,7 @@ export function millisecondsUntilNextLondonMidnight(from: Date = new Date()): nu
   let lo = from.getTime();
   let hi = from.getTime() + 25 * 60 * 60 * 1000;
 
-  while (hi - lo > 1000) {
+  while (hi - lo > 1) {
     const mid = Math.floor((lo + hi) / 2);
     if (londonDateString(new Date(mid)) === today) {
       lo = mid;
@@ -71,6 +71,33 @@ export function millisecondsUntilNextLondonMidnight(from: Date = new Date()): nu
   }
 
   return hi - from.getTime();
+}
+
+/**
+ * The instant that today's Europe/London calendar day began (i.e. the
+ * most recent London midnight on or before `now`). Used to bound "today"
+ * queries against timestamptz columns, e.g. the admin dashboard's
+ * "AI judge calls today" counter (`created_at >= startOfLondonDay()`).
+ *
+ * Same binary-search approach as millisecondsUntilNextLondonMidnight,
+ * just searching backward from `now` instead of forward.
+ */
+export function startOfLondonDay(now: Date = new Date()): Date {
+  const today = londonDateString(now);
+
+  let lo = now.getTime() - 25 * 60 * 60 * 1000; // definitely before today's midnight
+  let hi = now.getTime();
+
+  while (hi - lo > 1) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (londonDateString(new Date(mid)) === today) {
+      hi = mid;
+    } else {
+      lo = mid;
+    }
+  }
+
+  return new Date(hi);
 }
 
 /**

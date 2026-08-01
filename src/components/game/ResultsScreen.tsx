@@ -4,34 +4,25 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCountdownToNextPuzzle } from "@/hooks/use-countdown-to-next-puzzle";
 import type { PlayerStats, PlayResult } from "@/lib/storage/types";
-import { buildShareText, questionEmoji } from "@/lib/sharing/share-card";
+import { buildShareText } from "@/lib/sharing/share-card";
 import { ShareButton } from "./ShareButton";
-import type { RevealedAnswer } from "./types";
 
 interface ResultsScreenProps {
   puzzleTitle: string;
   result: PlayResult;
-  revealedAnswers: RevealedAnswer[];
   /** The canonical link answer — always shown at this point, whether or not the player guessed it. */
   linkText: string;
   stats: PlayerStats;
 }
 
 /**
- * The end-of-puzzle results screen: score, per-question breakdown, link
- * reveal/bonus, current streak, a share card, and a countdown to the next
- * puzzle. Everything it needs (the PlayResult, the streak-updated
- * PlayerStats, and the revealed answers/link text) is computed by GameLoop
- * once the puzzle completes and handed down as props — this component is
- * purely presentational.
+ * The end-of-round results screen: score, the 5 clue words, the link
+ * reveal, current streak, a share card, and a countdown to the next
+ * puzzle. Everything it needs (the PlayResult and the streak-updated
+ * PlayerStats) is computed by GameLoop once the round completes and
+ * handed down as props — this component is purely presentational.
  */
-export function ResultsScreen({
-  puzzleTitle,
-  result,
-  revealedAnswers,
-  linkText,
-  stats,
-}: ResultsScreenProps) {
+export function ResultsScreen({ puzzleTitle, result, linkText, stats }: ResultsScreenProps) {
   const countdown = useCountdownToNextPuzzle();
 
   // In practice this only ever renders client-side (reached through
@@ -43,8 +34,8 @@ export function ResultsScreen({
 
   const shareText = buildShareText({
     episodeNumber: result.episodeNumber,
-    questionResults: result.questionResults,
-    linkGuessedAfterRevealedCount: result.linkGuessedAfterRevealedCount,
+    guessedCorrectly: result.guessedCorrectly,
+    revealedClueCount: result.revealedClueCount,
     totalScore: result.totalScore,
     appUrl,
   });
@@ -64,22 +55,13 @@ export function ResultsScreen({
         <p className="font-sans text-sm text-yellow-100/60">points</p>
       </div>
 
-      <ol className="flex flex-col gap-2">
-        {revealedAnswers.map((answer, index) => (
+      <ol className="flex flex-wrap justify-center gap-2">
+        {result.clueTexts.map((clue, index) => (
           <li
             key={index}
-            className="flex items-center gap-3 rounded-xl border border-yellow-300/20 bg-purple-950/40 px-4 py-2"
+            className="rounded-full border-2 border-yellow-300/30 bg-purple-950/40 px-4 py-1.5 font-sans text-yellow-50"
           >
-            <span className="font-display text-xl leading-none">
-              {questionEmoji(result.questionResults[index])}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-sans text-xs text-yellow-100/60">{answer.questionText}</p>
-              <p className="font-sans text-base text-yellow-50">{answer.answerText}</p>
-            </div>
-            <span className="font-display text-lg tabular-nums text-yellow-300">
-              +{result.questionResults[index].pointsBanked}
-            </span>
+            {clue}
           </li>
         ))}
       </ol>
@@ -88,9 +70,9 @@ export function ResultsScreen({
         <p className="font-sans text-xs tracking-wide text-yellow-100/60 uppercase">The link</p>
         <p className="mt-1 font-display text-2xl text-yellow-300">🔗 {linkText}</p>
         <p className="mt-1 font-sans text-yellow-100">
-          {result.linkGuessedAfterRevealedCount !== null
-            ? `Guessed after ${result.linkGuessedAfterRevealedCount} answer${result.linkGuessedAfterRevealedCount === 1 ? "" : "s"} — +${result.linkBonus}`
-            : "Not guessed this time — 0 bonus"}
+          {result.guessedCorrectly
+            ? `Guessed after ${result.revealedClueCount} clue${result.revealedClueCount === 1 ? "" : "s"}`
+            : "Not guessed this time"}
         </p>
       </div>
 

@@ -5,6 +5,12 @@
  * pasting SQL into the dashboard, not via `supabase db push`), so nothing
  * regenerates this file automatically.
  *
+ * Table names are prefixed "JL_" (exact case) so they're visually
+ * distinguishable from QuizHub's tables in the same shared Supabase
+ * project — the `Database["public"]["Tables"]` keys below must match the
+ * quoted-identifier table names in the migration exactly, since
+ * supabase-js's `.from(name)` is case-sensitive.
+ *
  * Insert/Update types are written as plain object literals (matching what
  * `supabase gen types` itself produces) rather than `Partial<Row> & Pick<...>`
  * compositions — supabase-js's internal generic resolution doesn't reliably
@@ -57,22 +63,34 @@ export type Puzzle = {
   updated_at: string;
 };
 
-export type Question = {
+/** A single clue word/phrase — auto-revealed on a timer, never individually answered. */
+export type Clue = {
   id: string;
   puzzle_id: string;
-  /** 1-5, the order the question is asked in. */
+  /** 1-5, the order the clue reveals in. */
   position: number;
-  question_text: string;
-  answer: string;
-  alternatives: string[];
+  clue_text: string;
   created_at: string;
   updated_at: string;
 };
 
+/**
+ * Not one of ours — this is Jay's existing `profiles` table from the
+ * shared Supabase project (also used by QuizHub), queried only to check
+ * admin status (see src/lib/supabase/admin-check.ts). Schema assumed per
+ * Supabase's standard convention: profiles.id = auth.users.id, plus an
+ * is_admin boolean. **Confirm against the real table** — if the column or
+ * join differs, this is the one place to fix it.
+ */
+export type Profile = {
+  id: string;
+  is_admin: boolean;
+};
+
 export type JudgedAnswer = {
   id: string;
-  question_id: string | null;
-  puzzle_id: string | null;
+  /** Always a link guess — clues are never individually judged. */
+  puzzle_id: string;
   normalized_answer: string;
   raw_answer: string;
   verdict: JudgedAnswerVerdict;
@@ -96,7 +114,7 @@ export type JudgedAnswer = {
 export interface Database {
   public: {
     Tables: {
-      categories: {
+      JL_categories: {
         Row: Category;
         Relationships: [];
         Insert: {
@@ -120,7 +138,7 @@ export interface Database {
           updated_at?: string;
         };
       };
-      puzzles: {
+      JL_puzzles: {
         Row: Puzzle;
         Relationships: [];
         Insert: {
@@ -148,16 +166,14 @@ export interface Database {
           updated_at?: string;
         };
       };
-      questions: {
-        Row: Question;
+      JL_clues: {
+        Row: Clue;
         Relationships: [];
         Insert: {
           id?: string;
           puzzle_id: string;
           position: number;
-          question_text: string;
-          answer: string;
-          alternatives?: string[];
+          clue_text: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -165,20 +181,17 @@ export interface Database {
           id?: string;
           puzzle_id?: string;
           position?: number;
-          question_text?: string;
-          answer?: string;
-          alternatives?: string[];
+          clue_text?: string;
           created_at?: string;
           updated_at?: string;
         };
       };
-      judged_answers: {
+      JL_judged_answers: {
         Row: JudgedAnswer;
         Relationships: [];
         Insert: {
           id?: string;
-          question_id?: string | null;
-          puzzle_id?: string | null;
+          puzzle_id: string;
           normalized_answer: string;
           raw_answer: string;
           verdict: JudgedAnswerVerdict;
@@ -192,8 +205,7 @@ export interface Database {
         };
         Update: {
           id?: string;
-          question_id?: string | null;
-          puzzle_id?: string | null;
+          puzzle_id?: string;
           normalized_answer?: string;
           raw_answer?: string;
           verdict?: JudgedAnswerVerdict;
@@ -205,6 +217,14 @@ export interface Database {
           reviewed_at?: string | null;
           created_at?: string;
         };
+      };
+      profiles: {
+        Row: Profile;
+        Relationships: [];
+        // This app never writes to `profiles` (that's QuizHub's table to
+        // manage) — Insert/Update are typed loosely since they're unused.
+        Insert: { id: string; is_admin?: boolean };
+        Update: { id?: string; is_admin?: boolean };
       };
     };
     Views: Record<string, never>;

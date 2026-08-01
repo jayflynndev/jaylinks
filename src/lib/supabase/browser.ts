@@ -1,12 +1,18 @@
 "use client";
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient as createSupabaseBrowserClient } from "@supabase/ssr";
 import type { Database } from "./types";
 
 /**
  * Browser-side Supabase client using the public anon key. Used only for
  * the /admin sign-in flow (Supabase Auth) — never for reading/writing
- * puzzle data, which always goes through server-side API routes backed by
- * the service role client in ./server.ts.
+ * puzzle data, which always goes through server-side code backed by the
+ * service role client in ./server.ts.
+ *
+ * Uses @supabase/ssr's createBrowserClient (not plain @supabase/supabase-js
+ * createClient) specifically because it syncs the auth session into
+ * cookies rather than just localStorage — the server-side auth client
+ * (./server-auth.ts) and the session-refreshing proxy (src/proxy.ts) can
+ * only see a session that arrived this way.
  */
 export function createBrowserClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -18,5 +24,5 @@ export function createBrowserClient() {
     );
   }
 
-  return createClient<Database>(url, anonKey);
+  return createSupabaseBrowserClient<Database>(url, anonKey);
 }

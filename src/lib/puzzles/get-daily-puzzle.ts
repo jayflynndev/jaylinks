@@ -3,28 +3,54 @@ import { createServiceRoleClient } from "@/lib/supabase/server";
 import { londonDateString } from "@/lib/time/london";
 
 /**
- * The shape of a question ever sent to the browser — no `answer`, no
- * `alternatives`. See docs/ANSWER_ENGINE.md's security note: adjudication
- * happens entirely server-side via /api/check-answer, so this is the only
- * question data that should ever leave the server.
+ * A clue as sent to the browser — just its text and reveal position. Clue
+ * text itself was never secret (it's shown to every player as the round
+ * plays out — see docs/ANSWER_ENGINE.md's security note), so all 5 are
+ * included upfront; the client's own timer controls when each becomes
+ * visible. Only the puzzle's link answer/alternatives are ever withheld.
  */
-export interface PublicQuestion {
+export interface PublicClue {
   id: string;
   position: number;
-  questionText: string;
+  clueText: string;
 }
 
 /**
  * The shape of a puzzle ever sent to the browser before it's complete — no
  * `linkAnswer`, no `linkAlternatives`. Those are only revealed via
- * /api/check-link (on a correct guess) or an explicit end-of-puzzle reveal
- * once all 5 questions are done.
+ * /api/check-link (on a correct guess) or an explicit end-of-round reveal
+ * once the round times out unguessed.
  */
 export interface PublicPuzzle {
   id: string;
   episodeNumber: number;
   title: string;
-  questions: PublicQuestion[];
+  clues: PublicClue[];
+}
+
+/** Fetches and link-strips a puzzle's clues, given its row is already known to exist. */
+async function buildPublicPuzzle(puzzle: {
+  id: string;
+  episode_number: number;
+  title: string;
+}): Promise<PublicPuzzle> {
+  const supabase = createServiceRoleClient();
+  const { data: clues } = await supabase
+    .from("JL_clues")
+    .select("id, position, clue_text")
+    .eq("puzzle_id", puzzle.id)
+    .order("position", { ascending: true });
+
+  return {
+    id: puzzle.id,
+    episodeNumber: puzzle.episode_number,
+    title: puzzle.title,
+    clues: (clues ?? []).map((c) => ({
+      id: c.id,
+      position: c.position,
+      clueText: c.clue_text,
+    })),
+  };
 }
 
 /**
@@ -45,7 +71,7 @@ export async function getTodaysPuzzle(now: Date = new Date()): Promise<PublicPuz
   const today = londonDateString(now);
 
   const { data: category } = await supabase
-    .from("categories")
+    .from("JL_categories")
     .select("id")
     .eq("slug", "daily")
     .maybeSingle();
@@ -53,7 +79,7 @@ export async function getTodaysPuzzle(now: Date = new Date()): Promise<PublicPuz
   if (!category) return null;
 
   const { data: puzzle } = await supabase
-    .from("puzzles")
+    .from("JL_puzzles")
     .select("id, episode_number, title")
     .eq("category_id", category.id)
     .in("status", ["scheduled", "published"])
@@ -64,20 +90,28 @@ export async function getTodaysPuzzle(now: Date = new Date()): Promise<PublicPuz
 
   if (!puzzle) return null;
 
-  const { data: questions } = await supabase
-    .from("questions")
-    .select("id, position, question_text")
-    .eq("puzzle_id", puzzle.id)
-    .order("position", { ascending: true });
+  return buildPublicPuzzle(puzzle);
+}
 
-  return {
-    id: puzzle.id,
-    episodeNumber: puzzle.episode_number,
-    title: puzzle.title,
-    questions: (questions ?? []).map((q) => ({
-      id: q.id,
-      position: q.position,
-      questionText: q.question_text,
-    })),
-  };
+/**
+ * Fetches any puzzle by id, link-stripped, regardless of status or
+ * publish_date — including drafts and puzzles scheduled for the future.
+ *
+ * **Admin preview only.** Unlike getTodaysPuzzle, this has no unlock
+ * gating at all, so it must never be reachable from a public route — only
+ * from pages behind the /admin auth guard (src/proxy.ts + the
+ * (protected) layout).
+ */
+export async function getPuzzleByIdForPreview(id: string): Promise<PublicPuzzle | null> {
+  const supabase = createServiceRoleClient();
+
+  const { data: puzzle } = await supabase
+    .from("JL_puzzles")
+    .select("id, episode_number, title")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (!puzzle) return null;
+
+  return buildPublicPuzzle(puzzle);
 }
