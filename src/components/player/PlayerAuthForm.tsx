@@ -71,7 +71,9 @@ export function PlayerAuthForm() {
         {mode === "sign-in" ? "Sign in" : "Create an account"}
       </h1>
       <p className="text-center font-sans text-sm text-yellow-100/70">
-        Save your progress and streak across devices. The same login also works on QuizHub.
+        {mode === "sign-in"
+          ? "Already have a QuizHub account? Sign in with the same email and password — it works here too."
+          : "Save your progress and streak across devices. This also creates a QuizHub login, if you don't have one already."}
       </p>
 
       <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">

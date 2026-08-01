@@ -52,3 +52,9 @@ export async function mergeLocalHistoryAction(results: PlayResult[]): Promise<Pl
   const capped = results.slice(0, 2000);
   return playerHistory.mergeLocalHistory(userId, capped);
 }
+
+/** Deletes this account's saved play history — a data-safety action, not account deletion (see AccountDashboard.tsx). */
+export async function clearHistoryAction(): Promise<void> {
+  const userId = await requireUserId();
+  await playerHistory.clearHistory(userId);
+}

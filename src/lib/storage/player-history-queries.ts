@@ -74,6 +74,21 @@ export async function getStats(userId: string): Promise<PlayerStats> {
   return computeStats(userId);
 }
 
+/**
+ * Deletes every row for this account — a data-safety escape hatch, not
+ * account deletion (that's a separate, much bigger question since
+ * auth.users is shared with QuizHub — see the account deletion
+ * discussion in project history). Purely self-contained to this app's
+ * own table.
+ */
+export async function clearHistory(userId: string): Promise<void> {
+  const supabase = createServiceRoleClient();
+  const { error } = await supabase.from("JL_play_history").delete().eq("user_id", userId);
+  if (error) {
+    throw new Error(`Failed to clear play history: ${error.message}`);
+  }
+}
+
 export interface PlayHistoryItem {
   episodeNumber: number;
   playedDate: string;

@@ -76,15 +76,18 @@ export type Clue = {
 
 /**
  * Not one of ours — this is Jay's existing `profiles` table from the
- * shared Supabase project (also used by QuizHub), queried only to check
- * admin status (see src/lib/supabase/admin-check.ts). Schema assumed per
+ * shared Supabase project (also used by QuizHub). Schema assumed per
  * Supabase's standard convention: profiles.id = auth.users.id, plus an
- * is_admin boolean. **Confirm against the real table** — if the column or
- * join differs, this is the one place to fix it.
+ * is_admin boolean (checked by src/lib/supabase/admin-check.ts) and a
+ * username (nullable — a JL-only signup that never touched QuizHub's
+ * onboarding may not have set one; displayed with an email fallback, see
+ * src/lib/supabase/player-auth.ts). **Confirm against the real table** —
+ * if a column or the join differs, this is the one place to fix it.
  */
 export type Profile = {
   id: string;
   is_admin: boolean;
+  username: string | null;
 };
 
 /** One real (non-practice) play, saved server-side only once a player is signed in — see src/lib/storage/player-history-queries.ts. */

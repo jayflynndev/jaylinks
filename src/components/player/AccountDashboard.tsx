@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { mergeLocalHistoryAction } from "@/app/actions/player-store-actions";
+import { clearHistoryAction, mergeLocalHistoryAction } from "@/app/actions/player-store-actions";
 import { signOutAction } from "@/app/account/actions";
 import { exportLocalHistory } from "@/lib/storage/local-export";
 import type { PlayerStats } from "@/lib/storage/types";
@@ -10,7 +10,7 @@ import type { PlayHistoryItem } from "@/lib/storage/player-history-queries";
 
 interface AccountDashboardProps {
   userId: string;
-  email: string | null;
+  displayName: string | null;
   stats: PlayerStats;
   history: PlayHistoryItem[];
 }
@@ -24,9 +24,22 @@ const MERGE_FLAG_KEY = "jayslinks:merged:v1";
  * landed the player here — a direct sign-in/up, or clicking an email
  * confirmation link (which also points at /account).
  */
-export function AccountDashboard({ userId, email, stats, history }: AccountDashboardProps) {
+export function AccountDashboard({ userId, displayName, stats, history }: AccountDashboardProps) {
   const router = useRouter();
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isConfirmingClear, setIsConfirmingClear] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
+
+  async function handleClearHistory() {
+    setIsClearing(true);
+    try {
+      await clearHistoryAction();
+      setIsConfirmingClear(false);
+      router.refresh();
+    } finally {
+      setIsClearing(false);
+    }
+  }
 
   useEffect(() => {
     if (window.localStorage.getItem(MERGE_FLAG_KEY) === userId) return;
@@ -57,7 +70,7 @@ export function AccountDashboard({ userId, email, stats, history }: AccountDashb
   return (
     <div className="flex w-full max-w-md flex-col gap-5">
       <div className="rounded-3xl border-2 border-yellow-300/40 bg-purple-900/60 p-6 text-center">
-        {email && <p className="font-sans text-yellow-100/80">{email}</p>}
+        {displayName && <p className="font-sans text-yellow-100/80">{displayName}</p>}
         {isSyncing && (
           <p className="mt-2 font-sans text-sm text-yellow-100/60">Syncing your progress…</p>
         )}
@@ -105,14 +118,50 @@ export function AccountDashboard({ userId, email, stats, history }: AccountDashb
         )}
       </div>
 
-      <form action={signOutAction} className="flex justify-center">
-        <button
-          type="submit"
-          className="rounded-full border-2 border-yellow-300/40 px-6 py-3 font-sans text-yellow-100/80"
-        >
-          Sign out
-        </button>
-      </form>
+      <div className="flex flex-col items-center gap-3">
+        {isConfirmingClear ? (
+          <div className="flex flex-col items-center gap-2 rounded-2xl border-2 border-red-400/40 bg-red-950/20 p-4 text-center">
+            <p className="font-sans text-sm text-red-200">
+              Clear all your saved history and reset your streak? This can&apos;t be undone.
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleClearHistory}
+                disabled={isClearing}
+                className="rounded-full bg-red-500/80 px-5 py-2 font-display text-sm tracking-wide text-purple-950 disabled:opacity-50"
+              >
+                {isClearing ? "Clearing…" : "Yes, clear it"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsConfirmingClear(false)}
+                disabled={isClearing}
+                className="rounded-full border-2 border-yellow-300/40 px-5 py-2 font-sans text-sm text-yellow-100/80"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsConfirmingClear(true)}
+            className="font-sans text-sm text-yellow-100/50 underline"
+          >
+            Clear my saved history
+          </button>
+        )}
+
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            className="rounded-full border-2 border-yellow-300/40 px-6 py-3 font-sans text-yellow-100/80"
+          >
+            Sign out
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
