@@ -1,8 +1,4 @@
-interface RevealedAnswer {
-  questionText: string;
-  answerText: string;
-  correct: boolean;
-}
+import type { RevealedAnswer } from "./types";
 
 interface RevealedAnswersListProps {
   answers: RevealedAnswer[];

@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 import { isLinkGuessAvailable, linkBonusForRevealedCount } from "@/lib/scoring/scoring";
-
-interface LinkGuessOutcome {
-  bonus: number;
-  revealedAtCount: number;
-}
+import type { LinkGuessOutcome } from "./types";
 
 interface LinkGuessPanelProps {
   puzzleId: string;
@@ -78,7 +74,7 @@ export function LinkGuessPanel({
       .then((res) => res.json() as Promise<CheckLinkResponse>)
       .then((data) => {
         if (data.correct) {
-          onCorrect({ bonus: currentBonus, revealedAtCount: revealedCount });
+          onCorrect({ bonus: currentBonus, revealedAtCount: revealedCount, linkText: data.link ?? guess });
           setIsOpen(false);
         } else {
           setLockedAtRevealedCount(revealedCount);

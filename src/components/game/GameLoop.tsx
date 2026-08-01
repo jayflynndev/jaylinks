@@ -3,28 +3,24 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { getPlayerStore } from "@/lib/storage/player-store";
-import type { QuestionResult, PlayResult } from "@/lib/storage/types";
+import type { PlayerStats, QuestionResult, PlayResult } from "@/lib/storage/types";
 import { londonDateString } from "@/lib/time/london";
 import type { PublicPuzzle } from "@/lib/puzzles/get-daily-puzzle";
 import { QuestionCard } from "./QuestionCard";
 import { LinkGuessPanel } from "./LinkGuessPanel";
 import { RevealedAnswersList } from "./RevealedAnswersList";
-import type { QuestionOutcome } from "./types";
+import { ResultsScreen } from "./ResultsScreen";
+import type { LinkGuessOutcome, QuestionOutcome, RevealedAnswer } from "./types";
 
 interface GameLoopProps {
   puzzle: PublicPuzzle;
-}
-
-interface RevealedAnswer {
-  questionText: string;
-  answerText: string;
-  correct: boolean;
 }
 
 interface LinkGuessState {
   guessed: boolean;
   bonus: number | null;
   revealedAtCount: number | null;
+  linkText: string | null;
 }
 
 /** How long the "Correct!"/"Missed it" celebration stays visible before advancing to the next question. */
@@ -34,9 +30,9 @@ type Gate = "checking" | "ready" | "already-played";
 
 /**
  * Orchestrates one full play-through: the "already played today?" gate,
- * the 5-question sequence, link guessing, and (for now, pending milestone
- * 5's full results screen) a minimal completion summary. Owns all game
- * state; QuestionCard/LinkGuessPanel are controlled/callback-driven.
+ * the 5-question sequence, link guessing, and the final results screen.
+ * Owns all game state; QuestionCard/LinkGuessPanel/ResultsScreen are
+ * controlled/callback-driven.
  */
 export function GameLoop({ puzzle }: GameLoopProps) {
   const [gate, setGate] = useState<Gate>("checking");
@@ -49,10 +45,12 @@ export function GameLoop({ puzzle }: GameLoopProps) {
     guessed: false,
     bonus: null,
     revealedAtCount: null,
+    linkText: null,
   });
 
   const [finalResult, setFinalResult] = useState<PlayResult | null>(null);
-  const [revealedLinkIfMissed, setRevealedLinkIfMissed] = useState<string | null>(null);
+  const [finalStats, setFinalStats] = useState<PlayerStats | null>(null);
+  const [finalLinkText, setFinalLinkText] = useState<string | null>(null);
 
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -87,8 +85,13 @@ export function GameLoop({ puzzle }: GameLoopProps) {
     }, ADVANCE_DELAY_MS);
   }
 
-  function handleLinkCorrect(outcome: { bonus: number; revealedAtCount: number }) {
-    setLinkGuessState({ guessed: true, bonus: outcome.bonus, revealedAtCount: outcome.revealedAtCount });
+  function handleLinkCorrect(outcome: LinkGuessOutcome) {
+    setLinkGuessState({
+      guessed: true,
+      bonus: outcome.bonus,
+      revealedAtCount: outcome.revealedAtCount,
+      linkText: outcome.linkText,
+    });
   }
 
   // Puzzle complete once every question has resolved.
@@ -98,7 +101,7 @@ export function GameLoop({ puzzle }: GameLoopProps) {
     let cancelled = false;
 
     async function finish() {
-      let missedLink: string | null = null;
+      let linkText = linkGuessState.linkText;
       if (!linkGuessState.guessed) {
         try {
           const res = await fetch("/api/check-link", {
@@ -107,9 +110,9 @@ export function GameLoop({ puzzle }: GameLoopProps) {
             body: JSON.stringify({ puzzleId: puzzle.id, reveal: true }),
           });
           const data = (await res.json()) as { link?: string };
-          missedLink = data.link ?? null;
+          linkText = data.link ?? null;
         } catch {
-          missedLink = null;
+          linkText = null;
         }
       }
       if (cancelled) return;
@@ -128,8 +131,9 @@ export function GameLoop({ puzzle }: GameLoopProps) {
         totalScore,
       };
 
-      getPlayerStore().saveResult(result);
-      setRevealedLinkIfMissed(missedLink);
+      const stats = getPlayerStore().saveResult(result);
+      setFinalLinkText(linkText);
+      setFinalStats(stats);
       setFinalResult(result);
     }
 
@@ -173,27 +177,15 @@ export function GameLoop({ puzzle }: GameLoopProps) {
     );
   }
 
-  // Placeholder completion summary — milestone 5 replaces this with the
-  // full results screen (share card, streak, next-puzzle countdown).
-  if (finalResult) {
+  if (finalResult && finalStats) {
     return (
-      <div className="w-full max-w-md rounded-3xl border-2 border-yellow-300/40 bg-purple-900/60 p-6 text-center">
-        {isPractice && (
-          <p className="mb-2 font-sans text-sm tracking-wide text-yellow-100/70 uppercase">
-            Practice — doesn&apos;t count
-          </p>
-        )}
-        <p className="font-display text-3xl text-yellow-300">Score: {finalResult.totalScore}</p>
-        {!linkGuessState.guessed && revealedLinkIfMissed && (
-          <p className="mt-2 font-sans text-yellow-100">The link was: {revealedLinkIfMissed}</p>
-        )}
-        <Link
-          href="/"
-          className="mt-5 inline-block rounded-full bg-yellow-300 px-6 py-3 font-display tracking-wide text-purple-950"
-        >
-          Back home
-        </Link>
-      </div>
+      <ResultsScreen
+        puzzleTitle={puzzle.title}
+        result={finalResult}
+        revealedAnswers={revealedAnswers}
+        linkText={finalLinkText ?? "?"}
+        stats={finalStats}
+      />
     );
   }
 

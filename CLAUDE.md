@@ -115,14 +115,31 @@ route (not committed) since Supabase isn't configured in this dev
 environment yet — full correct/wrong-guess and link-guess flows still need
 real Supabase + Anthropic keys to test end-to-end.
 
-64 unit tests pass (`npm test`). One product decision made along the way:
+The real results screen is now built (`src/components/game/ResultsScreen.tsx`),
+replacing GameLoop's placeholder: per-question breakdown with the
+🟩🟨🟥 share-card emoji legend, the link reveal/bonus, current streak
+(skipped for practice plays), a share card via the Web Share API with a
+clipboard fallback (`ShareButton.tsx`), and a live "next puzzle unlocks
+in…" countdown (`useCountdownToNextPuzzle`, ticking off
+`millisecondsUntilNextLondonMidnight`). Share text generation is a pure,
+tested function (`src/lib/sharing/share-card.ts`). Verified visually via a
+temporary mock-data preview route (not committed) — this caught a real
+bug: `ResultsScreen` assumed it would never be server-rendered (reached
+only through GameLoop's client-only gating) and crashed with
+`window is not defined` when rendered directly; fixed with a
+`typeof window !== "undefined"` guard rather than relying solely on the
+caller's gating.
+
+75 unit tests pass (`npm test`). One product decision made along the way:
 the "I KNOW THE LINK!" button is available from the first revealed answer
 (not "from question 2" as an earlier draft of the brief read), confirmed
 directly — see the comment on `LINK_BONUS_TIERS` in scoring.ts.
 
-**Next up (milestone 5):** replace GameLoop's placeholder completion
-screen with the real results screen — per-question breakdown, link bonus,
-streak, share card (Web Share API + clipboard fallback), and the
-next-puzzle countdown (`millisecondsUntilNextLondonMidnight` in
-`src/lib/time/london.ts`, already built). Then milestone 6 (admin screen)
-and milestone 7 (PWA + deployment docs).
+**Next up (milestone 6):** the admin screen (`/admin`, Supabase-authed) —
+puzzle CRUD, the review queue UI for Tier 3's `judged_answers` (the
+engine has been writing this data since milestone 3, just nothing reads
+it yet), bulk import, and the duplicate-answer checker. Then milestone 7
+(PWA + deployment docs).
+
+Repo: pushed to `https://github.com/jayflynndev/jaylinks` (remote `origin`,
+branch `master`).
