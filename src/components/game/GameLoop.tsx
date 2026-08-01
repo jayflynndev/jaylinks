@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getPlayerStore } from "@/lib/storage/player-store";
 import type { PublicPuzzle } from "@/lib/puzzles/get-daily-puzzle";
+import { Countdown } from "./Countdown";
 import { PuzzleRound } from "./PuzzleRound";
 
 interface GameLoopProps {
@@ -18,18 +19,19 @@ interface GameLoopProps {
   mode?: "play" | "preview";
 }
 
-type Gate = "checking" | "ready" | "already-played";
+type Gate = "checking" | "countdown" | "already-played" | "playing";
 
 /**
- * Handles the "already played today?" gate, then hands off to PuzzleRound
- * for the actual round (meter, clue reveal, link guessing, results). Kept
- * separate from PuzzleRound so that component's timing hooks only ever
- * mount once the gate has resolved to "ready" — starting them any earlier
- * (e.g. during the localStorage check itself) would let the clock run
- * before the player can actually see/play the round.
+ * Handles the "already played today?" gate and the pre-round countdown,
+ * then hands off to PuzzleRound for the actual round (meter, clue reveal,
+ * link guessing, results). Kept separate from PuzzleRound so that
+ * component's timing hooks only ever mount once the gate has resolved to
+ * "playing" — starting them any earlier (e.g. during the localStorage
+ * check, or while the countdown is still running) would let the clock run
+ * before the player is actually ready.
  */
 export function GameLoop({ puzzle, mode = "play" }: GameLoopProps) {
-  const [gate, setGate] = useState<Gate>(mode === "preview" ? "ready" : "checking");
+  const [gate, setGate] = useState<Gate>(mode === "preview" ? "countdown" : "checking");
   const [isPractice, setIsPractice] = useState(mode === "preview");
 
   // One play per puzzle per device per day — see PlayerStore.hasPlayed.
@@ -39,10 +41,10 @@ export function GameLoop({ puzzle, mode = "play" }: GameLoopProps) {
   // starts at "checking" precisely so the server-rendered and first-client-
   // render markup match before this effect updates it.
   useEffect(() => {
-    if (mode === "preview") return; // gate already starts "ready" — see useState above.
+    if (mode === "preview") return; // gate already starts "countdown" — see useState above.
     const alreadyPlayed = getPlayerStore().hasPlayed(puzzle.episodeNumber);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setGate(alreadyPlayed ? "already-played" : "ready");
+    setGate(alreadyPlayed ? "already-played" : "countdown");
   }, [puzzle.episodeNumber, mode]);
 
   if (gate === "checking") {
@@ -68,7 +70,7 @@ export function GameLoop({ puzzle, mode = "play" }: GameLoopProps) {
             type="button"
             onClick={() => {
               setIsPractice(true);
-              setGate("ready");
+              setGate("countdown");
             }}
             className="rounded-full bg-yellow-300 px-6 py-3 font-display tracking-wide text-purple-950"
           >
@@ -76,6 +78,12 @@ export function GameLoop({ puzzle, mode = "play" }: GameLoopProps) {
           </button>
         </div>
       </div>
+    );
+  }
+
+  if (gate === "countdown") {
+    return (
+      <Countdown episodeNumber={puzzle.episodeNumber} onComplete={() => setGate("playing")} />
     );
   }
 

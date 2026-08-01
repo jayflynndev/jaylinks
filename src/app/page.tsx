@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { QuestionMarks } from "@/components/brand/QuestionMarks";
 import { TitlePanel } from "@/components/brand/TitlePanel";
+import { HowToPlayModal } from "@/components/game/HowToPlayModal";
 import { getTodaysPuzzle } from "@/lib/puzzles/get-daily-puzzle";
 
 // "Today's puzzle" changes daily and depends on live DB state — without
@@ -32,6 +33,7 @@ export default async function Home() {
       <TitlePanel subtitle={episodeNumber ? `Link #${episodeNumber}` : undefined} />
 
       <div className="relative mt-10 flex flex-col items-center gap-4">
+        <HowToPlayModal />
         {episodeNumber ? (
           <Link
             href="/play"
