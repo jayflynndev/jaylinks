@@ -231,12 +231,33 @@ puzzle is never shipped in the client bundle and must always be fetched
 fresh; a stale-shell cache must never mean a stale puzzle or stale auth
 state.
 
+**Analytics and SEO**: `@vercel/analytics`'s `<Analytics />` is mounted in
+the root layout (cookie-free, no consent banner needed). `robots.ts` and
+`sitemap.ts` cover the public routes (`/admin` and `/account` excluded from
+both — one's auth-gated, the other is a login form or private data,
+neither useful to crawl). `opengraph-image.tsx` generates a branded 1200×630
+share card the same way the app icons are generated (`ImageResponse`), and
+`layout.tsx`'s `metadata` sets Open Graph/Twitter tags plus `metadataBase`
+so those resolve correctly. The home page carries a `WebApplication`
+JSON-LD block — the one page this lives on, since it's the canonical
+"about this product" page. Deliberately no puzzle-specific SEO content
+anywhere: the link answer is never in any page's source (see
+`docs/ANSWER_ENGINE.md`), so there's nothing per-puzzle to rank for by
+design — this is about the product being discoverable, not individual
+puzzles surfacing in search results.
+
 108 unit tests pass (`npx vitest run`), `next build` and `eslint` both
 clean. Deployed and live at jayslinks.com (Vercel, auto-deploys from
 `master`) — currently in closed beta with real testers.
 
-**Next up:** deployment docs (`docs/DEPLOYMENT.md`) — the last piece of
-the original milestone 7. Otherwise, fold in beta feedback as it comes in.
+**Next up:** a phased roadmap agreed with Jay while awaiting more beta
+feedback — bulk-importing his ~290-puzzle back catalogue (spreadsheet
+incoming), then a "play past days' puzzles" archive (doesn't exist yet —
+today's puzzle is all there is once it's done), then retention features
+(leaderboards, daily reminders, ads), with a native mobile app + in-app-
+purchase content packs as a later, separately-scoped phase. `docs/DEPLOYMENT.md`
+was dropped from the plan — already deployed and working, not worth
+writing up retroactively.
 
 Repo: pushed to `https://github.com/jayflynndev/jaylinks` (remote `origin`,
 branch `master`).

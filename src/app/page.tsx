@@ -30,6 +30,25 @@ export default async function Home() {
 
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-6 py-16">
+      {/* SEO: describes the product to search engines — the home page is
+          the canonical representative page, so this isn't repeated on
+          every route. Never includes anything puzzle-specific (the link
+          answer is never in any page's content — see docs/ANSWER_ENGINE.md). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "Jay's Links",
+            url: "https://jayslinks.com",
+            description: "A daily chain-quiz game — guess the link before it's revealed.",
+            applicationCategory: "GameApplication",
+            operatingSystem: "Any",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "GBP" },
+          }),
+        }}
+      />
       <QuestionMarks />
 
       <TitlePanel subtitle={episodeNumber ? `Link #${episodeNumber}` : undefined} />
