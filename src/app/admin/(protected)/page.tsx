@@ -1,77 +1,104 @@
 import Link from "next/link";
-import { listDailyPuzzles } from "@/lib/puzzles/admin-queries";
-import { findScheduleGaps } from "@/lib/puzzles/schedule-gaps";
-import type { PuzzleStatus } from "@/lib/supabase/types";
+import {
+  getAnswerCheckingStats,
+  getContentHealthStats,
+  getPlayerEngagementStats,
+} from "@/lib/admin/dashboard-stats";
 
-const STATUS_STYLES: Record<PuzzleStatus, string> = {
-  draft: "bg-purple-800/60 text-yellow-100/70",
-  scheduled: "bg-yellow-300/20 text-yellow-200",
-  published: "bg-emerald-500/20 text-emerald-300",
-};
-
-/** Admin dashboard: the Daily puzzle list plus schedule-gap warnings. */
+/**
+ * Admin landing page: an at-a-glance overview, not a management screen —
+ * content health, player engagement, and answer-checking, so there's no
+ * need to click into Puzzles or Review Queue speculatively just to see if
+ * anything needs attention.
+ */
 export default async function AdminDashboardPage() {
-  const puzzles = await listDailyPuzzles();
-  const datedPublishDates = puzzles
-    .map((p) => p.publishDate)
-    .filter((date): date is string => date !== null);
-  const gaps = findScheduleGaps(datedPublishDates);
+  const [content, engagement, answers] = await Promise.all([
+    getContentHealthStats(),
+    getPlayerEngagementStats(),
+    getAnswerCheckingStats(),
+  ]);
 
   return (
-    <div className="flex flex-col gap-6">
-      {gaps.length > 0 && (
-        <div className="rounded-2xl border-2 border-red-400/50 bg-red-950/30 p-4">
-          <p className="font-display text-lg text-red-300">Schedule gaps</p>
-          <ul className="mt-2 flex flex-col gap-1 font-sans text-sm text-red-200">
-            {gaps.map((gap, index) => (
-              <li key={index}>
-                {gap.missingDays} day{gap.missingDays === 1 ? "" : "s"} unscheduled between{" "}
-                {gap.afterDate} and {gap.beforeDate}
-              </li>
-            ))}
-          </ul>
+    <div className="flex flex-col gap-10">
+      <section className="flex flex-col gap-3">
+        <h2 className="font-display text-xl tracking-wide text-yellow-300">Content health</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatCard label="Draft" value={content.draftCount} />
+          <StatCard label="Scheduled" value={content.scheduledCount} />
+          <StatCard label="Published" value={content.publishedCount} />
+          <StatCard label="Total puzzles" value={content.totalCount} />
         </div>
-      )}
-
-      {puzzles.length === 0 ? (
-        <div className="rounded-2xl border-2 border-yellow-300/30 bg-purple-900/50 p-6 text-center">
-          <p className="font-sans text-yellow-100/80">
-            No puzzles yet. Run the seed migration (see docs/SUPABASE_SETUP.md) or create one below.
-          </p>
-          <Link
-            href="/admin/puzzles/new"
-            className="mt-4 inline-block rounded-full bg-yellow-300 px-6 py-3 font-display tracking-wide text-purple-950"
-          >
-            New puzzle
+        <p className="font-sans text-sm text-yellow-100/60">
+          {content.lastScheduledDate
+            ? `Scheduled through ${content.lastScheduledDate}.`
+            : "Nothing scheduled yet."}{" "}
+          <Link href="/admin/puzzles" className="underline">
+            View puzzle library
           </Link>
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="font-display text-xl tracking-wide text-yellow-300">Player engagement</h2>
+        <p className="font-sans text-sm text-yellow-100/60">
+          Signed-in players only — anonymous play (the default) never touches the server, so this is
+          a slice of engaged players, not total traffic. See Vercel Analytics for the fuller picture.
+        </p>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <StatCard label="Plays today" value={engagement.playsToday} />
+          <StatCard label="Plays this week" value={engagement.playsThisWeek} />
+          <StatCard label="Total plays" value={engagement.totalPlays} />
+          <StatCard label="Signed-in players" value={engagement.uniquePlayers} />
+          <StatCard label="Average score" value={Math.round(engagement.averageScore).toLocaleString("en-GB")} />
+          <StatCard label="Guessed correctly" value={formatPercent(engagement.correctGuessRate)} />
         </div>
-      ) : (
-        <ul className="flex flex-col gap-2">
-          {puzzles.map((puzzle) => (
-            <li key={puzzle.id}>
-              <Link
-                href={`/admin/puzzles/${puzzle.id}/edit`}
-                className="flex items-center justify-between gap-4 rounded-xl border border-yellow-300/20 bg-purple-900/50 px-4 py-3 transition hover:border-yellow-300/50"
-              >
-                <div className="flex items-center gap-4">
-                  <span className="font-display text-lg text-yellow-300">#{puzzle.episodeNumber}</span>
-                  <div>
-                    <p className="font-sans text-yellow-50">{puzzle.title}</p>
-                    <p className="font-sans text-xs text-yellow-100/60">
-                      {puzzle.publishDate ?? "Undated"}
-                    </p>
-                  </div>
-                </div>
-                <span
-                  className={`rounded-full px-3 py-1 font-sans text-xs uppercase tracking-wide ${STATUS_STYLES[puzzle.status]}`}
-                >
-                  {puzzle.status}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="font-display text-xl tracking-wide text-yellow-300">Answer checking</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Link href="/admin/review" className="block">
+            <StatCard
+              label="Pending review"
+              value={answers.pendingReviewCount}
+              highlight={answers.pendingReviewCount > 0}
+            />
+          </Link>
+          <StatCard label="AI calls today" value={answers.judgeCallsToday} />
+          <StatCard label="Total judged" value={answers.totalJudged} />
+          <StatCard
+            label="Approval rate"
+            value={answers.approvalRate === null ? "—" : formatPercent(answers.approvalRate)}
+          />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function formatPercent(rate: number): string {
+  return `${Math.round(rate * 100)}%`;
+}
+
+function StatCard({
+  label,
+  value,
+  highlight = false,
+}: {
+  label: string;
+  value: string | number;
+  highlight?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-2xl border-2 p-4 text-center transition ${
+        highlight
+          ? "border-yellow-300 bg-yellow-300/10 hover:border-yellow-200"
+          : "border-yellow-300/20 bg-purple-900/50"
+      }`}
+    >
+      <p className="font-display text-2xl text-yellow-300">{value}</p>
+      <p className="font-sans text-xs text-yellow-100/60">{label}</p>
     </div>
   );
 }

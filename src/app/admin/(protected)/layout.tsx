@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 
 const NAV_LINKS = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/puzzles", label: "Puzzles" },
   { href: "/admin/puzzles/new", label: "New puzzle" },
   { href: "/admin/puzzles/import", label: "Bulk import" },
   { href: "/admin/review", label: "Review queue" },

@@ -62,6 +62,7 @@ src/
                           (anonymous, default) and SupabasePlayerStore
                           (signed-in, calls the Server Actions above)
     puzzles/             server-side puzzle queries/writes (admin + player fetch)
+    admin/               admin Dashboard stats queries (dashboard-stats.ts)
     supabase/            Supabase client setup (server + browser variants) +
                           admin-check.ts (profiles.is_admin gate) +
                           player-auth.ts (optional player sign-in check)
@@ -197,6 +198,20 @@ preview route that plays a puzzle for real without touching player stats,
 and the review queue at `/admin/review`
 (`src/lib/puzzles/review-queue.ts`) — approve/reject/dismiss pending
 `JL_judged_answers` rows, plus a daily AI-judge-call counter.
+
+`/admin` itself is a stats overview, not a management screen — content
+health (puzzle counts by status, how far scheduled content stretches),
+player engagement, and answer-checking stats
+(`src/lib/admin/dashboard-stats.ts`), so nothing needs clicking into
+speculatively just to see if it needs attention (the pending-review count
+links straight to `/admin/review`). One deliberate caveat shown on the
+page itself: engagement stats are derived from `JL_play_history`, which
+only ever gets a row from a *signed-in* player — anonymous play (the
+default) never touches the server, so these numbers are a slice of
+engaged players, not total traffic; Vercel Analytics is the fuller
+traffic picture. The puzzle library (browse/manage, plus the schedule-gap
+warnings) moved to its own page, `/admin/puzzles`, now that `/admin`
+itself is the overview.
 
 **Optional player accounts** are built: sign-in stays fully optional —
 anonymous localStorage play is still the zero-friction default. Signing in

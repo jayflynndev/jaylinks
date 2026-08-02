@@ -15,8 +15,9 @@ export interface PuzzleListItem {
  * The Daily category's id, or null if the seed migration hasn't been run
  * yet (see supabase/migrations/20260731000002_seed_sample_puzzles.sql) —
  * callers treat that as "no puzzles exist yet" rather than erroring.
+ * Exported for src/lib/admin/dashboard-stats.ts's content-health stats.
  */
-async function getDailyCategoryId(): Promise<string | null> {
+export async function getDailyCategoryId(): Promise<string | null> {
   const supabase = createServiceRoleClient();
   const { data } = await supabase.from("JL_categories").select("id").eq("slug", "daily").maybeSingle();
   return data?.id ?? null;
