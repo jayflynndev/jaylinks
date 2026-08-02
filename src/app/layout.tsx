@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka, Luckiest_Guy } from "next/font/google";
 import { RegisterServiceWorker } from "@/components/RegisterServiceWorker";
+import { Footer } from "@/components/brand/Footer";
 import "./globals.css";
 
 // Fredoka: rounded, friendly sans used for all body/UI text.
@@ -48,6 +49,7 @@ export default function RootLayout({
     >
       <body className="brand-gradient-bg min-h-full flex flex-col font-sans text-foreground">
         {children}
+        <Footer />
         <RegisterServiceWorker />
       </body>
     </html>
