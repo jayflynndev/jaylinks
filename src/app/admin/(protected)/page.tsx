@@ -4,6 +4,7 @@ import {
   getContentHealthStats,
   getPlayerEngagementStats,
 } from "@/lib/admin/dashboard-stats";
+import { getTodaysPuzzle } from "@/lib/puzzles/get-daily-puzzle";
 
 /**
  * Admin landing page: an at-a-glance overview, not a management screen —
@@ -12,16 +13,40 @@ import {
  * anything needs attention.
  */
 export default async function AdminDashboardPage() {
-  const [content, engagement, answers] = await Promise.all([
+  const [content, engagement, answers, todaysPuzzle] = await Promise.all([
     getContentHealthStats(),
     getPlayerEngagementStats(),
     getAnswerCheckingStats(),
+    getTodaysPuzzle(),
   ]);
 
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col gap-3">
         <h2 className="font-display text-xl tracking-wide text-yellow-300">Content health</h2>
+
+        {/* The status breakdown below is about the *authoring* pipeline, not
+            "is something live" — a "scheduled" puzzle goes live automatically
+            the moment its date arrives (see getTodaysPuzzle's doc comment);
+            "published" is only ever set by manually forcing a same-day
+            puzzle live via the single-puzzle form, so it reads ~0 almost
+            all the time even when today's puzzle is very much live. This is
+            the actual ground-truth answer to "is something live today." */}
+        <div
+          className={`rounded-2xl border-2 p-4 ${
+            todaysPuzzle ? "border-emerald-400/50 bg-emerald-950/20" : "border-red-400/50 bg-red-950/30"
+          }`}
+        >
+          {todaysPuzzle ? (
+            <p className="font-sans text-yellow-100">
+              <span className="font-display text-lg text-emerald-300">Live now: </span>
+              Link #{todaysPuzzle.episodeNumber} — {todaysPuzzle.title}
+            </p>
+          ) : (
+            <p className="font-sans text-red-200">No puzzle is live today — players will see nothing to play.</p>
+          )}
+        </div>
+
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <StatCard label="Draft" value={content.draftCount} />
           <StatCard label="Scheduled" value={content.scheduledCount} />
@@ -32,6 +57,8 @@ export default async function AdminDashboardPage() {
           {content.lastScheduledDate
             ? `Scheduled through ${content.lastScheduledDate}.`
             : "Nothing scheduled yet."}{" "}
+          A puzzle doesn&apos;t need to be manually marked &ldquo;published&rdquo; to go live —
+          &ldquo;scheduled&rdquo; puzzles unlock automatically once their date arrives.{" "}
           <Link href="/admin/puzzles" className="underline">
             View puzzle library
           </Link>
