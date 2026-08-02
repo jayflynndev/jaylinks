@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka, Luckiest_Guy } from "next/font/google";
+import { RegisterServiceWorker } from "@/components/RegisterServiceWorker";
 import "./globals.css";
 
 // Fredoka: rounded, friendly sans used for all body/UI text.
@@ -20,6 +21,13 @@ const luckiestGuy = Luckiest_Guy({
 export const metadata: Metadata = {
   title: "Jay's Links",
   description: "A daily chain-quiz game — guess the link before it's revealed.",
+  // iOS Safari's "Add to Home Screen" prefers these over the web manifest
+  // (see manifest.ts) — statusBarStyle "black-translucent" lets the
+  // brand's purple gradient show through the status bar in standalone mode.
+  appleWebApp: {
+    title: "Jay's Links",
+    statusBarStyle: "black-translucent",
+  },
 };
 
 export const viewport: Viewport = {
@@ -40,6 +48,7 @@ export default function RootLayout({
     >
       <body className="brand-gradient-bg min-h-full flex flex-col font-sans text-foreground">
         {children}
+        <RegisterServiceWorker />
       </body>
     </html>
   );

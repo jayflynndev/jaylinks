@@ -196,13 +196,28 @@ signed-in sessions to keep working over time, since Supabase rotates
 refresh tokens on each use and only proxy can persist a refreshed cookie
 back to the browser.
 
+The site is installable (the PWA half of the original milestone 7):
+`src/app/manifest.ts` plus generated icons at `/icon-192` and `/icon-512`
+(plain image Route Handlers, `force-static` — not Next's special
+`icon.tsx` convention, which is for the browser tab favicon specifically)
+make "Add to Home Screen" available, and `src/app/apple-icon.tsx` covers
+iOS Safari's separate `apple-touch-icon` preference. All four generated
+icon sizes (`icon.tsx`, `icon-192`, `icon-512`, `apple-icon.tsx`) share one
+design via `src/lib/brand-icon.tsx` so they read as the same mark at every
+size. `public/sw.js` (registered by `RegisterServiceWorker.tsx` in the
+root layout) caches only the app *shell* — Next's content-hashed
+`/_next/static/` build assets and the generated icons — and deliberately
+never intercepts navigations or `/api/`/`/play`/`/account`, since today's
+puzzle is never shipped in the client bundle and must always be fetched
+fresh; a stale-shell cache must never mean a stale puzzle or stale auth
+state.
+
 103 unit tests pass (`npx vitest run`), `next build` and `eslint` both
 clean. Deployed and live at jayslinks.com (Vercel, auto-deploys from
 `master`) — currently in closed beta with real testers.
 
-**Next up:** PWA (installable, app-shell cached) and deployment docs
-(`docs/DEPLOYMENT.md`) — the original milestone 7, still outstanding.
-Fold in beta feedback as it comes in.
+**Next up:** deployment docs (`docs/DEPLOYMENT.md`) — the last piece of
+the original milestone 7. Otherwise, fold in beta feedback as it comes in.
 
 Repo: pushed to `https://github.com/jayflynndev/jaylinks` (remote `origin`,
 branch `master`).
