@@ -90,6 +90,15 @@ export type Profile = {
   username: string | null;
 };
 
+/** Marks a signed-in player's round as genuinely in progress — anti-cheat: closes the "peek all clues, back out, restart fresh" exploit. Deleted once the round finishes. See src/lib/storage/player-history-queries.ts. */
+export type RoundStart = {
+  id: string;
+  user_id: string;
+  puzzle_id: string;
+  episode_number: number;
+  started_at: string;
+};
+
 /** One real (non-practice) play, saved server-side only once a player is signed in — see src/lib/storage/player-history-queries.ts. */
 export type PlayHistory = {
   id: string;
@@ -273,6 +282,24 @@ export interface Database {
           total_score?: number;
           created_at?: string;
           updated_at?: string;
+        };
+      };
+      JL_round_starts: {
+        Row: RoundStart;
+        Relationships: [];
+        Insert: {
+          id?: string;
+          user_id: string;
+          puzzle_id: string;
+          episode_number: number;
+          started_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          puzzle_id?: string;
+          episode_number?: number;
+          started_at?: string;
         };
       };
     };

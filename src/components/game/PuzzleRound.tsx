@@ -18,6 +18,8 @@ interface PuzzleRoundProps {
   isPractice: boolean;
   /** The signed-in player's id, or null — see GameLoop's prop of the same name. */
   currentUserId: string | null;
+  /** Where to start the round's clocks — 0 for fresh, or real elapsed time if GameLoop is resuming a round the player left mid-way (its anti-cheat round-start tracking). */
+  initialElapsedMs: number;
 }
 
 interface LinkGuessState {
@@ -35,14 +37,15 @@ const NOT_GUESSED: LinkGuessState = {
 };
 
 /**
- * Owns one full round: the shared points meter (draining from the instant
- * this mounts), the independent clue-reveal clock, link guessing, and the
- * round-end -> results transition. A fresh instance per puzzle (GameLoop
- * mounts this only once the "already played?" gate resolves to "ready"),
- * so its timing hooks naturally start from zero at the right moment
- * rather than needing a reset effect.
+ * Owns one full round: the shared points meter, the clue-reveal clock,
+ * link guessing, and the round-end -> results transition. A fresh
+ * instance per puzzle (GameLoop mounts this only once the "already
+ * played?" gate resolves), so its timing hooks naturally (re)initialise
+ * at the right moment rather than needing a reset effect — starting from
+ * zero for a fresh round, or from `initialElapsedMs` when GameLoop is
+ * resuming one the player left mid-way.
  */
-export function PuzzleRound({ puzzle, isPractice, currentUserId }: PuzzleRoundProps) {
+export function PuzzleRound({ puzzle, isPractice, currentUserId, initialElapsedMs }: PuzzleRoundProps) {
   const [isGuessActive, setIsGuessActive] = useState(false);
   const [linkGuessState, setLinkGuessState] = useState<LinkGuessState>(NOT_GUESSED);
 
@@ -61,7 +64,7 @@ export function PuzzleRound({ puzzle, isPractice, currentUserId }: PuzzleRoundPr
   // would let every clue reveal for free while the meter sat frozen — a
   // real exploit, not just a cosmetic mismatch.
   const paused = isGuessActive || linkGuessState.guessed || isRoundOver;
-  const activeElapsedMs = useElapsedTimer(paused);
+  const activeElapsedMs = useElapsedTimer(paused, initialElapsedMs);
   const revealedCount = revealedClueCount(activeElapsedMs);
   const currentScore = meterValueAtElapsed(activeElapsedMs);
 
@@ -115,8 +118,10 @@ export function PuzzleRound({ puzzle, isPractice, currentUserId }: PuzzleRoundPr
         totalScore: linkGuessState.guessed ? (linkGuessState.score ?? 0) : 0,
       };
 
+      const store = getPlayerStore(currentUserId);
+
       try {
-        const stats = await getPlayerStore(currentUserId).saveResult(result);
+        const stats = await store.saveResult(result);
         if (cancelled) return;
         setFinalStats(stats);
       } catch {
@@ -127,6 +132,16 @@ export function PuzzleRound({ puzzle, isPractice, currentUserId }: PuzzleRoundPr
         if (cancelled) return;
         setSaveFailed(true);
       }
+
+      // The round is genuinely over now — clear the anti-cheat "in
+      // progress" marker (see GameLoop's checking effect) so it doesn't
+      // linger. Best-effort: if this fails, the marker is just orphaned
+      // (harmless — hasPlayed already gates future visits once saveResult
+      // above succeeds; if that also failed, GameLoop's resume path will
+      // correctly re-derive an already-timed-out round on the next visit
+      // rather than silently granting a free replay).
+      void store.clearRoundStart(puzzle.episodeNumber, puzzle.id).catch(() => {});
+
       setFinalLinkText(linkText);
       setFinalResult(result);
     }

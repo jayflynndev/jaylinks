@@ -167,6 +167,25 @@ Both `/` and `/play` are marked `export const dynamic = "force-dynamic"`
 — without this Next would statically prerender "today's puzzle" once at
 build time and never refresh it.
 
+**Anti-cheat: round starts are recorded, not just round completions.**
+A beta tester found that leaving mid-round (back button, closing the tab)
+and returning handed out a completely fresh round — nothing was ever
+saved until a round naturally finished, so the "one play per day" gate
+never triggered. That let a player watch all 5 clues, back out, and come
+back with full knowledge of the answer and a full meter. Fixed via
+`PlayerStore.getOrStartRound(episodeNumber, puzzleId)`
+(`LocalStoragePlayerStore` uses a single localStorage slot;
+`SupabasePlayerStore` uses a new `"JL_round_starts"` table, `on conflict
+do nothing` so re-opening the app — any device — never resets the
+clock, only reads the original start time back). GameLoop calls this
+before showing the countdown: a genuinely new round gets the normal
+3-2-1-GO; a round already in progress skips the countdown and resumes
+`PuzzleRound`'s meter/clue-reveal clocks from real elapsed wall-clock
+time via `useElapsedTimer`'s `initialElapsedMs` param — if enough real
+time passed, the round is simply already over the instant it mounts,
+handled by the exact same timeout logic that already existed, no special
+casing needed. The marker is cleared once a round genuinely finishes.
+
 The admin screen (`/admin`, gated on `profiles.is_admin` via
 `src/lib/supabase/admin-check.ts` and `src/proxy.ts`, not just "is signed
 in" — this Supabase project's `auth.users` is shared with QuizHub) is
@@ -212,7 +231,7 @@ puzzle is never shipped in the client bundle and must always be fetched
 fresh; a stale-shell cache must never mean a stale puzzle or stale auth
 state.
 
-103 unit tests pass (`npx vitest run`), `next build` and `eslint` both
+108 unit tests pass (`npx vitest run`), `next build` and `eslint` both
 clean. Deployed and live at jayslinks.com (Vercel, auto-deploys from
 `master`) — currently in closed beta with real testers.
 

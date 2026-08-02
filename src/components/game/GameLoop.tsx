@@ -35,6 +35,11 @@ type Gate = "checking" | "countdown" | "already-played" | "playing";
 export function GameLoop({ puzzle, mode = "play", currentUserId }: GameLoopProps) {
   const [gate, setGate] = useState<Gate>(mode === "preview" ? "countdown" : "checking");
   const [isPractice, setIsPractice] = useState(mode === "preview");
+  // How far into the round to start PuzzleRound's clocks — 0 for a fresh
+  // round, or real elapsed wall-clock time when resuming one left
+  // mid-way (see the checking effect below). Never touched for practice
+  // plays, which always start fresh.
+  const [initialElapsedMs, setInitialElapsedMs] = useState(0);
 
   // One play per puzzle per device/account per day — see PlayerStore.hasPlayed.
   // This has to be an effect, not state computed during render: the
@@ -46,25 +51,55 @@ export function GameLoop({ puzzle, mode = "play", currentUserId }: GameLoopProps
   // always upserts-then-recomputes from the full history rather than
   // incrementing, so a stray re-play just overwrites the same row instead
   // of double-counting.
+  //
+  // Anti-cheat: beyond "already played", this also records (or reads back)
+  // the round's true start time via getOrStartRound — see PlayerStore.
+  // Without this, a player could watch all 5 clues reveal, back out before
+  // the round naturally times out (nothing gets saved until it does), and
+  // come back to a brand-new round with full knowledge of the answer and a
+  // full meter. If a round was already started earlier, this skips the
+  // countdown and resumes PuzzleRound's clocks from the real elapsed time
+  // instead — which, if enough real time has passed, may mean the round
+  // is already over the instant it mounts. PuzzleRound's own timeout
+  // handling takes it from there unchanged; nothing else needed to special-
+  // case that here.
   useEffect(() => {
     if (mode === "preview") return; // gate already starts "countdown" — see useState above.
     let cancelled = false;
     async function check() {
+      const store = getPlayerStore(currentUserId);
       let alreadyPlayed = false;
       try {
-        alreadyPlayed = await getPlayerStore(currentUserId).hasPlayed(puzzle.episodeNumber);
+        alreadyPlayed = await store.hasPlayed(puzzle.episodeNumber);
       } catch {
         alreadyPlayed = false;
       }
-      if (!cancelled) {
-        setGate(alreadyPlayed ? "already-played" : "countdown");
+      if (cancelled) return;
+      if (alreadyPlayed) {
+        setGate("already-played");
+        return;
+      }
+
+      try {
+        const round = await store.getOrStartRound(puzzle.episodeNumber, puzzle.id);
+        if (cancelled) return;
+        if (round.isNew) {
+          setGate("countdown");
+        } else {
+          setInitialElapsedMs(Date.now() - round.startedAtMs);
+          setGate("playing");
+        }
+      } catch {
+        // Couldn't record/read a round start (e.g. offline) — fail open
+        // with a normal fresh round rather than blocking play entirely.
+        if (!cancelled) setGate("countdown");
       }
     }
     void check();
     return () => {
       cancelled = true;
     };
-  }, [puzzle.episodeNumber, mode, currentUserId]);
+  }, [puzzle.episodeNumber, puzzle.id, mode, currentUserId]);
 
   if (gate === "checking") {
     return null;
@@ -107,6 +142,12 @@ export function GameLoop({ puzzle, mode = "play", currentUserId }: GameLoopProps
   }
 
   return (
-    <PuzzleRound key={puzzle.id} puzzle={puzzle} isPractice={isPractice} currentUserId={currentUserId} />
+    <PuzzleRound
+      key={puzzle.id}
+      puzzle={puzzle}
+      isPractice={isPractice}
+      currentUserId={currentUserId}
+      initialElapsedMs={initialElapsedMs}
+    />
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  clearRoundStartAction,
+  getOrStartRoundAction,
   getResultAction,
   getStatsAction,
   hasPlayedAction,
@@ -8,6 +10,12 @@ import {
 } from "@/app/actions/player-store-actions";
 import { computeStreakUpdate } from "./streak";
 import type { PlayerStats, PlayResult } from "./types";
+
+export interface RoundStart {
+  startedAtMs: number;
+  /** True if this call just created the record (a genuinely fresh round) — false if an existing one was found (resuming after leaving mid-round). */
+  isNew: boolean;
+}
 
 /**
  * The player-state persistence interface. Every piece of game code that
@@ -25,11 +33,28 @@ export interface PlayerStore {
   /** Persists a result and (for non-practice plays) updates aggregate stats/streak. Returns the up-to-date stats. */
   saveResult(result: PlayResult): Promise<PlayerStats>;
   getStats(): Promise<PlayerStats>;
+  /**
+   * Anti-cheat: records the moment a real (non-practice) round genuinely
+   * begins, and never resets that moment on a later call for the same
+   * puzzle — closes the "watch all 5 clues, back out before the timeout,
+   * come back to a brand new round" exploit. Callers use `isNew` to
+   * decide whether to play the normal countdown (a fresh round) or skip
+   * straight to resuming from the true elapsed time (not new).
+   */
+  getOrStartRound(episodeNumber: number, puzzleId: string): Promise<RoundStart>;
+  /** Clears the in-progress marker once a round genuinely finishes (guessed or timed out). */
+  clearRoundStart(episodeNumber: number, puzzleId: string): Promise<void>;
 }
 
 const RESULTS_KEY = "jayslinks:results:v1";
 const STATS_KEY = "jayslinks:stats:v1";
 const COMPLETED_KEY = "jayslinks:completed:v1";
+const ROUND_START_KEY = "jayslinks:round-start:v1";
+
+interface StoredRoundStart {
+  episodeNumber: number;
+  startedAtMs: number;
+}
 
 const EMPTY_STATS: PlayerStats = {
   currentStreak: 0,
@@ -100,6 +125,26 @@ function markEpisodeCompleted(episodeNumber: number): void {
   window.localStorage.setItem(COMPLETED_KEY, JSON.stringify([...completed]));
 }
 
+function readRoundStart(): StoredRoundStart | null {
+  if (!hasLocalStorage()) return null;
+  try {
+    const raw = window.localStorage.getItem(ROUND_START_KEY);
+    return raw ? (JSON.parse(raw) as StoredRoundStart) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeRoundStart(value: StoredRoundStart): void {
+  if (!hasLocalStorage()) return;
+  window.localStorage.setItem(ROUND_START_KEY, JSON.stringify(value));
+}
+
+function clearStoredRoundStart(): void {
+  if (!hasLocalStorage()) return;
+  window.localStorage.removeItem(ROUND_START_KEY);
+}
+
 class LocalStoragePlayerStore implements PlayerStore {
   async getResult(episodeNumber: number): Promise<PlayResult | null> {
     return readResults()[episodeNumber] ?? null;
@@ -150,6 +195,23 @@ class LocalStoragePlayerStore implements PlayerStore {
   async getStats(): Promise<PlayerStats> {
     return readStats();
   }
+
+  async getOrStartRound(episodeNumber: number): Promise<RoundStart> {
+    const existing = readRoundStart();
+    if (existing && existing.episodeNumber === episodeNumber) {
+      return { startedAtMs: existing.startedAtMs, isNew: false };
+    }
+    const startedAtMs = Date.now();
+    writeRoundStart({ episodeNumber, startedAtMs });
+    return { startedAtMs, isNew: true };
+  }
+
+  async clearRoundStart(episodeNumber: number): Promise<void> {
+    const existing = readRoundStart();
+    if (existing && existing.episodeNumber === episodeNumber) {
+      clearStoredRoundStart();
+    }
+  }
 }
 
 /**
@@ -175,6 +237,14 @@ class SupabasePlayerStore implements PlayerStore {
 
   async getStats(): Promise<PlayerStats> {
     return getStatsAction();
+  }
+
+  async getOrStartRound(episodeNumber: number, puzzleId: string): Promise<RoundStart> {
+    return getOrStartRoundAction(episodeNumber, puzzleId);
+  }
+
+  async clearRoundStart(episodeNumber: number, puzzleId: string): Promise<void> {
+    return clearRoundStartAction(puzzleId);
   }
 }
 

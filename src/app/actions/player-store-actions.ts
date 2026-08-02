@@ -2,6 +2,7 @@
 
 import { createServerAuthClient } from "@/lib/supabase/server-auth";
 import * as playerHistory from "@/lib/storage/player-history-queries";
+import type { RoundStartResult } from "@/lib/storage/player-history-queries";
 import type { PlayerStats, PlayResult } from "@/lib/storage/types";
 
 /**
@@ -57,4 +58,18 @@ export async function mergeLocalHistoryAction(results: PlayResult[]): Promise<Pl
 export async function clearHistoryAction(): Promise<void> {
   const userId = await requireUserId();
   await playerHistory.clearHistory(userId);
+}
+
+/** Anti-cheat round-start marker — see player-history-queries.ts's getOrStartRound for the full explanation. */
+export async function getOrStartRoundAction(
+  episodeNumber: number,
+  puzzleId: string
+): Promise<RoundStartResult> {
+  const userId = await requireUserId();
+  return playerHistory.getOrStartRound(userId, puzzleId, episodeNumber);
+}
+
+export async function clearRoundStartAction(puzzleId: string): Promise<void> {
+  const userId = await requireUserId();
+  await playerHistory.clearRoundStart(userId, puzzleId);
 }

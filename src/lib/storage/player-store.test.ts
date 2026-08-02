@@ -15,6 +15,8 @@ vi.mock("@/app/actions/player-store-actions", () => ({
   getResultAction: vi.fn(),
   saveResultAction: vi.fn(),
   getStatsAction: vi.fn(),
+  getOrStartRoundAction: vi.fn(),
+  clearRoundStartAction: vi.fn(),
 }));
 
 function makeResult(overrides: Partial<PlayResult> = {}): PlayResult {
@@ -103,5 +105,45 @@ describe("LocalStoragePlayerStore", () => {
     // ...but the earlier real completion is still remembered, so the
     // "one real play per puzzle per day" rule isn't forgotten by replaying.
     expect(await store.hasPlayed(281)).toBe(true);
+  });
+
+  it("getOrStartRound: first call for an episode is new and records a start time", async () => {
+    const store = getPlayerStore(null);
+    const before = Date.now();
+    const round = await store.getOrStartRound(281, "puzzle-281");
+    expect(round.isNew).toBe(true);
+    expect(round.startedAtMs).toBeGreaterThanOrEqual(before);
+  });
+
+  it("getOrStartRound: a second call for the same episode resumes instead of resetting the clock", async () => {
+    const store = getPlayerStore(null);
+    const first = await store.getOrStartRound(281, "puzzle-281");
+    const second = await store.getOrStartRound(281, "puzzle-281");
+    expect(second.isNew).toBe(false);
+    expect(second.startedAtMs).toBe(first.startedAtMs);
+  });
+
+  it("getOrStartRound: a different episode is treated as a fresh round", async () => {
+    const store = getPlayerStore(null);
+    await store.getOrStartRound(281, "puzzle-281");
+    const round = await store.getOrStartRound(282, "puzzle-282");
+    expect(round.isNew).toBe(true);
+  });
+
+  it("clearRoundStart: clearing then starting again is a fresh round", async () => {
+    const store = getPlayerStore(null);
+    await store.getOrStartRound(281, "puzzle-281");
+    await store.clearRoundStart(281, "puzzle-281");
+    const round = await store.getOrStartRound(281, "puzzle-281");
+    expect(round.isNew).toBe(true);
+  });
+
+  it("clearRoundStart: clearing a different episode than the one in progress is a no-op", async () => {
+    const store = getPlayerStore(null);
+    const first = await store.getOrStartRound(281, "puzzle-281");
+    await store.clearRoundStart(999, "puzzle-999"); // no round in progress for this episode
+    const second = await store.getOrStartRound(281, "puzzle-281");
+    expect(second.isNew).toBe(false);
+    expect(second.startedAtMs).toBe(first.startedAtMs);
   });
 });

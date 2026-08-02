@@ -148,6 +148,69 @@ export async function saveResult(userId: string, result: PlayResult): Promise<Pl
   return computeStats(userId);
 }
 
+export interface RoundStartResult {
+  startedAtMs: number;
+  /** True if this call just created the record (a genuinely fresh round) — false if an existing one was found (resuming). */
+  isNew: boolean;
+}
+
+/**
+ * Anti-cheat: records the moment a signed-in player's round genuinely
+ * begins, and never resets that moment on subsequent calls — closes the
+ * "watch all 5 clues, back out before the timeout, come back to a brand
+ * new round" exploit across devices/browsers, not just within one tab.
+ * `on conflict do nothing` on the insert means a second call (any device)
+ * for the same puzzle just reads the original start time back rather than
+ * overwriting it. The caller (GameLoop) uses the returned start time to
+ * either play the normal countdown-then-round flow (isNew) or resume the
+ * round from its true elapsed position, skipping the countdown (not new)
+ * — see src/lib/storage/player-store.ts's SupabasePlayerStore.
+ */
+export async function getOrStartRound(
+  userId: string,
+  puzzleId: string,
+  episodeNumber: number
+): Promise<RoundStartResult> {
+  const supabase = createServiceRoleClient();
+
+  const { data: inserted, error: insertError } = await supabase
+    .from("JL_round_starts")
+    .insert({ user_id: userId, puzzle_id: puzzleId, episode_number: episodeNumber })
+    .select("started_at")
+    .maybeSingle();
+
+  // A unique-violation (23505) here just means another call already
+  // created the row first (a race between tabs/devices, or simply a
+  // second visit) — expected, not an error. Any other insert failure is
+  // real and should surface.
+  if (insertError && insertError.code !== "23505") {
+    throw new Error(`Failed to start round: ${insertError.message}`);
+  }
+
+  if (inserted) {
+    return { startedAtMs: new Date(inserted.started_at).getTime(), isNew: true };
+  }
+
+  const { data: existing, error: selectError } = await supabase
+    .from("JL_round_starts")
+    .select("started_at")
+    .eq("user_id", userId)
+    .eq("puzzle_id", puzzleId)
+    .single();
+
+  if (selectError || !existing) {
+    throw new Error(`Failed to read round start: ${selectError?.message ?? "no row found"}`);
+  }
+
+  return { startedAtMs: new Date(existing.started_at).getTime(), isNew: false };
+}
+
+/** Clears the in-progress marker once a round genuinely finishes (guessed or timed out) — see PuzzleRound.tsx. */
+export async function clearRoundStart(userId: string, puzzleId: string): Promise<void> {
+  const supabase = createServiceRoleClient();
+  await supabase.from("JL_round_starts").delete().eq("user_id", userId).eq("puzzle_id", puzzleId);
+}
+
 /**
  * One-time upload of a device's local play history into an account on
  * first sign-in (src/components/player/AccountDashboard.tsx). Existing
